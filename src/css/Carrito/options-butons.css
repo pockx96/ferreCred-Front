@@ -1,0 +1,48 @@
+#confirmar{
+    background-color: #D46641;
+    text-align: left;
+    align-items: center;
+    width: 265px;
+    height: 50px;
+    border-radius: 18px;
+    padding: 10px;
+    border: none;
+
+}
+#confirmar i{
+    font-size: 25px;
+    color: #f2f2f2;
+}
+#eliminar{
+    width: 120px;
+    height: 50px;
+    border-radius: 18px;
+    padding: 10px;
+    margin-right: 5%;
+    background-color: #637C98;
+    border: none;
+}
+
+.options-butons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.options-butons a{
+    font-size: 20px;
+
+}
+.options-butons i{
+    color: #2c2c2c;
+    margin-left: 50px;
+    font-size: 45px;
+    width: 40px;
+}
+.container-left-btn{
+    display:flex;
+
+}
+.options-butons button{
+    border: none;
+    background: none;
+}

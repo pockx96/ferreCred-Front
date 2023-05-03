@@ -1,0 +1,13 @@
+.table-container {
+    border: solid 1px #ccc;
+    border-radius: 15px;
+
+    box-shadow: 0px 2.767256498336792px 2.2138051986694336px 0px #00000005;
+    box-shadow: 0px 6.650102138519287px 5.32008171081543px 0px #00000007;
+    box-shadow: 0px 12.521552085876465px 10.017241477966309px 0px #00000009;
+    box-shadow: 0px 22.3363094329834px 17.869047164916992px 0px #0000000B;
+    box-shadow: 0px 22.3363094329834px 17.869047164916992px 0px #0000000B;
+    box-shadow: 0px 41.777610778808594px 33.422088623046875px 0px #0000000D;
+    box-shadow: 0px 100px 80px 0px #00000012;
+    box-shadow: 0px 100px 80px 0px #00000012;
+}

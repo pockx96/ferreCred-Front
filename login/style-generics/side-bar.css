@@ -1,0 +1,36 @@
+nav{
+    display: flex;
+    height: 950px;
+    background-color: #D46641;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+nav ul {
+
+    text-align: left;
+}
+
+nav a {
+    font-size: 18px;
+    color: white;
+}
+
+
+nav ul li {
+    margin-top: 1.5em;
+    list-style: none;
+}
+.btnSide-container{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+    margin-right: 35px;
+}
+.btnSide-container i{
+    margin-top: 15px;
+    margin-right: 10px;
+}
+

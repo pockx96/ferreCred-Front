@@ -1,0 +1,15 @@
+.label-button{
+    font-family: Open Sans;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    margin-top: 120px;
+    margin-bottom: 40px;
+}       
+
+.label-button a{
+    text-decoration: underline;
+    color: #DD820D;
+
+}

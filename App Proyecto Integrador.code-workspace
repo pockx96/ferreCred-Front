@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Users/kriz_/OneDrive/Documentos/8vo Semestre/Progrmacion web/datatables"
+		},
+		{
+			"path": "../EasyCredit-Backend"
+		},
+		{
+			"path": "../../../Users/kriz_/OneDrive/Documentos/8vo Semestre/cheakers ia/Python-Checkers-AI"
+		},
+		{
+			"path": "../login"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "login"
+	}
+}

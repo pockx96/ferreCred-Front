@@ -1,0 +1,26 @@
+/// Instalacion de webpack
+npm i webpack -D
+
+///Compilacion
+npx webpack
+
+////Para importar el index.html a la carpeta de produccion
+npm i html -webpack-plugin -D
+
+/// desplegar el servidor de desarrollo
+npm i -D webpack-dev-server
+npm i webpack-dev-server -D
+
+//live reload
+npm run start 
+
+///importador de css
+npm install --save-dev css-loader
+npm install --save-dev style-loader
+
+///Cargar archivos html
+npm i --save-dev html-webpack-plugin
+npm install --save-dev html-loader
+
+/// Bootrap 
+npm install bootstrap@v5.2.3

@@ -1,0 +1,71 @@
+.total-box {
+    border-radius: 10px;
+    background-color: #F2F2F2;
+    width: 380px;
+    height: 158px;
+    margin-top: 2em;
+    margin-left: 45px;
+    margin-bottom: 2em ;
+}
+
+.total-box span {
+    font-size: 34px;
+}
+
+.tabla-container {
+    margin-top: 25px;
+    border-radius: 10px;
+    margin-bottom: 5em;
+}
+
+
+
+#table-product {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    height: 280px;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    border: 1px solid #cccc;
+    filter: drop-shadow(0px 100px 80px rgba(0, 0, 0, 0.07)) drop-shadow(0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198)) drop-shadow(0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275)) drop-shadow(0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035)) drop-shadow(0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725)) drop-shadow(0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802));
+    margin-left: 3em;
+}
+
+#table-product td,
+#table-product th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#table-product tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#table-product tr:hover {
+    background-color: #ddd;
+}
+
+#table-product th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f2f2f2;
+    color: #2c2c2c;
+
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title-container h2 {
+    font-size: 18px;
+    color: #5a5a5a;
+    font-weight: 300;
+}
+.Top-box-container{
+    display: flex;
+    justify-content: space-between;
+}

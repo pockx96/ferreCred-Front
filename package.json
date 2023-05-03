@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "datatables.net": "^1.13.4",
+    "quagga": "^0.12.1",
+    "webpack-php-loader": "^0.5.0"
+  },
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "datatables": "^1.10.18",
+    "html": "^1.0.0",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jquery": "^3.6.4",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.2",
+    "webpack-dev-server": "^4.13.2"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "builddev": "webpack --mode development",
+    "start": "webpack-dev-server --mode development --open"
+  }
+}

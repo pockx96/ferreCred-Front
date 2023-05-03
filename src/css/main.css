@@ -1,0 +1,9 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+@import url(./Menu/side-bar.css);
+@import url(./Carrito/main-Carrito.css);
+@import url(./Usuarios/main-Usuarios.css);
+@import url(./Bitacora/main-Bitacora.css);
+@import url(./Inventario/inventario-Main.css);

@@ -1,0 +1,125 @@
+body{
+    background-image: url(img/backgLogin.png);
+    font-family: Open Sans;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-form {
+    margin-top: 5%;
+    position: relative;
+    height: 550px;
+    border: none;
+    background: #f2f2f2;
+    border-radius: 20px;
+    padding: 0px;
+} 
+
+form{
+    margin-left: 50px;
+}
+
+.form-group {
+    margin-top: 30px;
+}
+
+input[type="text"],
+input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #e6ecf0;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 19px;
+    color: #fff;
+    background-color: #FE725D;
+    border: 1px solid #999;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 85px;
+    font-weight: 600;
+}
+
+button[type="submit"]:hover {
+    background-color: #fcb2a7;
+}
+
+
+
+.image-container{
+    margin: 0px;
+    height: 100%;
+    background-image: url(/img/login-imagen.png);
+    border-radius: 20px 0px 0px 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.login-form{
+    display: inline;
+}
+form h1{
+    margin-top: 70px;
+    font-size: 24px;
+    font-weight: 700;
+}
+h2{
+    margin-top: 9px;
+    margin-bottom: 19px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #2c2c2c;
+
+}
+h2 span{
+    color: #D46641;
+    font-weight: 600;
+}
+h3{
+    color: #2c2c2c;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 16px;
+
+}
+.text-container{
+    margin-left: 50px;
+    width: 378px;
+    height: 185;
+}
+.text-container img{
+    margin-top: 110px;
+    width: 80px;
+    height: 80px;
+}
+
+.text-container h1{
+    color: #2c2c2c;
+    margin-top: 10px;
+    font-size: 38px;
+    font-weight: 900;
+}
+
+.text-container i{
+    color: #D46641;
+}
+form p{
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 550;
+    color: #2c2c2c;
+    margin-top: 16px;
+    margin-left: 100px;
+}

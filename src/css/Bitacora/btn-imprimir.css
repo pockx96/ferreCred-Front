@@ -1,0 +1,32 @@
+.btn-container {
+    margin-bottom: 20px;
+    margin-top: 20%;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4%;
+    color: #f2f2f2;
+    height: 63px;
+    border-radius: 18px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.btn-pedido {
+    background-color: #D46641;
+    width: 230px;
+}
+
+.btn-imprimir {
+    background-color: #637C98;
+    width: 154px;
+}
+
+.button i{
+    font-size: 30px;
+
+}
