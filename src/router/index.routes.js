@@ -25,6 +25,9 @@ const router = async (route) => {
     case "#/bitacora":{
       return content.appendChild(await pages.bitacora());
     }
+    case "#/abonos":{
+      return content.appendChild(await pages.abonos());
+    }
     case "#/productoTest":{
       return content.appendChild(await pages.productoTest());
     }

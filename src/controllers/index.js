@@ -7,6 +7,7 @@ import Usuarios from "./usuarios.controller";
 import Bitacora from "./Bitacora.controller";
 import Proveedor from "./provedores.controller";
 import Inventario from "./inventario.controller";
+import Abonos from "./abonos";
 
 import ProductoTest from "./testing/productoTest";
 import DeudaTest from "./testing/deudaTest";
@@ -25,7 +26,8 @@ const pages = {
   carrito:Carrito,
   usuarios:Usuarios,
   bitacora:Bitacora,
-  productoTest:ProductoTest,
+  abonos:Abonos,
+  productoTest:ProductoTest,//TESTING/
   deudaTest:DeudaTest,
   compraTest:CompraTest,
   entradaTest:EntradaTest,

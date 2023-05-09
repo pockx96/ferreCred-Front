@@ -6,7 +6,7 @@ divElement.innerHTML = view;
 let miTabla;
 const initDataTable = async () => {
     var xmlhttp = new XMLHttpRequest();
-    var url = "http://localhost/EasyCredit-Backend/inventario";
+    var url = "https://ferrecred.com/api/inventario";
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {

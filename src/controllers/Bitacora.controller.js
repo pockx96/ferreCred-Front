@@ -10,7 +10,7 @@ let miTabla;
 
 const initDataTable = async () => {
   var xmlhttp = new XMLHttpRequest();
-  var url = "http://localhost/EasyCredit-Backend/bitacora";
+  var url = "https://ferrecred.com/api/bitacora";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {

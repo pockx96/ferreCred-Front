@@ -1,4 +1,4 @@
-const url = 'http://localhost/EasyCredit-Backend/usuarios';
+const url = 'https://ferrecred.com/api/usuarios';
 
 
 export const getAllUsuarios = async () => {
@@ -11,7 +11,7 @@ export const getAllUsuarios = async () => {
 };
 // GET por ID
 export const getByIDUsuario = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/usuarios/${id}`, {
+    return fetch(`https://ferrecred.com/api/usuarios/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export const putUsuarios = async (data) => {
 
 // DELETE
 export const deleteUsuario = async (data) => {
-    return fetch(`http://localhost/EasyCredit-Backend/usuarios`, {
+    return fetch(`https://ferrecred.com/api/usuarios`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

@@ -1,3 +1,9 @@
+.options-butons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3%;
+}
 #confirmar{
     background-color: #D46641;
     text-align: left;
@@ -23,11 +29,6 @@
     border: none;
 }
 
-.options-butons{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 .options-butons a{
     font-size: 20px;
 
