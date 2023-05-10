@@ -9,6 +9,11 @@
         display: flex;
         justify-content: space-between;
     }
+    .tabla-scrollable {
+    max-height: 6*40px;
+    /* 6 filas, 40px de alto por fila (ajustar según el tamaño deseado) */
+    overflow-y: scroll;
+}
 </style>
 <div class="row">
     <div class="lbl-container  col-md-2">
@@ -40,6 +45,7 @@
     </div>
     <div class="col-md-3 col-md-offset-1 total-box">
         <span>Codigo</span>
+        <input type="text" name="" id=" " >
         <div class="line"></div>
         <p id="result"></p>
     </div>
@@ -51,25 +57,29 @@
 </div>
 <div class="row">
     <div class="col-md-8 tabla-container">
-        <table id="table" class="table table-striped ">
-            <tr>
+        <div class="tabla-scrollable">
+          <table id="table" class="table table-striped">
+            <thead>
+              <tr>
                 <th>Codigo</th>
                 <th>Descripcion</th>
                 <th>Cantidad</th>
                 <th>Peso</th>
                 <th>Precio</th>
                 <th>Importe</th>
-            </tr>
+              </tr>
+            </thead>
             <tbody id="table-body">
-
+      
             </tbody>
-
-        </table>
-    </div>
+          </table>
+        </div>
+      </div>
+      
 </div>
     <div class="options-butons">
         <div class="container-left-btn col-md-3">
-            <button>
+            <button id="eliminar">
                 <i class="fa-solid fa-trash"></i>
             </button>
             <button>
@@ -77,7 +87,6 @@
             </button>
         </div>
         <div class="container-right-btn col-md-6">
-            <a href="" class="btn btn-danger" id="eliminar">Eliminar</a>
             <a href="#" class="btn btn-success" id="confirmar"><i class="fa-solid fa-circle-arrow-right"></i>Finalizar
                 compra</a>
         </div>

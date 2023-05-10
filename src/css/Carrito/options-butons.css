@@ -19,15 +19,7 @@
     font-size: 25px;
     color: #f2f2f2;
 }
-#eliminar{
-    width: 120px;
-    height: 50px;
-    border-radius: 18px;
-    padding: 10px;
-    margin-right: 5%;
-    background-color: #637C98;
-    border: none;
-}
+
 
 .options-butons a{
     font-size: 20px;

@@ -1,24 +1,30 @@
-const url = 'http://localhost/EasyCredit-Backend/catalogo';
+const url = 'https://ferrecred.com/api/catalogo';
 
 
 export const getAll = async () => {
     return fetch(url)
         .then(response => response.json())
         .then(data => {
-            return data;
+            const catalogo = data.map(producto => {
+                return {
+                    codigo: producto.codigo,
+                    descripcion: producto.descripcion
+                };
+            });
+            return catalogo;
         })
         .catch(error => console.error(error) );
 };
 // GET por ID
 export const getByCodigo = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/productos/${id}`, {
+    return fetch(`https://ferrecred.com/api/catalogo/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
     })
         .then(response => response.json())
-        .then(data =>{
+        .then(data => {
             console.log("producto encontrado");
             return data;
         })

@@ -1,10 +1,12 @@
 import Quagga from 'quagga';
 import view from "../view/Carrito.html";
+import {getAll,getByCodigo} from '../controllersDb/catalogoController';
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 const searchContainer = divElement.querySelector('.search-input-box');
 const inputSearch = searchContainer.querySelector('input');
 const boxSuggestions = divElement.querySelector('.container-suggestions');
+const inputCodigo = divElement.querySelector('input-codigo');
 let fila;
 const tabla = divElement.querySelector('#table-body');
 let suggestions = [];
@@ -39,50 +41,15 @@ function initQuagga() {
 
 }
 
-const url = 'https://ferrecred.com/api/catalogo';
-
-const getAll = async () => {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const catalogo = data.map(producto => {
-            return {
-                codigo: producto.codigo,
-                descripcion: producto.descripcion
-            };
-        });
-        return catalogo;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getByCodigo = async (id) => {
-    return fetch(`https://ferrecred.com/api/catalogo/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log("producto encontrado");
-            return data;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            throw error;
-        });
+function loadCatalogo(){
+    getAll().then(nombres => {
+        suggestions = nombres;
+        console.log(suggestions);
+    });
 }
 
-
-getAll().then(nombres => {
-    suggestions = nombres;
-    console.log(suggestions);
-});
-
 const addRow = (producto) => {
-    const importe = (producto.precio_venta*1.16);
+    const importe = (producto.precio_venta * 1.16).toFixed(2);
 
     fila = tabla.insertRow(tabla.rows.length);
     const celdaCodigo = fila.insertCell(0);
@@ -94,7 +61,7 @@ const addRow = (producto) => {
 
     celdaCodigo.innerHTML = producto.codigo;
     celdaDescripcion.innerHTML = producto.descripcion;
-    celdaCantidad.innerHTML = "1"; 
+    celdaCantidad.innerHTML = "1";
     celdaPeso.innerHTML = producto.peso;
     celdaPrecio.innerHTML = producto.precio_venta;
     celdaImporte.innerHTML = importe;
@@ -102,7 +69,6 @@ const addRow = (producto) => {
     celdaCodigo.contentEditable = true;
     celdaCantidad.contentEditable = true;
 };
-
 
 async function select(element) {
     const codigo = element.textContent.split("-")[0].trim()
@@ -150,11 +116,15 @@ function Search() {
 
 }
 
+function SearchByCodigo() {
+    
+}
+
 const showSuggestions = list => {
     let listData;
 
     if (!list.length) {
-        userValue = inputSearch.value;
+        const userValue = inputSearch.value;
         listData = `<li>${userValue}</li>`;
     } else {
         listData = list.join(' ');
@@ -176,15 +146,22 @@ function CantidadCaptura() {
 
 }
 
+function ClearTable() {
+    const btnEliminar = divElement.querySelector('#eliminar');
+    btnEliminar.addEventListener('click',()=>{
+        while(tabla.firstChild){
+            tabla.removeChild(tabla.firstChild);
+        }        
+    });
+}
+
 
 
 export default () => {
+    loadCatalogo();
     Search();
-
-    const btnClick = divElement.querySelector("#confirmar");
-    btnClick.addEventListener("click", () => {
-        initQuagga();
-    });
+    SearchByCodigo();
+    ClearTable();
 
     return divElement;
 };
