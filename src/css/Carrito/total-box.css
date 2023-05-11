@@ -9,11 +9,12 @@
     border-radius: 10px;
     background-color: #F2F2F2;
     width: 380px;
-    height: 158px;
+    height: 130px;
+    padding-top: 10px;
 }
 
 .total-box span {
-    font-size: 34px;
+    font-size: 30px;
 }
 
 .title-container {

@@ -1,6 +1,7 @@
 import Quagga from 'quagga';
 import view from "../view/Carrito.html";
-import {getAll,getByCodigo} from '../controllersDb/catalogoController';
+import { getAll, getByCodigo } from '../controllersDb/catalogoController';
+
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 const searchContainer = divElement.querySelector('.search-input-box');
@@ -41,7 +42,7 @@ function initQuagga() {
 
 }
 
-function loadCatalogo(){
+function loadCatalogo() {
     getAll().then(nombres => {
         suggestions = nombres;
         console.log(suggestions);
@@ -86,7 +87,6 @@ function Search() {
     window.select = select;
 
 
-
     inputSearch.onkeyup = e => {
         let userData = e.target.value;
         let emptyArray = [];
@@ -116,9 +116,6 @@ function Search() {
 
 }
 
-function SearchByCodigo() {
-    
-}
 
 const showSuggestions = list => {
     let listData;
@@ -133,35 +130,60 @@ const showSuggestions = list => {
 };
 
 function CantidadCaptura() {
-    tabla.addEventListener('keydown', (event) => {
+    tabla.addEventListener("keydown", (event) => {
         const fila = event.target.parentNode;
         const celdaCantidad = fila.cells[2]; // índice de la celda cantidad
 
         if (event.keyCode === 13 && event.target === celdaCantidad) {
-            const cantidad = celdaCantidad.innerText;
-            alert(cantidad);
+            event.preventDefault(); // evitar que la celda salte a una nueva línea
+            const cantidad = parseInt(celdaCantidad.innerText);
+            const precio = parseFloat(fila.cells[4].innerText);
+            const importe = ((cantidad * precio) * 1.16).toFixed(2);
+            fila.cells[5].innerText = importe;
+
         }
     });
-
-
 }
+
+function CodigoCaptura() {
+    tabla.addEventListener("keydown", async (event) => {
+        const fila = event.target.parentNode;
+        const celdaCodigo = fila.cells[0]; // índice de la celda cantidad
+        
+        if (event.keyCode === 13 && event.target === celdaCodigo) {
+            event.preventDefault();
+            const codigo = celdaCodigo.textContent;
+            const producto = await getByCodigo(codigo);
+    
+            fila.cells[1].innerText = producto.descripcion;
+            fila.cells[2].innerText  = "1";
+            fila.cells[3].innerText  = producto.peso;
+            fila.cells[4].innerText  = producto.precio_venta;
+            fila.cells[5].innerText  = ((producto.precio_venta)*1.16).toFixed(2); 
+
+        }
+    });
+}
+
 
 function ClearTable() {
     const btnEliminar = divElement.querySelector('#eliminar');
-    btnEliminar.addEventListener('click',()=>{
-        while(tabla.firstChild){
+    btnEliminar.addEventListener('click', () => {
+        while (tabla.firstChild) {
             tabla.removeChild(tabla.firstChild);
-        }        
+        }
     });
 }
+
 
 
 
 export default () => {
     loadCatalogo();
     Search();
-    SearchByCodigo();
     ClearTable();
+    CantidadCaptura();
+    CodigoCaptura();
 
     return divElement;
 };
