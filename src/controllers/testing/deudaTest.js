@@ -1,5 +1,5 @@
 import view from '../../view/testDB/deudaTest.html'
-import {getAll,getByFolio,post,put,getByCliente } from '../../controllersDb/deudaController'
+import {getAll,getByFolio,post,DeudaUpdate,getByCliente } from '../../controllersDb/deudaController'
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -82,7 +82,7 @@ function updateDeuda() {
         console.log(deuda);
         const folioString = folio.value;
         console.log(folioString);
-        put(folioString,deuda);
+        DeudaUpdate(folioString,deuda);
         loadTable();
     });
 };

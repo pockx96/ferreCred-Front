@@ -2,7 +2,7 @@ import $ from 'jquery';
 import 'datatables.net';
 import '../../../node_modules/datatables/media/css/jquery.dataTables.min.css';
 import view from '../../view/testDB/productoTest.html'
-import { getAll, getByFolio, post } from '../../controllersDb/productoController'
+import { ProductogetAll, ProductogetByFolio, ProductoPost } from '../../controllersDb/productoController'
 
 
 const divElement = document.createElement("div");
@@ -69,7 +69,7 @@ const initDataTable = async () => {
 
 const listProductos= async()=> {
 
-    getAll().then((producto) => {
+    ProductogetAll().then((producto) => {
         producto.forEach((producto) => {
             table.innerHTML += `
           <tr>
@@ -90,7 +90,7 @@ const listProductos= async()=> {
 function searchproducto() {
     btnBuscar.addEventListener("click", () => {
         var folioString = folio.value;
-        getByFolio(folioString).then((productos) => {
+        ProductogetByFolio(folioString).then((productos) => {
             productos.forEach((producto) => {
                 console.log(typeof (producto));
             });
@@ -109,7 +109,7 @@ function addProducto() {
             importe: importe.value
         };
 
-        post(producto);
+        ProductoPost(producto);
         loadTable();
     });
 

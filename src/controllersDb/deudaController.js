@@ -1,4 +1,4 @@
-const url = 'http://localhost/EasyCredit-Backend/deuda';
+const url = 'https://ferrecred.com/api/deuda';
 
 
 export const getAll = async () => {
@@ -11,7 +11,7 @@ export const getAll = async () => {
 };
 // GET por ID
 export const getByFolio = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/deuda/${id}`, {
+    return fetch(`${url}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export const getByFolio = async (id) => {
 }
 
 export const getByCliente = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/deuda/${id}`,{
+    return fetch(`${url}/${id}`,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ export const post = async (data) => {
         .catch(error => console.error('Error:', error));
 }
 
-export const put = async (folio,data) => {
+export const DeudaUpdate = async (data) => {
     const opciones = {
         method: 'PUT',
         headers: {
@@ -81,7 +81,7 @@ export const put = async (folio,data) => {
         body: JSON.stringify(data)
     };
 
-    fetch(`http://localhost/EasyCredit-Backend/deuda/${folio}`, opciones)
+    fetch(url, opciones)
         .then(response => {
             
             if (response.ok) {

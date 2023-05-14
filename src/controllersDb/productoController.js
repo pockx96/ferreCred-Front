@@ -1,7 +1,7 @@
-const url = 'http://localhost/EasyCredit-Backend/productos';
+const url = 'https://ferrecred.com/api/productos';
 
 
-export const getAll = async () => {
+export const ProductogetAll = async () => {
     return fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -10,8 +10,8 @@ export const getAll = async () => {
         .catch(error => console.error(error));
 };
 // GET por ID
-export const getByFolio = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/productos/${id}`, {
+export const ProductogetByFolio = async (id) => {
+    return fetch(`${url}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ export const getByFolio = async (id) => {
 
 
 
-export const post = async (data) => {
+export const ProductoPost = async (data) => {
     const opciones = {
         method: 'POST',
         headers: {
@@ -46,7 +46,7 @@ export const post = async (data) => {
     fetch(url, opciones)
         .then(response => {
             if (response.ok) {
-                console.log('el usuario ah sido agregado exitosamente');
+                console.log('el producto ah sido agregado exitosamente');
             } else {
                 console.log('Hubo un error al actualizar los datos.');
             }

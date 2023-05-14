@@ -1,5 +1,4 @@
 import view from "../view/Bitacora.html";
-import { getAll } from "../controllersDb/bitacoraController"
 
 
 const divElement = document.createElement("div");

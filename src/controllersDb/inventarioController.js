@@ -1,4 +1,4 @@
-const url = 'http://localhost/EasyCredit-Backend/inventario';
+const url = 'https://ferrecred.com/api/inventario';
 
 
 export const getAll = async () => {
@@ -11,8 +11,8 @@ export const getAll = async () => {
         .catch(error => console.error(error));
 };
 // GET por ID
-export const getByFolio = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/productos/${id}`, {
+export const InventarioGetByCodigo = async (id) => {
+    return fetch(`${url}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -20,7 +20,8 @@ export const getByFolio = async (id) => {
     })
         .then(response => response.json())
         .then(data =>{
-            console.log("producto encontrado");
+            console.log(`${url}/${id}`);
+            console.log("producto encontrado en inventario");
             return data;
         })
         .catch(error => {
@@ -31,7 +32,7 @@ export const getByFolio = async (id) => {
 
 
 
-export const post = async (data) => {
+export const SumaInventario = async (data) => {
     const opciones = {
         method: 'POST',
         headers: {
@@ -43,7 +44,7 @@ export const post = async (data) => {
     fetch(url, opciones)
         .then(response => {
             if (response.ok) {
-                console.log('el usuario ah sido agregado exitosamente');
+                console.log('el inventario a sido sumado exitosamente');
             } else {
                 console.log('Hubo un error al actualizar los datos.');
             }
@@ -51,4 +52,22 @@ export const post = async (data) => {
         .catch(error => console.error('Error:', error));
 }
 
+export const RestaInventario = async (data) => {
+    const opciones = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
 
+    fetch(url, opciones)
+        .then(response => {
+            if (response.ok) {
+                console.log('se a restado del inventario exitosamente');
+            } else {
+                console.log('Hubo un error al actualizar los datos.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
