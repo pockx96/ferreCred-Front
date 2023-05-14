@@ -5,6 +5,9 @@ const searchContainer = divElement.querySelector('.search-input-box');
 const inputSearch = searchContainer.querySelector('input');
 const boxSuggestions = divElement.querySelector('.container-suggestions');
 let suggestions = [];
+let cliente = '';
+const table = divElement.querySelector("#tableBody");
+let miTabla;
 
 
 const url = 'https://ferrecred.com/api/clientes';
@@ -21,7 +24,7 @@ const getAll = async () => {
 };
 
 function search() {
-
+  window.select = select;
     getAll().then(nombres => {
         suggestions = nombres;
         console.log(suggestions);
@@ -69,19 +72,19 @@ const showSuggestions = list => {
     boxSuggestions.innerHTML = listData;
 };
 function select(element) {
-    alert(`${element.textContent}`)
+    cliente = element.textContent;
+    initDataTable();
     searchContainer.classList.remove('active');
 }
 
 
 
-const table = divElement.querySelector("#tableBody");
-let miTabla;
+
 
 
 const initDataTable = async () => {
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://ferrecred.com/api/deuda";
+  var url = `https://ferrecred.com/api/deuda${cliente}`;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {

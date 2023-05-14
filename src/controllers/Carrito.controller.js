@@ -18,7 +18,7 @@ const inputCodigo = divElement.querySelector('input-codigo');
 let fila;
 const tabla = divElement.querySelector('#table-body');
 let suggestions = [];
-let Cliente = "clientesPrueba";
+let Cliente = "lord hikari";
 let tipoNota= "credito";
 var TotalCount;
 
