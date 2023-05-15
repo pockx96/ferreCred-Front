@@ -5,9 +5,13 @@ nav {
     flex-direction: column;
     align-items: center;
 }
-
 .side-bar {
-    width: 92px;
+    width: auto;
+    display: inline-block;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    overflow-y: auto;
 }
 
 nav i {
