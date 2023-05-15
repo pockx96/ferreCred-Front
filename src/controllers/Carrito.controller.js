@@ -173,6 +173,7 @@ const confirmarCompra = () => {
             }
             DeudaUpdate(deuda);
             BitacoraPost(bitacora);
+            erase();
         }
     });
 };
@@ -306,11 +307,15 @@ function CodigoCaptura() {
 function ClearTable() {
     const btnEliminar = divElement.querySelector('#eliminar');
     btnEliminar.addEventListener('click', () => {
-        while (tabla.firstChild) {
-            tabla.removeChild(tabla.firstChild);
-        }
+        erase();
     });
 }
+function erase() {
+    while (tabla.firstChild) {
+        tabla.removeChild(tabla.firstChild);
+    }
+  }
+  
 
 
 
@@ -322,7 +327,5 @@ export default () => {
     CodigoCapturaCelda();
     CodigoCaptura();
     confirmarCompra();
-
-
     return divElement;
 };
