@@ -76,7 +76,6 @@ function sumarImporte() {
 function loadCatalogo() {
     getAll().then(nombres => {
         suggestions = nombres;
-        console.log(suggestions);
     });
 }
 
@@ -196,8 +195,6 @@ async function select(element) {
 
 function Search() {
     window.select = select;
-
-
     inputSearch.onkeyup = e => {
         let userData = e.target.value;
         let emptyArray = [];
@@ -226,7 +223,6 @@ function Search() {
 
 
 }
-
 
 
 const showSuggestions = list => {
@@ -311,6 +307,24 @@ function ClearTable() {
     });
 }
 
+function nuevoCliente(){
+    const newProduct = divElement.querySelector('#LblCrear');
+    const newProductDialog = divElement.querySelector('#new-product-dialog');
+    newProduct.addEventListener('click', () => {
+        // Mostrar el cuadro de diálogo en el centro de la pantalla
+        newProductDialog.showModal();
+        newProductDialog.style.visibility = 'visible';
+        newProductDialog.style.justifyContent = 'center';
+        newProductDialog.style.alignItems = 'center';
+        console.log('p')
+    });
+    // Agregar evento de submit al formulario del cuadro de diálogo
+    divElement.querySelector('#close').addEventListener('click', (event) => {
+        console.log("prueba");
+        newProductDialog.style.visibility = 'hidden';
+        newProductDialog.close();
+    });
+}
 
 
 export default () => {
@@ -321,6 +335,7 @@ export default () => {
     CodigoCapturaCelda();
     CodigoCaptura();
     confirmarCompra();
+    nuevoCliente(); 
 
 
     return divElement;

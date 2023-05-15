@@ -1,7 +1,7 @@
-const url = 'http://localhost/EasyCredit-Backend/clientes';
+const url = 'https://ferrecred.com/api/clientes';
 
 
-export const getAllUsuarios = async () => {
+export const ClientesGetAll = async () => {
     return fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -10,8 +10,8 @@ export const getAllUsuarios = async () => {
         .catch(error => console.error(error));
 };
 // GET por ID
-export const getByIDUsuario = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/clientes/${id}`, {
+export const ClientesGetByCorreo = async (id) => {
+    return fetch(`${url}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
