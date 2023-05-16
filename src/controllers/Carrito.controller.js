@@ -106,6 +106,7 @@ const addRow = (producto) => {
     celdaBoton.appendChild(button);
     celdaCodigo.contentEditable = true;
     celdaCantidad.contentEditable = true;
+    fila.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
 };
 
 const obtenerFilasTabla = () => {
@@ -171,6 +172,7 @@ const confirmarCompra = () => {
             }
             DeudaUpdate(deuda);
             BitacoraPost(bitacora);
+            erase();
         }
     });
 };
@@ -253,7 +255,7 @@ function CantidadCaptura() {
                 const importe = ((cantidad * precio) * 1.16).toFixed(2);
                 fila.cells[5].innerText = importe;
                 sumarImporte();
-                
+                fila.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
             }
             else{
                 alert(`Cantidad insuficiente en inventario - cantidad disponible: ${cantidadActual.cantidad}`);
@@ -277,7 +279,7 @@ function CodigoCapturaCelda() {
             fila.cells[3].innerText = producto.peso;
             fila.cells[4].innerText = producto.precio_venta;
             fila.cells[5].innerText = ((producto.precio_venta) * 1.16).toFixed(2);
-
+            fila.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
         }
     });
 }
