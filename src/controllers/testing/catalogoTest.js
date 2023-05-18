@@ -2,7 +2,7 @@ import $ from 'jquery';
 import 'datatables.net';
 import '../../../node_modules/datatables/media/css/jquery.dataTables.min.css';
 import view from '../../view/testDB/catalogoTest.html'
-import {getAll,getByFolio,post } from '../../controllersDb/catalogoController'
+import {getAll,getByFolio,ProductoPost } from '../../controllersDb/catalogoController'
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -66,7 +66,7 @@ function addProducto() {
             tipo: tipo.value
         };
 
-        post(producto);
+        ProductoPost(producto);
     });
 
 };

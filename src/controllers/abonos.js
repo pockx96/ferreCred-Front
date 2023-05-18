@@ -176,7 +176,7 @@ function CrearCliente() {
     newClientDialog.style.visibility = 'hidden';
     newClientDialog.close();
   });
-  
+
   const btnCliente = divElement.querySelector('#btn-cliente');
   btnCliente.addEventListener('click', async () => {
     const inputNombre = divElement.querySelector('#input-nombre-cliente');
@@ -193,7 +193,7 @@ function CrearCliente() {
       correoCliente: inputCorreo.value
     }
     postClientes(newCliete);
-  })
+  });
 
 
 }

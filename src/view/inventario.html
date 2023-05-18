@@ -7,9 +7,47 @@
         margin-bottom: 5%;
     }
 </style>
+<dialog id="new-product-dialog" style="width: 32.72%; height: 76.43%; border-radius: 15px;">
+    <form>
+        <button id="close" style="border-radius: 15px; background-color:white; margin-left: 90%;" type="button"><i
+                class="fa-solid fa-x"></i></button>
+        <div style="background-color: whitesmoke; box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1)">
+            <h3 style="margin-left: 32%;">Nuevo producto</h3>
+            <div class="form-group">
+                <label for="product-PreComp">Codigo:</label>
+                <input class="textInput" type="text" id="input-codigo" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">Descripciòn:</label>
+                <input class="textInput" type="text" id="input-descripcion" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">Precio de compra:</label>
+                <input class="textInput" type="text" id="input-precio-compra" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">Precio de venta:</label>
+                <input class="textInput" type="text" id="input-precio-venta" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">Peso:</label>
+                <input class="textInput" type="text" id="input-peso" name="product-PreComp"><br><br>
+            </div>  
+            <button id="btn-producto" style="display: inline-flex;background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 32%;"> <i class="fa-sharp fa-solid fa-rectangle-history-circle-plus"></i>Agregar
+                producto</button>
+        </div>
+    </form>
+</dialog>
 <div class="row">
     <div class="lbl-container offset-md-1">
-        <a href="#" id="LblCrear">Crear nuevo producto</a>
+        <a  id="Lbl-crear-producto">Crear nuevo producto</a>
     </div>
 </div>
 <div class="row">

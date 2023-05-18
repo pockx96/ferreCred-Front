@@ -36,7 +36,7 @@ export const getByCodigo = async (id) => {
 
 
 
-export const post = async (data) => {
+export const ProductoPost = async (data) => {
     const opciones = {
         method: 'POST',
         headers: {
