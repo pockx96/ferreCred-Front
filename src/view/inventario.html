@@ -45,9 +45,56 @@
         </div>
     </form>
 </dialog>
+
+<dialog id="new-proveedor-dialog" style="width: 32.72%; height: 76.43%; border-radius: 15px;">
+    <form>
+        <button id="close-proveedor" style="border-radius: 15px; background-color:white; margin-left: 90%;" type="button"><i
+                class="fa-solid fa-x"></i></button>
+        <div style="background-color: whitesmoke; box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1)">
+            <h3 style="margin-left: 32%;">Nuevo proveedor</h3> 
+            <div class="form-group">
+                <label for="product-PreComp">Nombre de la empresa:</label>
+                <input class="textInput" type="text" id="input-empresa" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">Nombre del proveedor:</label>
+                <input class="textInput" type="text" id="input-nombre" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">correo electronico:</label>
+                <input class="textInput" type="email" id="input-correo" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">Direccion:</label>
+                <input class="textInput" type="text" id="input-direccion" name="product-PreComp"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="product-PreComp">telefono:</label>
+                <input class="textInput" type="text" id="input-telefono" name="product-PreComp"><br><br>
+            </div>  
+            <div class="form-group">
+                <label for="product-PreComp">RFC:</label>
+                <input class="textInput" type="text" id="input-rfc" name="product-PreComp"><br><br>
+            </div>  
+            <button id="btn-provedor" style="display: inline-flex;background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 32%;"> <i class="fa-sharp fa-solid fa-rectangle-history-circle-plus"></i>Agregar
+                producto</button>
+        </div>
+    </form>
+</dialog>
+
 <div class="row">
     <div class="lbl-container offset-md-1">
         <a  id="Lbl-crear-producto">Crear nuevo producto</a>
+    </div>
+    <div class="lbl-container offset-md-1">
+        <a  id="Lbl-crear-proveedor">Crear nuevo proveedor</a>
     </div>
 </div>
 <div class="row">

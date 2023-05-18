@@ -8,6 +8,10 @@ let miTabla;
 
 
 const initDataTable = async () => {
+  if (miTabla) {
+    miTabla.destroy();
+    miTabla = null;
+  }
   var xmlhttp = new XMLHttpRequest();
   var url = "https://ferrecred.com/api/bitacora";
   xmlhttp.open("GET", url, true);

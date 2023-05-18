@@ -1,4 +1,4 @@
-const url = 'http://localhost/EasyCredit-Backend/productos';
+const url = 'https://ferrecred.com/api/proveedores';
 
 
 export const getAll = async () => {
@@ -30,7 +30,7 @@ export const getByFolio = async (id) => {
 
 
 
-export const post = async (data) => {
+export const ProveedorPost = async (data) => {
     const opciones = {
         method: 'POST',
         headers: {
@@ -42,7 +42,7 @@ export const post = async (data) => {
     fetch(url, opciones)
         .then(response => {
             if (response.ok) {
-                console.log('el usuario ah sido agregado exitosamente');
+                console.log('el proveedor ah sido agregado exitosamente');
             } else {
                 console.log('Hubo un error al actualizar los datos.');
             }

@@ -87,6 +87,7 @@ const initDataTable = async () => {
   }
   var xmlhttp = new XMLHttpRequest();
   var url = `https://ferrecred.com/api/compras/cliente/${cliente}`;
+  console.log(`https://ferrecred.com/api/compras/cliente/${cliente}`);
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {

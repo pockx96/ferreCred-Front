@@ -1,6 +1,7 @@
 import view from '../view/inventario.html';
 import { getAll } from '../controllersDb/inventarioController';
 import {ProductoPost} from '../controllersDb/catalogoController';
+import {ProveedorPost} from '../controllersDb/proveedorController';
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -86,8 +87,49 @@ function CrearProducto() {
 
 
 }
+
+
+function CrearProveedor() {
+  const lblProvedor = divElement.querySelector('#Lbl-crear-proveedor');
+  const newClientDialog = divElement.querySelector('#new-proveedor-dialog');
+  lblProvedor.addEventListener('click', () => {
+    newClientDialog.showModal();
+    newClientDialog.style.visibility = 'visible';
+    newClientDialog.style.justifyContent = 'center';
+    newClientDialog.style.alignItems = 'center';
+  });
+  divElement.querySelector('#close-proveedor').addEventListener('click', (event) => {
+    console.log("prueba");
+    newClientDialog.style.visibility = 'hidden';
+    newClientDialog.close();
+  });
+
+  const btnProvedor = divElement.querySelector('#btn-provedor');
+  btnProvedor.addEventListener('click', async () => {
+    const inputEmpresa = divElement.querySelector('#input-empresa');
+    const inputNombre = divElement.querySelector('#input-nombre');
+    const inputCorreo = divElement.querySelector('#input-correo');
+    const inputDireccion = divElement.querySelector('#input-direccion');
+    const inputTelefono = divElement.querySelector('#input-telefono');
+    const inputRFC = divElement.querySelector('#input-rfc');
+    const newProveedor = {
+      correo_electronico: inputCorreo.value,
+      nombre_empresa: inputEmpresa.value,
+      nombre_contacto: inputNombre.value,
+      direccion: inputDireccion.value,
+      telefono: inputTelefono.value,
+      RFC:inputRFC.value
+    }
+    ProveedorPost(newProveedor);
+
+    alert('Nuevo proveedor agregado');
+  });
+
+
+}
 export default async () => {
   initDataTable();
   CrearProducto();
+  CrearProveedor();
   return divElement;
 };

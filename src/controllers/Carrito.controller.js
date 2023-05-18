@@ -153,6 +153,7 @@ const confirmarCompra = () => {
             const compra = {
                 cliente: Cliente,
                 tipo_nota: tipoNota,
+                deuda:TotalCount,
                 total: TotalCount
             };
             ComprasPost(compra);
