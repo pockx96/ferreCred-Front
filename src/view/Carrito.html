@@ -9,44 +9,40 @@
         display: flex;
         justify-content: space-between;
     }
-    .tabla-container{
+
+    .tabla-container {
         z-index: 0;
     }
-    .table{
-        z-index: 1;
 
+    .table {
+        z-index: 1;
     }
-    .header-table{
+
+    .table-body {
+        border-collapse: collapse;
+    }
+
+    td,
+    th {
+        border: 1px solid #000000;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .header-table {
         background-color: red;
     }
 </style>
-<dialog id="new-product-dialog" style="width: 32.72%; height: 76.43%; border-radius: 15px; bor">
+<dialog id="new-product-dialog" style="width: 32.72%; height: 76.43%; border-radius: 15px;">
     <form>
         <button id="close" style="border-radius: 15px; background-color:white; margin-left: 90%;" type="button"><i
                 class="fa-solid fa-x"></i></button>
         <div style="background-color: whitesmoke; box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1)">
             <h3 style="margin-left: 32%;">Nuevo producto</h3>
-            <div class="form-group">
-                <label for="product-name">Codigo:</label>
-                <input class="textInput" type="text" id="product-name" name="product-name"><br><br>
-            </div>
-            <div class="form-group">
-                <label for="product-description">Descripción:</label>
-                <textarea class="textInput" id="product-description" name="product-description"></textarea><br><br>
-            </div>
-            <div class="form-group">
-                <label for="product-PreComp">Precio de compra:</label>
-                <input class="textInput" type="text" id="product-PreComp" name="product-PreComp"><br><br>
-            </div>
-            <div class="form-group">
-                <label for="product-PreVen">Precio de venta:</label>
-                <input class="textInput" type="text" id="product-PreVen" name="product-PreVen"><br><br>
-            </div>
-            <div class="form-group">
-                <label for="product-Cant">Cantidad:</label>
-                <input class="textInput" type="text" id="product-Cant" name="product-Cant"><br><br>
-            </div>
-            <button type="submit" style="display: inline-flex;background-color: #007bff;
+            <select id="combo-box">
+              </select>
+              
+            <button id="btn-cliente" style="display: inline-flex;background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -82,14 +78,15 @@
     <div class="col-md-4 total-box">
         <div class="title-container">
             <span>Total</span>
-            <h2>Cli. Alozo lopez mateo</h2>
+            <h2 id="Lbl-cliente">Cli. Alozo lopez mateo</h2>
             <h2 id="total-label"></h2>
         </div>
         <div class="line"></div>
     </div>
     <div class="col-md-5 col-md-offset-1 total-box">
         <span>Codigo</span>
-        <input type="text" name="" id="input-codigo" >
+        <input type="text" name="" id="input-codigo">
+        <h3 id="Lbl-Producto"></h3>
         <div class="line"></div>
         <p id="result"></p>
     </div>
@@ -102,36 +99,37 @@
 <div class="row">
     <div class="col-md-8 tabla-container" style="height: 250px; overflow-y: scroll; margin-bottom: 2%;">
         <div class="tabla-scrollable">
-          <table id="table" class="table table-striped">
-            <thead>
-                <tr class="header-table">
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">Codigo</th>
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">Descripcion</th>
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">Cantidad</th>
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">Peso</th>
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">Precio</th>
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">Importe</th>
-                    <th style="position: sticky; top: 0; background-color: #f5f5f5;">X</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-</div>
-    <div class="options-butons">
-        <div class="container-left-btn col-md-3">
-            <button id="eliminar">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-            <button>
-                <i class="fa-solid fa-camera"></i>
-            </button>
-        </div>
-        <div class="container-right-btn col-md-6">
-            <a href="#/creditos" class="btn btn-success" id="confirmar"><i class="fa-solid fa-circle-arrow-right"></i>Finalizar
-                compra</a>
+            <table id="table" class="table table-striped">
+                <thead>
+                    <tr class="header-table">
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">Codigo</th>
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">Descripcion</th>
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">Cantidad</th>
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">Peso</th>
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">Precio</th>
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">Importe</th>
+                        <th style="position: sticky; top: 0; background-color: #f5f5f5;">X</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
         </div>
     </div>
+
+</div>
+<div class="options-butons">
+    <div class="container-left-btn col-md-3">
+        <button id="eliminar">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+        <button>
+            <i class="fa-solid fa-camera"></i>
+        </button>
+    </div>
+    <div class="container-right-btn col-md-6">
+        <a href="#/creditos" class="btn btn-success" id="confirmar"><i
+                class="fa-solid fa-circle-arrow-right"></i>Finalizar
+            compra</a>
+    </div>
+</div>

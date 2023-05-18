@@ -2,11 +2,12 @@
 import view from "../view/Carrito.html";
 import { getAll, getByCodigo } from '../controllersDb/catalogoController';
 import { ProductoPost } from '../controllersDb/productoController';
-import {ComprasPost} from '../controllersDb/compraController';
-import {RestaInventario,InventarioGetByCodigo} from '../controllersDb/inventarioController';
-import{BitacoraPost} from '../controllersDb/bitacoraController';
-import {DeudaUpdate} from '../controllersDb/deudaController';
-
+import { ComprasPost } from '../controllersDb/compraController';
+import { RestaInventario, InventarioGetByCodigo } from '../controllersDb/inventarioController';
+import { BitacoraPost } from '../controllersDb/bitacoraController';
+import { DeudaUpdate } from '../controllersDb/deudaController';
+import { initDataTable } from './inventario.controller';
+import { ClientesGetAll } from '../controllersDb/clientesController';
 
 
 const divElement = document.createElement("div");
@@ -19,7 +20,7 @@ let fila;
 const tabla = divElement.querySelector('#table-body');
 let suggestions = [];
 let Cliente = "lord hikari";
-let tipoNota= "credito";
+let tipoNota = "credito";
 var TotalCount;
 
 // function initQuagga() {
@@ -135,13 +136,13 @@ const obtenerProductos = () => {
     return objetosFilas;
 }
 
-function bicoraRecord (){
-    let bitacora ={ 
+function bicoraRecord() {
+    let bitacora = {
         Usuario: "@example.com",
         Proceso: "pruebaCarrito3",
         Estatus: 1,
-      }
-      return bitacora;
+    }
+    return bitacora;
 }
 
 const confirmarCompra = () => {
@@ -149,30 +150,30 @@ const confirmarCompra = () => {
     confirmarBtn.addEventListener('click', () => {
         const confirmado = window.confirm('¿Está seguro de confirmar la compra?');
         if (confirmado) {
-            const compra ={
-                cliente:Cliente,
-                tipo_nota:tipoNota,
-                total:TotalCount 
+            const compra = {
+                cliente: Cliente,
+                tipo_nota: tipoNota,
+                total: TotalCount
             };
             ComprasPost(compra);
 
             const productoList = obtenerProductos();
             productoList.forEach(producto => {
-                const produtoInventario={
-                    codigo:producto.codigo,
-                    cantidad:producto.cantidad
+                const produtoInventario = {
+                    codigo: producto.codigo,
+                    cantidad: producto.cantidad
                 }
                 RestaInventario(produtoInventario);
                 ProductoPost(producto);
             });
             const bitacora = bicoraRecord();
-            const deuda ={    
+            const deuda = {
                 "cliente": "Juan Perez",
                 "adeudo": TotalCount
             }
             DeudaUpdate(deuda);
             BitacoraPost(bitacora);
-            erase();
+            initDataTable();
         }
     });
 };
@@ -184,11 +185,11 @@ async function select(element) {
     console.log(producto);
     console.log(typeof (producto));
     const cantidadActual = await InventarioGetByCodigo(codigo);
-    if(cantidadActual.cantidad>0){
+    if (cantidadActual.cantidad > 0) {
         addRow(producto);
         sumarImporte();
     }
-    else{
+    else {
         alert("produco agotado");
     }
 
@@ -250,14 +251,14 @@ function CantidadCaptura() {
             console.log(codigo);
             const cantidad = parseInt(celdaCantidad.innerText);
             const cantidadActual = await InventarioGetByCodigo(codigo);
-            if(cantidad <= cantidadActual.cantidad){
+            if (cantidad <= cantidadActual.cantidad) {
                 const precio = parseFloat(fila.cells[4].innerText);
                 const importe = ((cantidad * precio) * 1.16).toFixed(2);
                 fila.cells[5].innerText = importe;
                 sumarImporte();
                 fila.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
             }
-            else{
+            else {
                 alert(`Cantidad insuficiente en inventario - cantidad disponible: ${cantidadActual.cantidad}`);
             }
         }
@@ -285,16 +286,17 @@ function CodigoCapturaCelda() {
 }
 function CodigoCaptura() {
     const inputCodigo = divElement.querySelector('#input-codigo');
+    const LblProducto = divElement.querySelector('#Lbl-Producto');
     inputCodigo.addEventListener("keydown", async (event) => {
 
         if (event.keyCode === 13 && event.target === inputCodigo) {
             event.preventDefault();
             const codigo = inputCodigo.value;
             const producto = await getByCodigo(codigo);
-
+            LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
             addRow(producto);
             sumarImporte();
-            inputCodigo.value="";
+            inputCodigo.value = "";
 
         }
     });
@@ -309,7 +311,7 @@ function ClearTable() {
     });
 }
 
-function nuevoCliente(){
+async function nuevoCliente() {
     const newProduct = divElement.querySelector('#LblCrear');
     const newProductDialog = divElement.querySelector('#new-product-dialog');
     newProduct.addEventListener('click', () => {
@@ -326,6 +328,31 @@ function nuevoCliente(){
         newProductDialog.style.visibility = 'hidden';
         newProductDialog.close();
     });
+    const comboBox = divElement.querySelector('#combo-box');
+    const ListaClientes = await ClientesGetAll();
+    console.log(ListaClientes);
+    ListaClientes.forEach(Cliente => {
+        const optionElement = document.createElement('option');
+        optionElement.textContent = Cliente.nombreCliente;
+        optionElement.value = Cliente.nombreCliente;
+        comboBox.appendChild(optionElement);
+    });
+
+}
+
+function SelectNuevoCliente(){
+    const newProductDialog = divElement.querySelector('#new-product-dialog');
+    const comboBox = divElement.querySelector('#combo-box');
+    const btnCliete = divElement.querySelector('#btn-cliente');
+    const lblCliente = divElement.querySelector('#Lbl-cliente');
+    btnCliete.addEventListener('click', () => {
+        const value = comboBox.value;
+        Cliente = value;
+        lblCliente.innerText = `Cli. ${value}`;
+        newProductDialog.style.visibility = 'hidden';
+        newProductDialog.close();
+    });
+
 }
 
 
@@ -337,7 +364,8 @@ export default () => {
     CodigoCapturaCelda();
     CodigoCaptura();
     confirmarCompra();
-    nuevoCliente(); 
+    nuevoCliente();
+    SelectNuevoCliente();
 
 
     return divElement;

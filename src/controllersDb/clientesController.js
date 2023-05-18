@@ -30,7 +30,7 @@ export const ClientesGetByCorreo = async (id) => {
 
 
 
-export const postU = async (data) => {
+export const postClientes = async (data) => {
     const opciones = {
         method: 'POST',
         headers: {

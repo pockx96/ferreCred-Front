@@ -3,8 +3,12 @@ import { getAll} from '../controllersDb/inventarioController'
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
-let miTabla;
-const initDataTable = async () => {
+let miTabla; 
+export const initDataTable = async () => {
+  if (miTabla) {
+    miTabla.destroy();
+    miTabla = null;
+  }
     var xmlhttp = new XMLHttpRequest();
     var url = "https://ferrecred.com/api/inventario";
     xmlhttp.open("GET", url, true);

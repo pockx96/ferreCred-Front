@@ -1,5 +1,7 @@
 import view from "../view/abonos.html";
-import {ClientesGetAll,ClientesGetByCorreo} from '../controllersDb/clientesController';
+import { ClientesGetAll, ClientesGetByCorreo } from '../controllersDb/clientesController';
+import { ComprasGetByCliente, ComprasGetDeuda, ComprasUpdateDeuda } from '../controllersDb/compraController';
+import { postClientes } from '../controllersDb/clientesController';
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 const searchContainer = divElement.querySelector('.search-input-box');
@@ -23,29 +25,29 @@ function loadCatalogo() {
 function Search() {
   window.select = select;
   inputSearch.onkeyup = e => {
-      let userData = e.target.value;
-      let emptyArray = [];
+    let userData = e.target.value;
+    let emptyArray = [];
 
-      if (userData) {
-          emptyArray = suggestions.filter(clientes => {
-              const regex = new RegExp(userData, 'gi');
-              return clientes.nombreCliente.match(regex);
-          });
+    if (userData) {
+      emptyArray = suggestions.filter(clientes => {
+        const regex = new RegExp(userData, 'gi');
+        return clientes.nombreCliente.match(regex);
+      });
 
-          emptyArray = emptyArray.map(data => {
-              return (data = `<li>${data.nombreCliente} - ${data.correoCliente}</li>`);
-          });
-          searchContainer.classList.add('active');
-          showSuggestions(emptyArray);
+      emptyArray = emptyArray.map(data => {
+        return (data = `<li>${data.nombreCliente} - ${data.correoCliente}</li>`);
+      });
+      searchContainer.classList.add('active');
+      showSuggestions(emptyArray);
 
-          let allList = boxSuggestions.querySelectorAll('li');
+      let allList = boxSuggestions.querySelectorAll('li');
 
-          allList.forEach(li => {
-              li.setAttribute('onclick', 'select(this)');
-          });
-      } else {
-          searchContainer.classList.remove('active');
-      }
+      allList.forEach(li => {
+        li.setAttribute('onclick', 'select(this)');
+      });
+    } else {
+      searchContainer.classList.remove('active');
+    }
   };
 
 
@@ -63,12 +65,17 @@ const showSuggestions = list => {
   boxSuggestions.innerHTML = listData;
 };
 
+
 async function select(element) {
   cliente = element.textContent.split("-")[0].trim().replace(/\s+/g, '%20');
   console.log(cliente);
   searchContainer.classList.remove('active');
   await initDataTable();
+  const deuda = await ComprasGetDeuda(cliente);
+  const LblDeuda = divElement.querySelector('#Lbl-deudaCount');
+  LblDeuda.textContent = deuda.suma_deuda;
 }
+
 
 
 
@@ -78,9 +85,8 @@ const initDataTable = async () => {
     miTabla.destroy();
     miTabla = null;
   }
-  
   var xmlhttp = new XMLHttpRequest();
-  var url = `https://ferrecred.com/api/deuda/cliente/${cliente}`;
+  var url = `https://ferrecred.com/api/compras/cliente/${cliente}`;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {
@@ -90,13 +96,25 @@ const initDataTable = async () => {
       miTabla = $('#datatable_clientes').DataTable({
         "data": data,
         "columns": [
-          { "data": "cliente" },
-          { "data": "total" },
-          { "data": "adeudo" },
+          { "data": "folio" },
+          { "data": "fecha" },
+          {
+            "data": "deuda",
+            "render": function (data, type, row) {
+              return data.toString(); // Convierte el valor decimal a cadena
+            }
+          },
+          {
+            "data": "total",
+            "render": function (data, type, row) {
+              return data.toString(); // Convierte el valor decimal a cadena
+            }
+          }
         ],
-        pageLength: 3,
+        pageLength: 6,
+        searching: false,
         language: {
-          lengthMenu: "Mostrar _MENU_ registros por página",
+          lengthMenu: "",
           zeroRecords: "Ningún usuario encontrado",
           info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
           infoEmpty: "Ningún usuario encontrado",
@@ -115,13 +133,75 @@ const initDataTable = async () => {
   }
 
 };
+async function Abonar() {
+  const btnAbonar = divElement.querySelector('#btn-abonar');
+  btnAbonar.addEventListener('click', async () => {
+    const abonoinput = divElement.querySelector('#input-deuda');
+    const listaDeuda = await ComprasGetByCliente(cliente);
+    let AbonoCount = parseFloat(abonoinput.value);
+    console.log(AbonoCount);
+    listaDeuda.map((Deuda) => {
+      const deudaActual = Deuda.deuda;
+      if (deudaActual < AbonoCount) {
+        AbonoCount - deudaActual;
+        Deuda.deuda = 0;
+      }
+      else {
+        Deuda.deuda -= AbonoCount;
+        AbonoCount = 0;
+      }
+    });
+    listaDeuda.forEach(async (Deuda) => {
+      ComprasUpdateDeuda(Deuda);
+    });
+    console.log(cliente);
+    initDataTable();
+  });
+
+}
 
 
+function CrearCliente() {
+  const lblCliente = divElement.querySelector('#Lbl-crear-cliente');
+  const newClientDialog = divElement.querySelector('#new-product-dialog');
+  lblCliente.addEventListener('click', () => {
+    newClientDialog.showModal();
+    newClientDialog.style.visibility = 'visible';
+    newClientDialog.style.justifyContent = 'center';
+    newClientDialog.style.alignItems = 'center';
+    console.log('p')
+  });
+  divElement.querySelector('#close').addEventListener('click', (event) => {
+    console.log("prueba");
+    newClientDialog.style.visibility = 'hidden';
+    newClientDialog.close();
+  });
+  
+  const btnCliente = divElement.querySelector('#btn-cliente');
+  btnCliente.addEventListener('click', async () => {
+    const inputNombre = divElement.querySelector('#input-nombre-cliente');
+    const inputDireccion = divElement.querySelector('#input-direccion');
+    const inputTelefono = divElement.querySelector('#input-telefono');
+    const inputLimite = divElement.querySelector('#input-limite');
+    const inputCorreo = divElement.querySelector('#input-correo');
+    const newCliete = {
+      nombreCliente: inputNombre.value,
+      direccion: inputDireccion.value,
+      telefono: inputTelefono.value,
+      limiteCredito: inputLimite.value,
+      saldoActual: "0",
+      correoCliente: inputCorreo.value
+    }
+    postClientes(newCliete);
+  })
 
+
+}
 
 export default () => {
   loadCatalogo();
   Search();
+  Abonar();
+  CrearCliente();
   return divElement;
-
 };
