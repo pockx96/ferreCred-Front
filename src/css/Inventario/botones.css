@@ -20,14 +20,27 @@
 .btn-pedido {
     background-color: #D46641;
     width: 230px;
+    text-decoration: none;
+}
+.btn-pedido:hover{
+    background-color: #9e4c31;
+    color: #f2f2f2;
+    cursor: pointer;
+
 }
 
 .btn-imprimir {
     background-color: #637C98;
     width: 154px;
+    text-decoration: none;
+}
+.btn-imprimir:hover{
+    background-color: #3d4d5f;
+
 }
 
 .button i{
+    color: #ffff;
     font-size: 30px;
 
 }

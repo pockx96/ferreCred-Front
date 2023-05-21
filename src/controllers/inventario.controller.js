@@ -2,10 +2,14 @@ import view from '../view/inventario.html';
 import { getAll } from '../controllersDb/inventarioController';
 import {ProductoPost} from '../controllersDb/catalogoController';
 import {ProveedorPost} from '../controllersDb/proveedorController';
+import {showDialog}from '../controllers/Entradas.controller';
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 let miTabla;
+const lblProducto = divElement.querySelector('#Lbl-crear-producto');
+const lblProvedor = divElement.querySelector('#Lbl-crear-proveedor');
+
 export const initDataTable = async () => {
   if (miTabla) {
     miTabla.destroy();
@@ -18,7 +22,6 @@ export const initDataTable = async () => {
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var data = JSON.parse(this.responseText);
-
       miTabla = $('#datatable_inventario').DataTable({
         "data": data,
         "columns": [
@@ -30,12 +33,13 @@ export const initDataTable = async () => {
         ],
         pageLength: 6,
         language: {
-          lengthMenu: "Mostrar _MENU_ registros por página",
+          lengthMenu: "",
           zeroRecords: "Ningún usuario encontrado",
           info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
           infoEmpty: "Ningún usuario encontrado",
           infoFiltered: "(filtrados desde _MAX_ registros totales)",
-          search: "Buscar:",
+          search: "",
+          searchPlaceholder: '¿Que producto buscas?',
           loadingRecords: "Cargando...",
           paginate: {
             first: "Primero",
@@ -52,19 +56,17 @@ export const initDataTable = async () => {
 
 
 function CrearProducto() {
-  const lblProducto = divElement.querySelector('#Lbl-crear-producto');
   const newClientDialog = divElement.querySelector('#new-product-dialog');
   lblProducto.addEventListener('click', () => {
-    newClientDialog.showModal();
-    newClientDialog.style.visibility = 'visible';
-    newClientDialog.style.justifyContent = 'center';
-    newClientDialog.style.alignItems = 'center';
-    console.log('p')
+    if(!newClientDialog.open){
+      newClientDialog.showModal();
+      newClientDialog.style.visibility = 'visible';
+    }
   });
   divElement.querySelector('#close').addEventListener('click', (event) => {
-    console.log("prueba");
     newClientDialog.style.visibility = 'hidden';
     newClientDialog.close();
+
   });
 
   const btnProducto = divElement.querySelector('#btn-producto');
@@ -90,19 +92,18 @@ function CrearProducto() {
 
 
 function CrearProveedor() {
-  const lblProvedor = divElement.querySelector('#Lbl-crear-proveedor');
-  const newClientDialog = divElement.querySelector('#new-proveedor-dialog');
+  const newProveedorDialog = divElement.querySelector('#new-proveedor-dialog');
   lblProvedor.addEventListener('click', () => {
-    newClientDialog.showModal();
-    newClientDialog.style.visibility = 'visible';
-    newClientDialog.style.justifyContent = 'center';
-    newClientDialog.style.alignItems = 'center';
+    if(!newProveedorDialog.open){
+      newProveedorDialog.showModal();
+      newProveedorDialog.style.visibility = 'visible';
+    }
   });
   divElement.querySelector('#close-proveedor').addEventListener('click', (event) => {
-    console.log("prueba");
-    newClientDialog.style.visibility = 'hidden';
-    newClientDialog.close();
-  });
+      newProveedorDialog.style.visibility = 'hidden';
+      newProveedorDialog.close();
+    }
+  );
 
   const btnProvedor = divElement.querySelector('#btn-provedor');
   btnProvedor.addEventListener('click', async () => {
@@ -127,6 +128,8 @@ function CrearProveedor() {
 
 
 }
+
+
 export default async () => {
   initDataTable();
   CrearProducto();

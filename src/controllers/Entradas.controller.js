@@ -3,11 +3,12 @@ import view from "../view/Carrito.html";
 import { getAll, getByCodigo } from '../controllersDb/catalogoController';
 import { ProductoPost } from '../controllersDb/productoController';
 import { ComprasPost } from '../controllersDb/compraController';
-import { RestaInventario, InventarioGetByCodigo } from '../controllersDb/inventarioController';
+import { RestaInventario, InventarioGetByCodigo, SumaInventario } from '../controllersDb/inventarioController';
 import { BitacoraPost } from '../controllersDb/bitacoraController';
 import { DeudaUpdate } from '../controllersDb/deudaController';
 import { initDataTable } from './inventario.controller';
 import { ClientesGetAll } from '../controllersDb/clientesController';
+import { ProveedoresGetAll } from '../controllersDb/proveedorController';
 
 
 const divElement = document.createElement("div");
@@ -23,6 +24,7 @@ let suggestions = [];
 let Cliente = "lord hikari";
 let tipoNota = "credito";
 var TotalCount;
+
 
 // function initQuagga() {
 //     Quagga.init({
@@ -80,6 +82,7 @@ function loadCatalogo() {
         suggestions = nombres;
     });
 }
+
 function empycellsTable(){
     var rowCount = tabla.getElementsByTagName('tr').length;
     var emptyRowsNeeded = 5 - rowCount;
@@ -162,11 +165,15 @@ const obtenerFilasTabla = () => {
     const arrayFilas = [];
 
     for (let i = 0; i < filas.length; i++) {
-        arrayFilas.push(filas[i]);
+        // Verificar si la fila no está vacía
+        if (filas[i].innerText.trim() !== '') {
+            arrayFilas.push(filas[i]);
+        }
     }
 
     return arrayFilas;
 };
+
 
 const obtenerProductos = () => {
     const tablaArray = obtenerFilasTabla();
@@ -200,24 +207,26 @@ const confirmarCompra = () => {
             const compra = {
                 cliente: Cliente,
                 tipo_nota: tipoNota,
-                deuda:TotalCount,
+                deuda: TotalCount,
                 total: TotalCount
             };
             ComprasPost(compra);
 
             const productoList = obtenerProductos();
+            console.log("lista de productos:");
+            console.log(productoList);
             productoList.forEach(producto => {
                 const produtoInventario = {
                     codigo: producto.codigo,
                     cantidad: producto.cantidad
                 }
-                RestaInventario(produtoInventario);
+                SumaInventario(produtoInventario);
                 ProductoPost(producto);
             });
             const bitacora = bicoraRecord();
             BitacoraPost(bitacora);
-            ClearTable();
             initDataTable();
+            ClearTable();
         }
     });
 };
@@ -331,7 +340,7 @@ function CodigoCapturaCelda() {
     });
 }
 function CodigoCaptura() {
-    
+
     inputCodigo.addEventListener("keydown", async (event) => {
 
         if (event.keyCode === 13 && event.target === inputCodigo) {
@@ -382,7 +391,7 @@ async function nuevoCliente() {
 
 }
 
-function SelectNuevoCliente(){
+function SelectNuevoCliente() {
     const newProductDialog = divElement.querySelector('#select-client-dialog');
     const comboBox = divElement.querySelector('#combo-box');
     const btnCliete = divElement.querySelector('#btn-cliente');
@@ -397,6 +406,36 @@ function SelectNuevoCliente(){
 
 }
 
+function hiddenElements() {
+    const labelContent = divElement.querySelector('.lbl-container');
+    labelContent.style.display = "none";
+}
+
+export function showDialog() {
+    // const newProductDialog = divElement.querySelector('#select-client-dialog');
+    // if (!newProductDialog.open) { // Verificar si el cuadro de diálogo está cerrado
+    //     newProductDialog.showModal();
+    //     newProductDialog.style.visibility = 'visible';
+    // }
+    alert('working');
+}
+export async function Proveedores() {
+    const newProductDialog = divElement.querySelector('#select-client-dialog');
+    // Agregar evento de submit al formulario del cuadro de diálogo
+    divElement.querySelector('#close').addEventListener('click', (event) => {
+        newProductDialog.style.visibility = 'hidden';
+        newProductDialog.close();
+    });
+    const comboBox = divElement.querySelector('#combo-box');
+    const ListaProveedores = await ProveedoresGetAll();
+    console.log(ListaProveedores);
+    ListaProveedores.forEach(Cliente => {
+        const optionElement = document.createElement('option');
+        optionElement.textContent = Cliente.nombre_empresa;
+        optionElement.value = Cliente.nombre_empresa;
+        comboBox.appendChild(optionElement);
+    });
+}
 
 export default () => {
     loadCatalogo();
@@ -406,9 +445,9 @@ export default () => {
     CodigoCapturaCelda();
     CodigoCaptura();
     confirmarCompra();
-    nuevoCliente();
     SelectNuevoCliente();
+    hiddenElements();
+    Proveedores();
     empycellsTable();
-
     return divElement;
 };

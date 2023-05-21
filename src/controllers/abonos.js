@@ -73,12 +73,10 @@ async function select(element) {
   await initDataTable();
   const deuda = await ComprasGetDeuda(cliente);
   const LblDeuda = divElement.querySelector('#Lbl-deudaCount');
+  const LblCliente = divElement.querySelector('#lbl-cliente');
   LblDeuda.textContent = deuda.suma_deuda;
+  LblCliente.textContent = cliente;
 }
-
-
-
-
 
 const initDataTable = async () => {
   if (miTabla) {
@@ -112,7 +110,7 @@ const initDataTable = async () => {
             }
           }
         ],
-        pageLength: 6,
+        pageLength: 5,
         searching: false,
         language: {
           lengthMenu: "",
@@ -166,11 +164,10 @@ function CrearCliente() {
   const lblCliente = divElement.querySelector('#Lbl-crear-cliente');
   const newClientDialog = divElement.querySelector('#new-product-dialog');
   lblCliente.addEventListener('click', () => {
-    newClientDialog.showModal();
-    newClientDialog.style.visibility = 'visible';
-    newClientDialog.style.justifyContent = 'center';
-    newClientDialog.style.alignItems = 'center';
-    console.log('p')
+    if (!newClientDialog.open) { // Verificar si el cuadro de diálogo está cerrado
+      newClientDialog.showModal();
+      newClientDialog.style.visibility = 'visible';
+    }
   });
   divElement.querySelector('#close').addEventListener('click', (event) => {
     console.log("prueba");
@@ -194,12 +191,15 @@ function CrearCliente() {
       correoCliente: inputCorreo.value
     }
     postClientes(newCliete);
+    newClientDialog.style.visibility = 'hidden';
+    newClientDialog.close();
   });
 
 
 }
 
 export default () => {
+  initDataTable();
   loadCatalogo();
   Search();
   Abonar();

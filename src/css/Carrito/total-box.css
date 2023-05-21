@@ -11,19 +11,37 @@
     width: 380px;
     height: 130px;
     padding-top: 10px;
+    border: 1px solid #ccc;
 }
 
 .total-box span {
     font-size: 30px;
+    color: #DD820D;
 }
 
 .title-container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin-left: 3%;
 }
 
 .title-container h2 {
     font-size: 18px;
     color: #5a5a5a;
     font-weight: 300;
+}
+#Lbl-Producto{
+    font-size: 18px;
+    color: #5a5a5a;
+    font-weight: 300; 
+}
+.codigo-container{
+    display: flex;
+    align-items: center;
+    width: 80%;
+    justify-content: space-between;
+    padding-bottom: 1%;
+    padding-left: 2%;
 }

@@ -2,24 +2,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 3%;
+    margin-top: 2%;
 }
-#confirmar{
-    background-color: #D46641;
-    text-align: left;
-    align-items: center;
-    width: 265px;
-    height: 50px;
-    border-radius: 18px;
-    padding: 10px;
-    border: none;
-
-}
-#confirmar i{
-    font-size: 25px;
-    color: #f2f2f2;
-}
-
 
 .options-butons a{
     font-size: 20px;
@@ -38,4 +22,9 @@
 .options-butons button{
     border: none;
     background: none;
+}
+#confirmar{
+    display: inline;
+    height: 53px;
+    font-size: 24px;
 }

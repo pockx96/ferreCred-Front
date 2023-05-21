@@ -1,105 +1,60 @@
-import view from '../view/usuarios.html'
-import { getAllUsuarios, postUsuarios, putUsuarios, deleteUsuario, getByIDUsuario } from '../controllersDb/usuariosController'
+import view from "../view/usuarios.html";
+
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
-const table = divElement.querySelector("#table");
-
-const btnAgregar = divElement.querySelector("#Agregar");
-const btnEditar = divElement.querySelector("#Editar");
-const btnEliminar = divElement.querySelector("#Eliminar");
-const btnBuscar = divElement.querySelector("#Buscar");
-
-const nombre = divElement.querySelector("#nombre");
-const correo = divElement.querySelector("#correo");
-const contrasena = divElement.querySelector("#contrasena");
+const table = divElement.querySelector("#tableBody");
+let miTabla;
 
 
+const initDataTable = async () => {
+  if (miTabla) {
+    miTabla.destroy();
+    miTabla = null;
+  }
+  var xmlhttp = new XMLHttpRequest();
+  var url = "https://ferrecred.com/api/usuarios";
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+  xmlhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var data = JSON.parse(this.responseText);
 
-function loadTable() {
-    while (table.rows.length > 1) {
-        table.deleteRow(1);
-    }
-
-    getAllUsuarios().then((usuarios) => {
-        usuarios.forEach((usuario) => {
-            table.innerHTML += `
-          <tr>
-          <td>${usuario.nombreUsuario}</td>
-          <td>${usuario.contraseñaUsuario}</td>
-          <td>${usuario.correoUsuario}</td>
-      </tr>
-          `;
-
-        });
-    });
-};
-
-
-function searchUsuario() {
-    btnBuscar.addEventListener("click", () => {
-        var correotext = correo.value;
-        getByIDUsuario(correotext).then((usuarios) =>{
-            console.log(typeof(usuarios));
-            usuarios.forEach((usuario)=>{
-                alert(`holaaa ${usuario.nombreUsuario}`);
-            });
-        });
-    });
-
-};
-
-function addUsuario() {
-    btnAgregar.addEventListener("click", () => {
-        var usuario = {
-            nombreUsuario: nombre.value,
-            contraseñaUsuario: contrasena.value,
-            correoUsuario: correo.value
-        };
-
-        postUsuarios(usuario);
-        loadTable();
-    });
-    nombre.value = '';
-    correo.value = '',
-    contrasena.value = '';
-};
-
-function editUsuario() {
-    btnEditar.addEventListener("click", () => {
-        var usuario = {
-            nombreUsuario: nombre.value,
-            contraseñaUsuario: contrasena.value,
-            correoUsuario: correo.value
-        };
-
-        putUsuarios(usuario);
-        loadTable();
-    });
-    nombre.value = '';
-    correo.value = '',
-    contrasena.value = '';
-};
-
-function removeUsuario() {
-    btnEliminar.addEventListener("click", () => {
-        var usuario = {
-            nombreUsuario: nombre.value
+      miTabla = $('#datatable_usuario').DataTable({
+        "data": data,
+        "columns": [
+          { "data": "correoUsuario" },
+          { "data": "nombreUsuario" },
+          { "data": "contraseñaUsuario" }
+        ],
+        pageLength: 6,
+        language: {
+          lengthMenu: "",
+          zeroRecords: "Ningún usuario encontrado",
+          info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+          infoEmpty: "Ningún usuario encontrado",
+          infoFiltered: "(filtrados desde _MAX_ registros totales)",
+          search: "",
+          searchPlaceholder: '¿Busca alguna operacion?',
+          loadingRecords: "Cargando...",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior"
+          }
         }
-        deleteUsuario(usuario);
-        loadTable();
-    });
-    nombre.value = '';
+      });
+    }
+  }
+
 };
 
 
 
-export default async () => {
 
-    loadTable();
-    addUsuario();
-    editUsuario();
-    removeUsuario();
-    searchUsuario();
-    return divElement;
+export default () => {
+  initDataTable();
+  return divElement;
+
 };

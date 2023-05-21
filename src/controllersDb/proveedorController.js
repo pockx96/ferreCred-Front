@@ -1,7 +1,7 @@
 const url = 'https://ferrecred.com/api/proveedores';
 
 
-export const getAll = async () => {
+export const ProveedoresGetAll = async () => {
     return fetch(url)
         .then(response => response.json())
         .then(data => {

@@ -1,4 +1,5 @@
 import { pages } from "../controllers/index";
+import {showDialog} from "../controllers/Entradas.controller";
 
 const router = async (route) => {
   let content = document.getElementById("root");
@@ -15,6 +16,9 @@ const router = async (route) => {
     }
     case "#/usuarios": {
       return content.appendChild(await pages.usuarios());
+    }
+    case "#/Entradas":{
+      return content.appendChild(await pages.entradas());
     }
     case "#/inventario": {
       return content.appendChild(await pages.inventario());
