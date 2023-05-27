@@ -1,26 +1,28 @@
-body{
+body {
     background-image: url(img/backgLogin.png);
     font-family: Open Sans;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.container{
+
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.login-form {
     margin-top: 5%;
     position: relative;
     height: 550px;
     border: none;
     background: #f2f2f2;
     border-radius: 20px;
-    padding: 0px;
-} 
+    padding-left: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    overflow: hidden;
+}
 
-form{
+form {
     margin-left: 50px;
 }
 
@@ -28,7 +30,7 @@ form{
     margin-top: 30px;
 }
 
-input[type="text"],
+input[type="email"],
 input[type="password"] {
     display: block;
     width: 100%;
@@ -38,8 +40,9 @@ input[type="password"] {
     border: 1px solid #e6ecf0;
 }
 
-button[type="submit"] {
+#botonIrAMain {
     display: block;
+    text-align: center;
     width: 100%;
     padding: 10px;
     font-size: 19px;
@@ -53,29 +56,21 @@ button[type="submit"] {
     font-weight: 600;
 }
 
-button[type="submit"]:hover {
+#botonIrAMain:hover {
     background-color: #fcb2a7;
 }
 
-
-
-.image-container{
-    margin: 0px;
-    height: 100%;
-    background-image: url(/img/login-imagen.png);
-    border-radius: 20px 0px 0px 20px;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.login-form{
+.login-form {
     display: inline;
 }
-form h1{
+
+form h1 {
     margin-top: 70px;
     font-size: 24px;
     font-weight: 700;
 }
-h2{
+
+h2 {
     margin-top: 9px;
     margin-bottom: 19px;
     font-size: 14px;
@@ -83,43 +78,81 @@ h2{
     color: #2c2c2c;
 
 }
-h2 span{
+
+h2 span {
     color: #D46641;
     font-weight: 600;
 }
-h3{
+
+h3 {
     color: #2c2c2c;
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 16px;
 
 }
-.text-container{
+
+.text-container {
     margin-left: 50px;
     width: 378px;
     height: 185;
 }
-.text-container img{
+
+.text-container img {
     margin-top: 110px;
     width: 80px;
     height: 80px;
 }
 
-.text-container h1{
+.text-container h1 {
     color: #2c2c2c;
     margin-top: 10px;
     font-size: 38px;
     font-weight: 900;
 }
 
-.text-container i{
+.text-container i {
     color: #D46641;
 }
-form p{
+
+form p {
     text-decoration: underline;
     font-size: 14px;
     font-weight: 550;
     color: #2c2c2c;
     margin-top: 16px;
     margin-left: 100px;
+}
+
+.container-img {
+    border-radius: 25px, 0px, 0px, 0px;
+    height: 550px;
+    width: 63%;
+    background-image: url(./img/login-imagen.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.text-login {
+    position: relative;
+    left:8%;
+    width: 60%;
+    color: #f2f2f2;
+    font-family: Open Sans;
+    font-size: 45px;
+    font-weight: 900;
+    line-height: 46px;
+    letter-spacing: 0em;
+    text-align: left;
+
+}
+
+.logo{
+    background-image: url(./img/logo.creditEase-removebg-preview.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 110px;
+    width: 115px;
+    margin-left: 6%;
+    margin-top: 15%;
 }

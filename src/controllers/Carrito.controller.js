@@ -136,7 +136,7 @@ const addRow = (producto) => {
 
     const tableBody = document.getElementById('table-body');
     if (totalRows > 0) {
-        tableBody.insertBefore(newRow, tableBody.childNodes[1]); // Insertar después de la segunda fila (después de las cabeceras)
+        tableBody.insertBefore(newRow, tableBody.childNodes[0]); // Insertar después de la segunda fila (después de las cabeceras)
     } else {
         tableBody.appendChild(newRow); // Si no hay filas, agregar como la primera fila
     }
@@ -197,6 +197,7 @@ const confirmarCompra = () => {
     confirmarBtn.addEventListener('click', () => {
         const confirmado = window.confirm('¿Está seguro de confirmar la compra?');
         if (confirmado) {
+            console.log("INICIO DEL IF")
             const compra = {
                 cliente: Cliente,
                 tipo_nota: tipoNota,
@@ -217,6 +218,7 @@ const confirmarCompra = () => {
             const bitacora = bicoraRecord();
             BitacoraPost(bitacora);
             ClearTable();
+            console.log("la tabla no se limpio");
             initDataTable();
         }
     });
@@ -348,13 +350,19 @@ function CodigoCaptura() {
 }
 
 function ClearTable() {
-    const btnEliminar = divElement.querySelector('#eliminar');
-    btnEliminar.addEventListener('click', () => {
-        while (tabla.firstChild) {
-            tabla.removeChild(tabla.firstChild);
+    const tableBody = divElement.querySelector('#table-body');
+    tableBody.innerHTML = ``;
+    for (let i = 0; i < 7; i++) {
+        const emptyRow = document.createElement('tr');
+        for (let j = 0; j < 6; j++) {
+            const emptyCell = document.createElement('td');
+            emptyCell.innerHTML = '&nbsp;';
+            emptyRow.appendChild(emptyCell);
         }
-    });
-}
+        tableBody.appendChild(emptyRow);
+    }
+    console.log("tabla limpiada");
+}                       
 
 async function nuevoCliente() {
     const newProduct = divElement.querySelector('#LblCrear');
