@@ -420,9 +420,14 @@ export function showDialog() {
     alert('working');
 }
 export async function Proveedores() {
+    const btn = divElement.querySelector('#pruebas');
     const newProductDialog = divElement.querySelector('#select-client-dialog');
+    btn.addEventListener('click',()=>{
+        newProductDialog.showModal();
+        newProductDialog.style.visibility = 'visible';
+    });
     // Agregar evento de submit al formulario del cuadro de diálogo
-    divElement.querySelector('#close').addEventListener('click', (event) => {
+    divElement.querySelector('#close').addEventListener('click', () => {
         newProductDialog.style.visibility = 'hidden';
         newProductDialog.close();
     });
@@ -437,6 +442,7 @@ export async function Proveedores() {
     });
 }
 
+
 export default () => {
     loadCatalogo();
     Search();
@@ -449,5 +455,6 @@ export default () => {
     hiddenElements();
     Proveedores();
     empycellsTable();
+    prueba();
     return divElement;
 };

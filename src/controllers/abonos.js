@@ -8,7 +8,7 @@ const searchContainer = divElement.querySelector('.search-input-box');
 const inputSearch = searchContainer.querySelector('input');
 const boxSuggestions = divElement.querySelector('.container-suggestions');
 let suggestions = [];
-let cliente = '';
+let cliente = 'anlopez@gmail.com';
 const table = divElement.querySelector("#tableBody");
 let miTabla;
 
@@ -83,6 +83,7 @@ const initDataTable = async () => {
     miTabla.destroy();
     miTabla = null;
   }
+  
   var xmlhttp = new XMLHttpRequest();
   var url = `https://ferrecred.com/api/compras/cliente/${cliente}`;
   console.log(`https://ferrecred.com/api/compras/cliente/${cliente}`);
@@ -158,8 +159,6 @@ async function Abonar() {
   });
 
 }
-
-
 function CrearCliente() {
   const lblCliente = divElement.querySelector('#Lbl-crear-cliente');
   const newClientDialog = divElement.querySelector('#new-product-dialog');
