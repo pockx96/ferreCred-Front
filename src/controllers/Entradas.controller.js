@@ -7,7 +7,7 @@ import { RestaInventario, InventarioGetByCodigo, SumaInventario } from '../contr
 import { BitacoraPost } from '../controllersDb/bitacoraController';
 import {initDataTableBitacora}  from './Bitacora.controller';
 import { DeudaUpdate } from '../controllersDb/deudaController';
-import { initDataTable } from './inventario.controller';
+import { initDataTableInventario } from './inventario.controller';
 import { ClientesGetAll } from '../controllersDb/clientesController';
 import { ProveedoresGetAll } from '../controllersDb/proveedorController';
 
@@ -227,7 +227,7 @@ const confirmarCompra = () => {
             const bitacora = bicoraRecord();
             BitacoraPost(bitacora);
             initDataTableBitacora();
-            initDataTable();
+            initDataTableInventario();
             ClearTable();
             window.location.href = "#/inventario";
               
@@ -242,15 +242,9 @@ async function select(element) {
     console.log(producto);
     console.log(typeof (producto));
     const cantidadActual = await InventarioGetByCodigo(codigo);
-    if (cantidadActual.cantidad > 0) {
-        LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
-        addRow(producto);
-        sumarImporte();
-    }
-    else {
-        alert("produco agotado");
-    }
-
+    LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
+    addRow(producto);
+    sumarImporte();
     searchContainer.classList.remove('active');
 }
 
@@ -367,6 +361,9 @@ function ClearTable() {
             tabla.removeChild(tabla.firstChild);
         }
     });
+    const etiquetaTotal = divElement.querySelector('#total-label');
+    etiquetaTotal.textContent = "";
+    LblProducto.textContent ="";
 }
 
 async function nuevoCliente() {
@@ -413,6 +410,8 @@ function SelectNuevoCliente() {
 function hiddenElements() {
     const labelContent = divElement.querySelector('.lbl-container');
     labelContent.style.display = "none";
+    const btnEntrada = divElement.querySelector('#confirmar');
+    btnEntrada.textContent = "Finalizar resepción";
 }
 
 export async function showDialog() {

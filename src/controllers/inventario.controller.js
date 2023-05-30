@@ -7,10 +7,12 @@ import {showDialog}from '../controllers/Entradas.controller';
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 let miTabla;
+
 const lblProducto = divElement.querySelector('#Lbl-crear-producto');
 const lblProvedor = divElement.querySelector('#Lbl-crear-proveedor');
+let appInitialized = false; 
 
-export const initDataTable = async () => {
+export const initDataTableInventario = async () => {
   if (miTabla) {
     miTabla.destroy();
     miTabla = null;
@@ -22,6 +24,7 @@ export const initDataTable = async () => {
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var data = JSON.parse(this.responseText);
+
       miTabla = $('#datatable_inventario').DataTable({
         "data": data,
         "columns": [
@@ -51,6 +54,7 @@ export const initDataTable = async () => {
       });
     }
   }
+  appInitialized = true; 
 
 };
 
@@ -199,7 +203,9 @@ function CrearProveedor() {
 }
 
 export default async () => {
-  initDataTable();
+  if(!appInitialized){
+    initDataTableInventario();
+  }
   CrearProducto();
   CrearProveedor();
   return divElement;
