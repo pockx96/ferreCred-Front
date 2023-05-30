@@ -5,6 +5,7 @@ import { ProductoPost } from '../controllersDb/productoController';
 import { ComprasPost } from '../controllersDb/compraController';
 import { RestaInventario, InventarioGetByCodigo, SumaInventario } from '../controllersDb/inventarioController';
 import { BitacoraPost } from '../controllersDb/bitacoraController';
+import {initDataTableBitacora}  from './Bitacora.controller';
 import { DeudaUpdate } from '../controllersDb/deudaController';
 import { initDataTable } from './inventario.controller';
 import { ClientesGetAll } from '../controllersDb/clientesController';
@@ -193,7 +194,7 @@ const obtenerProductos = () => {
 function bicoraRecord() {
     let bitacora = {
         Usuario: "@example.com",
-        Proceso: "pruebaCarrito3",
+        Proceso: "Entrada de procduto",
         Estatus: 1,
     }
     return bitacora;
@@ -202,7 +203,7 @@ function bicoraRecord() {
 const confirmarCompra = () => {
     const confirmarBtn = divElement.querySelector('#confirmar');
     confirmarBtn.addEventListener('click', () => {
-        const confirmado = window.confirm('¿Está seguro de confirmar la compra?');
+        const confirmado = window.confirm('¿Está seguro de confirmar la resepcion?');
         if (confirmado) {
             const compra = {
                 cliente: Cliente,
@@ -225,8 +226,11 @@ const confirmarCompra = () => {
             });
             const bitacora = bicoraRecord();
             BitacoraPost(bitacora);
+            initDataTableBitacora();
             initDataTable();
             ClearTable();
+            window.location.href = "#/inventario";
+              
         }
     });
 };
@@ -411,13 +415,25 @@ function hiddenElements() {
     labelContent.style.display = "none";
 }
 
-export function showDialog() {
-    // const newProductDialog = divElement.querySelector('#select-client-dialog');
-    // if (!newProductDialog.open) { // Verificar si el cuadro de diálogo está cerrado
-    //     newProductDialog.showModal();
-    //     newProductDialog.style.visibility = 'visible';
-    // }
-    alert('working');
+export async function showDialog() {
+    const newProductDialog = divElement.querySelector('#select-client-dialog');
+    if (!newProductDialog.open) { // Verificar si el cuadro de diálogo está cerrado
+        newProductDialog.showModal();
+        newProductDialog.style.visibility = 'visible';
+    }
+    divElement.querySelector('#close').addEventListener('click', () => {
+        newProductDialog.style.visibility = 'hidden';
+        newProductDialog.close();
+    });
+    const comboBox = divElement.querySelector('#combo-box');
+    const ListaProveedores = await ProveedoresGetAll();
+    console.log(ListaProveedores);
+    ListaProveedores.forEach(Cliente => {
+        const optionElement = document.createElement('option');
+        optionElement.textContent = Cliente.nombre_empresa;
+        optionElement.value = Cliente.nombre_empresa;
+        comboBox.appendChild(optionElement);
+    });
 }
 export async function Proveedores() {
     const btn = divElement.querySelector('#pruebas');
@@ -455,6 +471,5 @@ export default () => {
     hiddenElements();
     Proveedores();
     empycellsTable();
-    prueba();
     return divElement;
 };

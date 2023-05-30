@@ -5,8 +5,7 @@ import { ProductoPost } from '../controllersDb/productoController';
 import { ComprasPost } from '../controllersDb/compraController';
 import { RestaInventario, InventarioGetByCodigo } from '../controllersDb/inventarioController';
 import { BitacoraPost } from '../controllersDb/bitacoraController';
-import { DeudaUpdate } from '../controllersDb/deudaController';
-import { initDataTable } from './inventario.controller';
+import {initDataTableBitacora}  from './Bitacora.controller';
 import { ClientesGetAll } from '../controllersDb/clientesController';
 
 
@@ -23,6 +22,7 @@ let suggestions = [];
 let Cliente = "lord hikari";
 let tipoNota = "credito";
 var TotalCount;
+const etiquetaTotal = divElement.querySelector("#total-label");
 
 // function initQuagga() {
 //     Quagga.init({
@@ -56,9 +56,8 @@ var TotalCount;
 
 
 function sumarImporte() {
-    // Obtener todas las celdas de importe de la tabla
+    console.log("si entre al metodo pero me suda la polla");
     const celdasImporte = document.querySelectorAll("#table-body td:nth-child(6)");
-
     // Iterar sobre cada celda y obtener el valor de su texto
     let total = 0;
     celdasImporte.forEach(celda => {
@@ -69,7 +68,6 @@ function sumarImporte() {
     });
 
     // Actualizar la etiqueta con el valor total
-    const etiquetaTotal = document.getElementById("total-label");
     etiquetaTotal.textContent = total.toLocaleString('es-ES', { style: 'currency', currency: 'MXN' });
     TotalCount = total;
 }
@@ -186,7 +184,7 @@ const obtenerProductos = () => {
 function bicoraRecord() {
     let bitacora = {
         Usuario: "@example.com",
-        Proceso: "pruebaCarrito3",
+        Proceso: "Compra de producto",
         Estatus: 1,
     }
     return bitacora;
@@ -197,7 +195,6 @@ const confirmarCompra = () => {
     confirmarBtn.addEventListener('click', () => {
         const confirmado = window.confirm('¿Está seguro de confirmar la compra?');
         if (confirmado) {
-            console.log("INICIO DEL IF")
             const compra = {
                 cliente: Cliente,
                 tipo_nota: tipoNota,
@@ -217,9 +214,8 @@ const confirmarCompra = () => {
             });
             const bitacora = bicoraRecord();
             BitacoraPost(bitacora);
+            initDataTableBitacora();
             ClearTable();
-            console.log("la tabla no se limpio");
-            initDataTable();
         }
     });
 };
@@ -228,19 +224,18 @@ const confirmarCompra = () => {
 async function select(element) {
     const codigo = element.textContent.split("-")[0].trim()
     const producto = await getByCodigo(codigo);
-    console.log(producto);
-    console.log(typeof (producto));
     const cantidadActual = await InventarioGetByCodigo(codigo);
     if (cantidadActual.cantidad > 0) {
         LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
         addRow(producto);
         sumarImporte();
+        inputSearch.value = '';
     }
     else {
         alert("produco agotado");
     }
-
     searchContainer.classList.remove('active');
+
 }
 
 function Search() {
@@ -361,7 +356,8 @@ function ClearTable() {
         }
         tableBody.appendChild(emptyRow);
     }
-    console.log("tabla limpiada");
+    etiquetaTotal.textContent = "";
+    LblProducto.textContent ="";
 }                       
 
 async function nuevoCliente() {
@@ -405,11 +401,26 @@ function SelectNuevoCliente(){
 
 }
 
+function btnEliminar(){
+    const btnEliminar = divElement.querySelector('#eliminar');
+    btnEliminar.addEventListener('click',()=>{
+        const confirmado = window.confirm('¿Está seguro de eliminar todos los productos?');
+        if(confirmado){
+            ClearTable();
+        }
+    });
+}
 
+
+function Contado(){
+    const BtnContado = divElement.querySelector('#btn-contado');
+    BtnContado.addEventListener('click',()=>{
+        alert('Estamos trabajando en agregar esta funcion en futuras actualizaciòn');
+    });
+}
 export default () => {
     loadCatalogo();
     Search();
-    ClearTable();
     CantidadCaptura();
     CodigoCapturaCelda();
     CodigoCaptura();
@@ -417,6 +428,8 @@ export default () => {
     nuevoCliente();
     SelectNuevoCliente();
     empycellsTable();
+    Contado();
+    btnEliminar();
 
     return divElement;
 };

@@ -20,7 +20,7 @@ const updateNav = () => {
 
   // Iterar sobre los elementos de la barra de navegación y
   // agregar la clase 'active' al elemento correspondiente a la ruta actual
-  for (let i = 0; i < navItems.length; i++) {
+  for (let i = 0; i < navItems.length; i++) {  
     const item = navItems[i];
     const link = item.querySelector('a');
     

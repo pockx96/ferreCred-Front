@@ -2,6 +2,9 @@ import view from "../view/abonos.html";
 import { ClientesGetAll, ClientesGetByCorreo } from '../controllersDb/clientesController';
 import { ComprasGetByCliente, ComprasGetDeuda, ComprasUpdateDeuda } from '../controllersDb/compraController';
 import { postClientes } from '../controllersDb/clientesController';
+import { BitacoraPost } from '../controllersDb/bitacoraController';
+import {initDataTableBitacora}  from './Bitacora.controller';
+
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 const searchContainer = divElement.querySelector('.search-input-box');
@@ -14,7 +17,14 @@ let miTabla;
 
 
 
-
+function bicoraRecord() {
+  let bitacora = {
+      Usuario: "@example.com",
+      Proceso: "abono a adeudos",
+      Estatus: 1,
+  }
+  return bitacora;
+}
 
 function loadCatalogo() {
   ClientesGetAll().then(nombres => {
@@ -68,7 +78,6 @@ const showSuggestions = list => {
 
 async function select(element) {
   cliente = element.textContent.split("-")[0].trim().replace(/\s+/g, '%20');
-  console.log(cliente);
   searchContainer.classList.remove('active');
   await initDataTable();
   const deuda = await ComprasGetDeuda(cliente);
@@ -154,11 +163,47 @@ async function Abonar() {
     listaDeuda.forEach(async (Deuda) => {
       ComprasUpdateDeuda(Deuda);
     });
-    console.log(cliente);
+    const bitacora = bicoraRecord();
+    BitacoraPost(bitacora);
+    initDataTableBitacora();
     initDataTable();
   });
 
 }
+function ValidateInputs(){
+  var nombreCliente = divElement.querySelector("#input-nombre-cliente").value;
+  var direccion = divElement.querySelector("#input-direccion").value;
+  var telefono = divElement.querySelector("#input-telefono").value;
+  var correo = divElement.querySelector("#input-correo").value;
+  var limiteCredito = divElement.querySelector("#input-limite").value;
+
+  // Realiza la validación de los campos
+  if (nombreCliente === "" || direccion === "" || telefono === "" || correo === "" || limiteCredito === "") {
+    alert("Por favor, completa todos los campos.");
+    return false; // Detiene la ejecución de la función si algún campo está vacío
+  }
+
+  // Validación de formato de correo electrónico utilizando una expresión regular
+  var emailRegex = /^\S+@\S+\.\S+$/;
+  if (!emailRegex.test(correo)) {
+    alert("El correo electrónico no tiene un formato válido.");
+    return false; // Detiene la ejecución de la función si el formato del correo electrónico no es válido
+  }
+
+  // Validación de tipo de teléfono utilizando una expresión regular
+  var telefonoRegex = /^[0-9]{10}$/;
+  if (!telefonoRegex.test(telefono)) {
+    alert("El teléfono no tiene un formato válido. Debe ser un número de 10 dígitos.");
+    return false; // Detiene la ejecución de la función si el tipo de teléfono no es válido
+  }
+  if (isNaN(parseFloat(limiteCredito))) {
+    alert("El límite de crédito debe ser un valor numérico.");
+    return false; // Detiene la ejecución de la función si el límite de crédito no es numérico
+  }
+  return true;
+
+}
+
 function CrearCliente() {
   const lblCliente = divElement.querySelector('#Lbl-crear-cliente');
   const newClientDialog = divElement.querySelector('#new-product-dialog');
@@ -175,7 +220,9 @@ function CrearCliente() {
   });
 
   const btnCliente = divElement.querySelector('#btn-cliente');
-  btnCliente.addEventListener('click', async () => {
+  btnCliente.addEventListener('click', async (event) => {
+   event.preventDefault();
+   if(ValidateInputs()){
     const inputNombre = divElement.querySelector('#input-nombre-cliente');
     const inputDireccion = divElement.querySelector('#input-direccion');
     const inputTelefono = divElement.querySelector('#input-telefono');
@@ -192,6 +239,13 @@ function CrearCliente() {
     postClientes(newCliete);
     newClientDialog.style.visibility = 'hidden';
     newClientDialog.close();
+    ClientesGetAll().then(nombres => {
+      suggestions = nombres;
+    });
+    console.log(suggestions);
+    alert("cliente agregado con exito!");
+
+   }
   });
 
 

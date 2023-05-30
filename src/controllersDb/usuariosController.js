@@ -1,15 +1,16 @@
 const url = 'https://ferrecred.com/api/usuarios';
 
-
+// Función para obtener todos los usuarios
 export const getAllUsuarios = async () => {
-    return fetch(url)
-        .then(response => response.json())
+    return fetch(url) // Realiza una solicitud GET a la URL especificada
+        .then(response => response.json()) // Convierte la respuesta en formato JSON
         .then(data => {
-            return data;
+            return data; // Devuelve los datos obtenidos
         })
-        .catch(error => console.error(error));
+        .catch(error => console.error(error)); // Maneja cualquier error que ocurra durante la solicitud
 };
-// GET por ID
+
+// Función para obtener un usuario por su ID
 export const getByIDUsuario = async (id) => {
     return fetch(`https://ferrecred.com/api/usuarios/${id}`, {
         method: 'GET',
@@ -17,79 +18,78 @@ export const getByIDUsuario = async (id) => {
             'Content-Type': 'application/json'
         }
     })
-        .then(response => response.json())
-        .then(data =>{
-            console.log("usuario encontrado");
-            return data;
+        .then(response => response.json()) // Convierte la respuesta en formato JSON
+        .then(data => {
+            console.log("Usuario encontrado");
+            return data; // Devuelve los datos del usuario encontrado
         })
         .catch(error => {
             console.error('Error:', error);
-            throw error;
+            throw error; // Maneja cualquier error que ocurra durante la solicitud
         });
 }
 
-
-
+// Función para agregar un usuario
 export const postUsuarios = async (data) => {
     const opciones = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data) // Convierte los datos del usuario en formato JSON
     };
 
     fetch(url, opciones)
         .then(response => {
             if (response.ok) {
-                console.log('el usuario ah sido agregado exitosamente');
+                console.log('El usuario ha sido agregado exitosamente');
             } else {
                 console.log('Hubo un error al actualizar los datos.');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error)); // Maneja cualquier error que ocurra durante la solicitud
 }
 
+// Función para actualizar un usuario
 export const putUsuarios = async (data) => {
     const opciones = {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data) // Convierte los datos del usuario en formato JSON
     };
 
     fetch(url, opciones)
         .then(response => {
             if (response.ok) {
-                console.log('el usuario ah sido actualizado exitosamente');
+                console.log('El usuario ha sido actualizado exitosamente');
             } else {
                 console.log('Hubo un error al actualizar los datos.');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error)); // Maneja cualquier error que ocurra durante la solicitud
 }
 
-
-// DELETE
+// Función para eliminar un usuario
 export const deleteUsuario = async (data) => {
     return fetch(`https://ferrecred.com/api/usuarios`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data) // Convierte los datos del usuario en formato JSON
     })
         .then(response => {
             if (response.ok) {
-                console.log('el usuario ah sido eliminado exitosamente');
+                console.log('El usuario ha sido eliminado exitosamente');
             } else {
                 console.log('Hubo un error al actualizar los datos.');
             }
-            return response.json();
+            return response.json(); // Devuelve los datos de respuesta en formato JSON
         })
         .catch(error => {
             console.error('Error:', error);
-            throw error;
+            throw error; // Maneja cualquier error que ocurra durante la solicitud
         });
 }

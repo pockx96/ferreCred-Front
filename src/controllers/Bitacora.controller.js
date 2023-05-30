@@ -7,7 +7,7 @@ const table = divElement.querySelector("#tableBody");
 let miTabla;
 
 
-const initDataTable = async () => {
+export const initDataTableBitacora = async () => {
   if (miTabla) {
     miTabla.destroy();
     miTabla = null;
@@ -55,7 +55,7 @@ const initDataTable = async () => {
 
 
 export default () => {
-  initDataTable();
+  initDataTableBitacora();
   return divElement;
 
 };

@@ -54,7 +54,6 @@ export const initDataTable = async () => {
 
 };
 
-
 function CrearProducto() {
   const newClientDialog = divElement.querySelector('#new-product-dialog');
   lblProducto.addEventListener('click', () => {
@@ -89,7 +88,6 @@ function CrearProducto() {
 
 
 }
-
 
 function CrearProveedor() {
   const newProveedorDialog = divElement.querySelector('#new-proveedor-dialog');
@@ -128,7 +126,6 @@ function CrearProveedor() {
 
 
 }
-
 
 export default async () => {
   initDataTable();

@@ -18,7 +18,8 @@ const router = async (route) => {
       return content.appendChild(await pages.usuarios());
     }
     case "#/Entradas":{
-      return content.appendChild(await pages.entradas());
+      await content.appendChild(await pages.entradas());
+      return showDialog();
     }
     case "#/inventario": {
       return content.appendChild(await pages.inventario());

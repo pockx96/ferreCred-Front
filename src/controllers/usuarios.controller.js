@@ -35,7 +35,7 @@ const initDataTable = async () => {
           infoEmpty: "Ningún usuario encontrado",
           infoFiltered: "(filtrados desde _MAX_ registros totales)",
           search: "",
-          searchPlaceholder: '¿Busca alguna operacion?',
+          searchPlaceholder: '¿Busca alguna usuario?',
           loadingRecords: "Cargando...",
           paginate: {
             first: "Primero",

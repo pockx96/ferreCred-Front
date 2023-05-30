@@ -73,3 +73,6 @@ body {
 .container-suggestions li:hover{
     background-color: #414b57;
 }
+.container-suggestions li{
+	cursor: pointer;
+}
