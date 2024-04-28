@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/proveedores';
+const url = 'https://cristopherdev.com/backend/proveedores';
 
 
 export const ProveedoresGetAll = async () => {
@@ -11,7 +11,7 @@ export const ProveedoresGetAll = async () => {
 };
 // GET por ID
 export const getByFolio = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/productos/${id}`, {
+    return fetch(`https://cristopherdev.com/backend/productos/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

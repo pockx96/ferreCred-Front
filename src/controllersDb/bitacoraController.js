@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/bitacora';
+const url = 'https://cristopherdev.com/backend/bitacora';
 
 
 export const BitacoraGetAll = async () => {

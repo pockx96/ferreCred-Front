@@ -73,7 +73,7 @@ export const putUsuarios = async (data) => {
 
 // DELETE
 export const deleteUsuario = async (data) => {
-    return fetch(`http://localhost/EasyCredit-Backend/usuarios`, {
+    return fetch(`https://cristopherdev.com/backend/usuarios`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

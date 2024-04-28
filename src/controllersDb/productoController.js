@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/productos';
+const url = 'https://cristopherdev.com/backend/productos';
 
 
 export const ProductogetAll = async () => {

@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/usuarios';
+const url = 'https://cristopherdev.com/backend/usuarios';
 
 // Función para obtener todos los usuarios
 export const getAllUsuarios = async () => {
@@ -12,7 +12,7 @@ export const getAllUsuarios = async () => {
 
 // Función para obtener un usuario por su ID
 export const getByIDUsuario = async (id) => {
-    return fetch(`https://ferrecred.com/api/usuarios/${id}`, {
+    return fetch(`https://cristopherdev.com/backend/usuarios/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ export const putUsuarios = async (data) => {
 
 // Función para eliminar un usuario
 export const deleteUsuario = async (data) => {
-    return fetch(`https://ferrecred.com/api/usuarios`, {
+    return fetch(`https://cristopherdev.com/backend/usuarios`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

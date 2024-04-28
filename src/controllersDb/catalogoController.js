@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/catalogo';
+const url = 'https://cristopherdev.com/backend/catalogo';
 
 
 export const getAll = async () => {
@@ -17,7 +17,7 @@ export const getAll = async () => {
 };
 // GET por ID
 export const getByCodigo = async (id) => {
-    return fetch(`https://ferrecred.com/api/catalogo/${id}`, {
+    return fetch(`https://cristopherdev.com/backend/catalogo/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

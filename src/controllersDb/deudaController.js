@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/deuda';
+const url = 'https://cristopherdev.com/backend/deuda';
 
 
 export const getAll = async () => {

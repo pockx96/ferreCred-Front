@@ -1,4 +1,4 @@
-const url = 'http://localhost/EasyCredit-Backend/productos';
+const url = 'https://cristopherdev.com/backend/productos';
 
 
 export const getAll = async () => {
@@ -11,7 +11,7 @@ export const getAll = async () => {
 };
 // GET por ID
 export const getByFolio = async (id) => {
-    return fetch(`http://localhost/EasyCredit-Backend/productos/${id}`, {
+    return fetch(`https://cristopherdev.com/backend/productos/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
