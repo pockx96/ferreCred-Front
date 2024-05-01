@@ -13,7 +13,7 @@ export const initDataTableBitacora = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://ferrecred.com/api/bitacora";
+  var url = "https://backend.cristopherdev.com/bitacora";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {
