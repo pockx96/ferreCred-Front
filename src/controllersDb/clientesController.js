@@ -1,4 +1,4 @@
-const url = 'https://ferrecred.com/api/clientes';
+const url = 'https://ferrecred.com/backend/clientes';
 
 
 export const ClientesGetAll = async () => {
