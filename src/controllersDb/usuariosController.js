@@ -1,4 +1,4 @@
-const url = "https://ferrecred.com/backend/usuarios";
+const url = "https://www.cristopherdev.com/backend/usuarios";
 
 // Función para obtener todos los usuarios
 export const getAllUsuarios = async () => {

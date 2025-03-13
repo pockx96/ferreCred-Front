@@ -1,4 +1,4 @@
-const url = "https://ferrecred.com/backend/bitacora";
+const url = "https://www.cristopherdev.com/backend/bitacora";
 
 export const BitacoraGetAll = async () => {
   return fetch(url)
