@@ -1,11 +1,9 @@
 import view from "../view/usuarios.html";
 
-
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 const table = divElement.querySelector("#tableBody");
 let miTabla;
-
 
 const initDataTable = async () => {
   if (miTabla) {
@@ -13,19 +11,19 @@ const initDataTable = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://ferrecred.com/api/usuarios";
+  var url = "https://www.cristopherdev.com/backend/usuarios";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var data = JSON.parse(this.responseText);
 
-      miTabla = $('#datatable_usuario').DataTable({
-        "data": data,
-        "columns": [
-          { "data": "correoUsuario" },
-          { "data": "nombreUsuario" },
-          { "data": "contraseñaUsuario" }
+      miTabla = $("#datatable_usuario").DataTable({
+        data: data,
+        columns: [
+          { data: "correoUsuario" },
+          { data: "nombreUsuario" },
+          { data: "contraseñaUsuario" },
         ],
         pageLength: 6,
         language: {
@@ -35,26 +33,21 @@ const initDataTable = async () => {
           infoEmpty: "Ningún usuario encontrado",
           infoFiltered: "(filtrados desde _MAX_ registros totales)",
           search: "",
-          searchPlaceholder: '¿Busca alguna usuario?',
+          searchPlaceholder: "¿Busca alguna usuario?",
           loadingRecords: "Cargando...",
           paginate: {
             first: "Primero",
             last: "Último",
             next: "Siguiente",
-            previous: "Anterior"
-          }
-        }
+            previous: "Anterior",
+          },
+        },
       });
     }
-  }
-
+  };
 };
-
-
-
 
 export default () => {
   initDataTable();
   return divElement;
-
 };

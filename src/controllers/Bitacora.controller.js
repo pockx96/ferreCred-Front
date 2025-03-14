@@ -1,11 +1,9 @@
 import view from "../view/Bitacora.html";
 
-
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 const table = divElement.querySelector("#tableBody");
 let miTabla;
-
 
 export const initDataTableBitacora = async () => {
   if (miTabla) {
@@ -13,7 +11,7 @@ export const initDataTableBitacora = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://backend.cristopherdev.com/bitacora";
+  var url = "https://www.cristopherdev.com/backend/bitacora";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {
@@ -21,13 +19,13 @@ export const initDataTableBitacora = async () => {
       var data = JSON.parse(this.responseText);
       console.log(data);
 
-      miTabla = $('#datatable_bitacora').DataTable({
-        "data": data,
-        "columns": [
-          { "data": "Usuario" },
-          { "data": "Proceso" },
-          { "data": "Estatus" },
-          { "data": "Fecha_Hora" }
+      miTabla = $("#datatable_bitacora").DataTable({
+        data: data,
+        columns: [
+          { data: "Usuario" },
+          { data: "Proceso" },
+          { data: "Estatus" },
+          { data: "Fecha_Hora" },
         ],
         pageLength: 6,
         language: {
@@ -37,26 +35,21 @@ export const initDataTableBitacora = async () => {
           infoEmpty: "Ningún usuario encontrado",
           infoFiltered: "(filtrados desde _MAX_ registros totales)",
           search: "",
-          searchPlaceholder: '¿Busca alguna operacion?',
+          searchPlaceholder: "¿Busca alguna operacion?",
           loadingRecords: "Cargando...",
           paginate: {
             first: "Primero",
             last: "Último",
             next: "Siguiente",
-            previous: "Anterior"
-          }
-        }
+            previous: "Anterior",
+          },
+        },
       });
     }
-  }
-
+  };
 };
-
-
-
 
 export default () => {
   initDataTableBitacora();
   return divElement;
-
 };
