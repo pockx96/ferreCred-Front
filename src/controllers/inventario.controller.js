@@ -101,12 +101,6 @@ function CrearProducto() {
       return false; // Detiene la ejecución de la función si los precios no son numéricos
     }
 
-    // Validación de tipo numérico para el peso
-    if (isNaN(parseFloat(peso))) {
-      alert("El peso debe ser un valor numérico.");
-      return false; // Detiene la ejecución de la función si el peso no es numérico
-    }
-
     return true;
   }
 
@@ -118,13 +112,13 @@ function CrearProducto() {
       const inputDescripccion = divElement.querySelector("#input-descripcion");
       const inputCompra = divElement.querySelector("#input-precio-compra");
       const inputVenta = divElement.querySelector("#input-precio-venta");
-      const inputPeso = divElement.querySelector("#input-peso");
+      const inputTipo = divElement.querySelector("#input-peso");
       const newProducto = {
-        codigo: inputCodigo.value,
-        descripcion: inputDescripccion.value,
-        precio_compra: inputCompra.value,
-        precio_venta: inputVenta.value,
-        peso: inputPeso.value,
+        codigo: parseInt(inputCodigo.value, 10),
+        descripcion: inputDescripccion.value.toString(),
+        precio_compra: parseFloat(inputCompra.value),
+        precio_venta: parseFloat(inputVenta.value),
+        tipo: inputTipo.value.toString(),
       };
       ProductoPost(newProducto);
       alert("Nuevo producto agregado");

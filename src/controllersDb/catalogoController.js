@@ -34,6 +34,7 @@ export const getByCodigo = async (id) => {
 };
 
 export const ProductoPost = async (data) => {
+  console.log("Datos enviados:", data);
   const opciones = {
     method: "POST",
     headers: {
@@ -45,7 +46,7 @@ export const ProductoPost = async (data) => {
   fetch(url, opciones)
     .then((response) => {
       if (response.ok) {
-        console.log("el usuario ah sido agregado exitosamente");
+        console.log("El producto ha sido agregado correctamente");
       } else {
         console.log("Hubo un error al actualizar los datos.");
       }
