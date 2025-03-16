@@ -24,6 +24,7 @@ export const initDataTableInventario = async () => {
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var data = JSON.parse(this.responseText);
+      console.log("Datos recibidos:", data);
 
       miTabla = $("#datatable_inventario").DataTable({
         data: data,
