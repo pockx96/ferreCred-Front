@@ -197,8 +197,10 @@
       <p id="descripcionProducto" class="text-info" style="margin-bottom: 15px;">Descripción: --</p>
       <label for="cantidadProducto">Cantidad:</label>
       <input id="cantidadProducto" type="number" class="form-control" placeholder="Cantidad del producto" style="margin-bottom: 15px;">
-      <button id="actualizarCantidad" class="btn btn-success">Actualizar</button>
-      <button id="close-editar-cantidad" class="btn btn-danger" style="position: absolute; top: 10px; right: 10px;">Cerrar</button>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button id="actualizarCantidad" class="btn btn-success" style="width: auto; padding: 10px 15px;">Actualizar</button>
+        <button id="close-editar-cantidad" class="btn btn-danger" style="width: auto; padding: 10px 15px;">Cerrar</button>
+      </div>
     </div>
   </dialog>
 
