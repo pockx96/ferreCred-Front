@@ -2,6 +2,7 @@ import view from "../view/inventario.html";
 import { getAll } from "../controllersDb/inventarioController";
 import { ProductoPost } from "../controllersDb/catalogoController";
 import { ProveedorPost } from "../controllersDb/proveedorController";
+import { SumaInventario } from "../controllersDb/inventarioController";
 import { showDialog } from "../controllers/Entradas.controller";
 
 const divElement = document.createElement("div");
@@ -77,6 +78,7 @@ function CrearProducto() {
     var precioCompra = divElement.querySelector("#input-precio-compra").value;
     var precioVenta = divElement.querySelector("#input-precio-venta").value;
     var peso = divElement.querySelector("#input-peso").value;
+    var cantidad = divElement.querySelector("#input-cantidad").value;
 
     // Realiza la validación de los campos
     if (
@@ -84,7 +86,8 @@ function CrearProducto() {
       descripcion === "" ||
       precioCompra === "" ||
       precioVenta === "" ||
-      peso === ""
+      peso === "" ||
+      cantidad == ""
     ) {
       alert("Por favor, completa todos los campos.");
       return false; // Detiene la ejecución de la función si algún campo está vacío
@@ -102,6 +105,12 @@ function CrearProducto() {
       return false; // Detiene la ejecución de la función si los precios no son numéricos
     }
 
+    // Validación de tipo numérico para la cantidad de producto
+    if (isNaN(parseFloat(cantidad))) {
+      alert("La cantidad debe de ser Numerica");
+      return false; // Detiene la ejecución de la función si los precios no son numéricos
+    }
+
     return true;
   }
 
@@ -114,6 +123,7 @@ function CrearProducto() {
       const inputCompra = divElement.querySelector("#input-precio-compra");
       const inputVenta = divElement.querySelector("#input-precio-venta");
       const inputTipo = divElement.querySelector("#input-peso");
+      const inputCantidad = divElement.querySelector("#input-cantidad");
       const newProducto = {
         codigo: parseInt(inputCodigo.value, 10),
         descripcion: inputDescripccion.value.toString(),
@@ -122,7 +132,13 @@ function CrearProducto() {
         tipo: inputTipo.value.toString(),
       };
       ProductoPost(newProducto);
+      const newInv = {
+        codigo: parseInt(inputCodigo.value,10),
+        cantidad: parseInt(inputCantidad.value,10),
+      };
+      SumaInventario(newInv);
       alert("Nuevo producto agregado");
+      initDataTableInventario();
     }
   });
 }
