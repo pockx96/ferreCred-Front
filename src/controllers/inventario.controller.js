@@ -1,9 +1,10 @@
 import view from "../view/inventario.html";
 import { getAll } from "../controllersDb/inventarioController";
-import { ProductoPost } from "../controllersDb/catalogoController";
+import { ProductoPost, ProductogetByFolio } from "../controllersDb/catalogoController";
 import { ProveedorPost } from "../controllersDb/proveedorController";
-import { SumaInventario } from "../controllersDb/inventarioController";
+import { SumaInventario, InventarioGetByCodigo} from "../controllersDb/inventarioController";
 import { showDialog } from "../controllers/Entradas.controller";
+import { getByCodigo } from "../controllersDb/catalogoController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -11,6 +12,8 @@ let miTabla;
 
 const lblProducto = divElement.querySelector("#Lbl-crear-producto");
 const lblProvedor = divElement.querySelector("#Lbl-crear-proveedor");
+const lblVerInventario = divElement.querySelector("#Lbl-ver-inventario");
+const lblEditarCantidad = divElement.querySelector("#Lbl-editar-cantidad");
 let appInitialized = false;
 
 export const initDataTableInventario = async () => {
@@ -58,6 +61,21 @@ export const initDataTableInventario = async () => {
   };
   appInitialized = true;
 };
+
+function VerInventario() {
+  const dialogInventario = divElement.querySelector("#dialogoInventario");
+  const lblVerInventario = divElement.querySelector("#Lbl-ver-inventario");
+  lblVerInventario.addEventListener("click", () => {
+    if (!dialogInventario.open) {
+      dialogInventario.showModal();
+      dialogInventario.style.visibility = "visible";
+    }
+  });
+  divElement.querySelector("#close-inventario").addEventListener("click", () => {
+    dialogInventario.style.visibility = "hidden";
+    dialogInventario.close();
+  });
+}
 
 function CrearProducto() {
   const newClientDialog = divElement.querySelector("#new-product-dialog");
@@ -142,6 +160,83 @@ function CrearProducto() {
     }
   });
 }
+
+function EditarCantidad() {
+  const dialogEditarCantidad = divElement.querySelector("#dialogoEditarCantidad");
+  const lblEditarCantidad = divElement.querySelector("#Lbl-editar-cantidad");
+  const inputCodigo = divElement.querySelector("#codigoProducto");
+  const descripcionProducto = divElement.querySelector("#descripcionProducto");
+  const cantidadProducto = divElement.querySelector("#cantidadProducto");
+  const btnActualizar = divElement.querySelector("#actualizarCantidad");
+  
+  lblEditarCantidad.addEventListener("click", () => {
+    if (!dialogEditarCantidad.open) {
+      dialogEditarCantidad.showModal();
+      dialogEditarCantidad.style.visibility = "visible";
+      descripcionProducto.textContent = "Descripción: --"; // Reinicia los valores al abrir
+      cantidadProducto.value = ""; // Limpia el valor de la cantidad
+    }
+  });
+
+  divElement.querySelector("#close-editar-cantidad").addEventListener("click", () => {
+    dialogEditarCantidad.style.visibility = "hidden";
+    dialogEditarCantidad.close();
+  });
+
+  inputCodigo.addEventListener("input", async () => {
+    const codigo = inputCodigo.value.trim();
+
+    if (codigo) {
+      try {
+        const productoNombre = await getByCodigo(codigo);
+        if (productoNombre && productoNombre.descripcion) {
+          descripcionProducto.textContent = `Descripción: ${productoNombre.descripcion}`;
+        } else {
+          descripcionProducto.textContent = "Descripción: Producto no encontrado";
+        }
+        const productoCantidad = await InventarioGetByCodigo(codigo);
+        if (productoCantidad && productoCantidad.cantidad !== undefined) {
+          cantidadProducto.value = productoCantidad.cantidad;
+        } else {
+          cantidadProducto.value = "";
+        }
+      } catch (error) {
+        console.error("Error al obtener el producto:", error);
+        descripcionProducto.textContent = "Descripción: Error al buscar";
+        cantidadProducto.value = "";
+      }
+    } else {
+      descripcionProducto.textContent = "Descripción: --";
+      cantidadProducto.value = "";
+    }
+  });
+
+  btnActualizar.addEventListener("click", async () => {
+    const codigo = inputCodigo.value.trim();
+    const cantidad = cantidadProducto.value.trim();
+
+    if (codigo && cantidad) {
+      const data = {
+        codigo: parseInt(codigo, 10),
+        cantidad: parseInt(cantidad, 10)
+      };
+
+      try {
+        await EditarInventario(data); // Llama a tu método para actualizar el inventario
+        alert("Cantidad actualizada correctamente");
+        dialogEditarCantidad.style.visibility = "hidden";
+        dialogEditarCantidad.close();
+      } catch (error) {
+        console.error("Error al actualizar el inventario:", error);
+        alert("Hubo un error al actualizar la cantidad");
+      }
+    } else {
+      alert("Por favor, completa todos los campos antes de actualizar.");
+    }
+  });
+}
+
+
 function ValidateProviderInputs() {
   var empresa = divElement.querySelector("#input-empresa").value;
   var nombreProveedor = divElement.querySelector("#input-nombre").value;
@@ -227,5 +322,7 @@ export default async () => {
   }
   CrearProducto();
   CrearProveedor();
+  VerInventario();
+  EditarCantidad();
   return divElement;
 };

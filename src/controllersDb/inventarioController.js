@@ -67,3 +67,25 @@ export const RestaInventario = async (data) => {
     })
     .catch((error) => console.error("Error:", error));
 };
+
+export const EditarInventario = async (data) => {
+  const opciones = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+
+  try {
+    const response = await fetch(`${url}/${data.codigo}`, opciones);
+    if (response.ok) {
+      console.log("El inventario ha sido actualizado exitosamente.");
+    } else {
+      console.error("Hubo un error al actualizar los datos.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
