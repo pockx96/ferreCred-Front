@@ -4,7 +4,7 @@ import { getAll, getByCodigo } from "../controllersDb/catalogoController";
 import { ProductoPost } from "../controllersDb/productoController";
 import { ComprasPost } from "../controllersDb/compraController";
 import {
-  RestaInventario,
+  EditarInventario,
   InventarioGetByCodigo,
 } from "../controllersDb/inventarioController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
@@ -216,7 +216,7 @@ const confirmarCompra = () => {
           codigo: producto.codigo,
           cantidad: producto.cantidad,
         };
-        RestaInventario(produtoInventario);
+        EditarInventario(produtoInventario);
         ProductoPost(producto);
       });
       const bitacora = bicoraRecord();

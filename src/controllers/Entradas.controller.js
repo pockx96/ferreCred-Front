@@ -3,7 +3,7 @@ import view from "../view/Carrito.html";
 import { getAll, getByCodigo } from '../controllersDb/catalogoController';
 import { ProductoPost } from '../controllersDb/productoController';
 import { ComprasPost } from '../controllersDb/compraController';
-import { RestaInventario, InventarioGetByCodigo, SumaInventario } from '../controllersDb/inventarioController';
+import { EditarInventario, InventarioGetByCodigo} from '../controllersDb/inventarioController';
 import { BitacoraPost } from '../controllersDb/bitacoraController';
 import {initDataTableBitacora}  from './Bitacora.controller';
 import { DeudaUpdate } from '../controllersDb/deudaController';
@@ -221,7 +221,7 @@ const confirmarCompra = () => {
                     codigo: producto.codigo,
                     cantidad: producto.cantidad
                 }
-                SumaInventario(produtoInventario);
+                EditarInventario(produtoInventario);
                 ProductoPost(producto);
             });
             const bitacora = bicoraRecord();

@@ -2,7 +2,7 @@ import view from "../view/inventario.html";
 import { getAll } from "../controllersDb/inventarioController";
 import { ProductoPost, ProductogetByFolio } from "../controllersDb/catalogoController";
 import { ProveedorPost } from "../controllersDb/proveedorController";
-import { SumaInventario, InventarioGetByCodigo, EditarInventario} from "../controllersDb/inventarioController";
+import {InventarioGetByCodigo, EditarInventario} from "../controllersDb/inventarioController";
 import { showDialog } from "../controllers/Entradas.controller";
 import { getByCodigo } from "../controllersDb/catalogoController";
 
@@ -154,7 +154,7 @@ function CrearProducto() {
         codigo: parseInt(inputCodigo.value,10),
         cantidad: parseInt(inputCantidad.value,10),
       };
-      SumaInventario(newInv);
+      EditarInventario(newInv);
       alert("Nuevo producto agregado");
       initDataTableInventario();
     }
