@@ -76,9 +76,9 @@ export const EditarInventario = async (data) => {
     },
     body: JSON.stringify(data),
   };
-
+  console.log(data);
   try {
-    const response = await fetch(`${url}/${data.codigo}`, opciones);
+    const response = await fetch(url, opciones);
     if (response.ok) {
       console.log("El inventario ha sido actualizado exitosamente.");
     } else {

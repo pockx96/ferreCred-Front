@@ -2,7 +2,7 @@ import view from "../view/inventario.html";
 import { getAll } from "../controllersDb/inventarioController";
 import { ProductoPost, ProductogetByFolio } from "../controllersDb/catalogoController";
 import { ProveedorPost } from "../controllersDb/proveedorController";
-import { SumaInventario, InventarioGetByCodigo} from "../controllersDb/inventarioController";
+import { SumaInventario, InventarioGetByCodigo, EditarInventario} from "../controllersDb/inventarioController";
 import { showDialog } from "../controllers/Entradas.controller";
 import { getByCodigo } from "../controllersDb/catalogoController";
 
@@ -223,7 +223,6 @@ function EditarCantidad() {
 
       try {
         await EditarInventario(data); // Llama a tu método para actualizar el inventario
-        alert("Cantidad actualizada correctamente");
         dialogEditarCantidad.style.visibility = "hidden";
         dialogEditarCantidad.close();
       } catch (error) {
@@ -233,6 +232,7 @@ function EditarCantidad() {
     } else {
       alert("Por favor, completa todos los campos antes de actualizar.");
     }
+    initDataTableInventario();
   });
 }
 
