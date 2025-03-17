@@ -77,7 +77,7 @@ function CrearProducto() {
     var descripcion = divElement.querySelector("#input-descripcion").value;
     var precioCompra = divElement.querySelector("#input-precio-compra").value;
     var precioVenta = divElement.querySelector("#input-precio-venta").value;
-    var peso = divElement.querySelector("#input-peso").value;
+    var tipo = divElement.querySelector("#input-tipo").value;
     var cantidad = divElement.querySelector("#input-cantidad").value;
 
     // Realiza la validación de los campos
@@ -86,7 +86,7 @@ function CrearProducto() {
       descripcion === "" ||
       precioCompra === "" ||
       precioVenta === "" ||
-      peso === "" ||
+      tipo === "" ||
       cantidad == ""
     ) {
       alert("Por favor, completa todos los campos.");
@@ -122,7 +122,7 @@ function CrearProducto() {
       const inputDescripccion = divElement.querySelector("#input-descripcion");
       const inputCompra = divElement.querySelector("#input-precio-compra");
       const inputVenta = divElement.querySelector("#input-precio-venta");
-      const inputTipo = divElement.querySelector("#input-peso");
+      const inputTipo = divElement.querySelector("#input-tipo");
       const inputCantidad = divElement.querySelector("#input-cantidad");
       const newProducto = {
         codigo: parseInt(inputCodigo.value, 10),
