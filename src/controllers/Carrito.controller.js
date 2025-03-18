@@ -4,7 +4,7 @@ import { getAll, getByCodigo } from "../controllersDb/catalogoController";
 import { ProductoPost } from "../controllersDb/productoController";
 import { ComprasPost } from "../controllersDb/compraController";
 import {
-  EditarInventario,
+  RestaInventario,
   InventarioGetByCodigo,
 } from "../controllersDb/inventarioController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
@@ -105,7 +105,7 @@ const addRow = (producto) => {
   const celdaCodigo = document.createElement("td");
   const celdaDescripcion = document.createElement("td");
   const celdaCantidad = document.createElement("td");
-  const celdaPeso = document.createElement("td");
+  const celdaTipo = document.createElement("td");
   const celdaPrecio = document.createElement("td");
   const celdaImporte = document.createElement("td");
   const celdaBoton = document.createElement("td");
@@ -115,7 +115,7 @@ const addRow = (producto) => {
   celdaCodigo.innerHTML = producto.codigo;
   celdaDescripcion.innerHTML = producto.descripcion;
   celdaCantidad.innerHTML = "1";
-  celdaPeso.innerHTML = producto.peso;
+  celdaTipo.innerHTML = producto.tipo;
   celdaPrecio.innerHTML = producto.precio_venta;
   celdaImporte.innerHTML = importe;
   button.innerHTML = "Eliminar";
@@ -131,7 +131,7 @@ const addRow = (producto) => {
   newRow.appendChild(celdaCodigo);
   newRow.appendChild(celdaDescripcion);
   newRow.appendChild(celdaCantidad);
-  newRow.appendChild(celdaPeso);
+  newRow.appendChild(celdaTipo);
   newRow.appendChild(celdaPrecio);
   newRow.appendChild(celdaImporte);
   newRow.appendChild(celdaBoton);
@@ -181,7 +181,7 @@ const obtenerProductos = () => {
     objetoFila.codigo = parseInt(columnas[0].textContent);
     objetoFila.folio = "prueba";
     objetoFila.cantidad = parseInt(columnas[2].textContent);
-    objetoFila.peso = parseFloat(columnas[3].textContent);
+    objetoFila.tipo = columnas[3].textContent;
     objetoFila.importe = parseFloat(columnas[5].textContent);
     return objetoFila;
   });
@@ -216,7 +216,7 @@ const confirmarCompra = () => {
           codigo: producto.codigo,
           cantidad: producto.cantidad,
         };
-        EditarInventario(produtoInventario);
+        RestaInventario(produtoInventario);
         ProductoPost(producto);
       });
       const bitacora = bicoraRecord();
@@ -326,7 +326,7 @@ function CodigoCapturaCelda() {
 
       fila.cells[1].innerText = producto.descripcion;
       fila.cells[2].innerText = "1";
-      fila.cells[3].innerText = producto.peso;
+      fila.cells[3].innerText = producto.tipo;
       fila.cells[4].innerText = producto.precio_venta;
       fila.cells[5].innerText = (producto.precio_venta * 1.16).toFixed(2);
       fila.scrollIntoView({

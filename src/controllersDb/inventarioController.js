@@ -49,3 +49,43 @@ export const EditarInventario = async (data) => {
   }
 };
 
+export const SumaInventario = async (data) => {
+  const opciones = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+
+  fetch(url, opciones)
+    .then((response) => {
+      if (response.ok) {
+        console.log("el inventario a sido sumado exitosamente");
+      } else {
+        console.log("Hubo un error al actualizar los datos.");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+};
+
+export const RestaInventario = async (data) => {
+  const opciones = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+
+  fetch(url, opciones)
+    .then((response) => {
+      if (response.ok) {
+        console.log("se a restado del inventario exitosamente");
+      } else {
+        console.log("Hubo un error al actualizar los datos.");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+};
+
