@@ -1,22 +1,29 @@
-
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
   mode: 'development',
   entry: './src/main.js',
   output: {
-    path: __dirname + '/dist',
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    clean: true, // Limpia dist/ en cada build
   },
-  
+
   devServer: {
-    port: 8080
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    port: 8080,
+    hot: true, // 🔥 Hot Module Replacement
+    open: true,
+    watchFiles: ['./src/**/*'], // Recarga si cambias algo en src/
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
+      template: "./src/index.html",
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -29,8 +36,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader', 'postcss-loader'], // tailwind + css
       },
       {
         test: /\.s[ac]ss$/i,
@@ -50,9 +57,14 @@ module.exports = {
           loader: 'expose-loader',
           options: 'Quagga'
         }]
-      }
+      },
+      // Si quieres cargar PHP como raw
+      // {
+      //   test: /\.php$/,
+      //   use: 'webpack-php-loader'
+      // }
     ]
   },
 
   devtool: "eval-source-map",
-}
+};
