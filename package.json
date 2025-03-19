@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@tailwindcss/cli": "^4.0.14",
     "bootstrap": "^5.2.3",
     "datatables.net": "^1.13.4",
@@ -29,6 +30,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "builddev": "webpack --mode development",
-    "start": "webpack-dev-server --mode development --open"
+    "start": "webpack-dev-server --mode development --open",
+    "dev": "npm run start"
   }
 }

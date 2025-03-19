@@ -158,16 +158,32 @@
    
 </dialog>
 
-<div class="row">
-    <div class="lbl-container col-md-5 offset-md-1">
-        <a id="Lbl-crear-producto" class="label-button">Nuevo producto</a>
-        <a id="Lbl-crear-proveedor" class="label-button">Nuevo proveedor</a>
-        <a id="Lbl-ver-inventario" class="label-button">Ver inventario</a>
-        <a id="Lbl-editar-cantidad" class="label-button">Editar cantidad</a>
-    </div>
+<div class="w-full  flex justify-start">
+    <div class="flex w-full my-4 cursor-pointer">
+        <div class="flex mx-2 justify-start">
+            <i class="fa-solid fa-circle-plus text-green-500 text-2xl items-center py-2"></i>
+            <a id="Lbl-crear-producto" class="text-black flex w-1/6 text-l font-bold w-4/5
+            text-left m-2">Nuevo</a>
+        </div>
+        <div class="flex mx-2 justify-start ">
+            <i class="fa-solid fa-circle-plus text-green-500 text-2xl items-center py-2"></i>
+            <a id="Lbl-crear-proveedor" class="text-black flex w-1/6 text-l font-bold w-4/5
+            text-left m-2">Nuevo proveedor</a>
+        </div>
+        <div class="flex mx-2 justify-start ">
+            <i class="fa-solid fa-circle-plus text-green-500 text-2xl items-center py-2"></i>
+            <a id="Lbl-ver-inventario" class="text-black flex w-1/6 text-l font-bold w-4/5
+            text-left m-2">Catalogo</a>
+        </div>
+        <div class="flex mx-2 justify-start">
+            <i class="fa-solid fa-pen text-yellow-500 text-2xl items-center py-2"></i>
+            <a id="Lbl-editar-cantidad" class="text-black flex w-1/6 text-l font-bold w-4/5
+            text-left m-2">Editar</a>
+        </div>
+    </div> 
 </div>
 
-<dialog id="dialogoInventario" class="show-dialog" style="height: 85%; width: 50%;">
+<dialog id="dialogoInventario" class="" style="height: 85%; width: 50%;">
     <div class="row">
       <div class="table-container col-md-9 offset-md-1">
         <table id="datatable_inventario" class="table table-striped table-bordered">
@@ -189,17 +205,18 @@
     <button id="close-inventario" class="btn btn-danger" style="position: absolute; top: 10px; right: 10px;">Cerrar</button>
   </dialog>
   
-  <dialog id="dialogoEditarCantidad" class="show-dialog" style="height: 50%; width: 60%; border: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-    <div class="row" style="padding: 20px;">
-      <label for="codigoProducto">Código de Producto:</label>
-      <input id="codigoProducto" type="number" class="form-control" placeholder="Ingresa el código del producto" style="margin-bottom: 15px;">
-      <label for="descripcionProducto">Descripción:</label>
-      <p id="descripcionProducto" class="text-info" style="margin-bottom: 15px;">Descripción: --</p>
-      <label for="cantidadProducto">Cantidad:</label>
-      <input id="cantidadProducto" type="number" class="form-control" placeholder="Cantidad del producto" style="margin-bottom: 15px;">
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <button id="actualizarCantidad" class="btn btn-success" style="width: auto; padding: 10px 15px;">Actualizar</button>
-        <button id="close-editar-cantidad" class="btn btn-danger" style="width: auto; padding: 10px 15px;">Cerrar</button>
+  <dialog id="dialogoEditarCantidad" class="show-dialog h-1/5 w-2/5 border-none shadow-md shadow-black/20 justify-self-center" >
+    <div class="flex flex-col justify-center p-4">
+        <div class="flex justify-end">
+            <button id="close-editar-cantidad" class="border-none"><i class="fa-solid fa-circle-xmark"></i></button>
+        </div>
+      <label for="codigoProducto" class="mb-4">Código de Producto:</label>
+      <input id="codigoProducto" type="number" class="form-control mb-4" placeholder="Ingresa el código del producto">
+      <label for="descripcionProducto" class="mb-4">Descripción:</label>
+      <p id="descripcionProducto" class="text-info mb-4">Descripción: --</p>
+      <label for="cantidadProducto" class="mb-4">Cantidad:</label>
+      <input id="cantidadProducto" type="number" class="form-control mb-4" placeholder="Cantidad del producto" >
+      <button id="actualizarCantidad" class="w-full bg-[#007bff] text-white font-bold text-3xl rounded h-14 mt-4">Actualizar</button> 
       </div>
     </div>
   </dialog>

@@ -1,6 +1,6 @@
 import { router } from "./router/index.routes";
 import "datatables.net-dt/css/jquery.dataTables.css";
-
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./css/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
