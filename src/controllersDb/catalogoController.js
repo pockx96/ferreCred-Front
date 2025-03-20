@@ -48,13 +48,13 @@ export const ProductoPost = async (data) => {
       if (response.ok) {
         console.log("El producto ha sido agregado correctamente");
       } else {
-        console.log("Hubo un error al actualizar los datos.");
+        console.log(`Hubo un error al actualizar los datos. ${response.json}`);
       }
     })
     .catch((error) => console.error("Error:", error));
 };
 
-export const put = async (data) => {
+export const EditCantidad = async (data) => {
   const opciones = {
     method: "PUT",
     headers: {
@@ -63,10 +63,36 @@ export const put = async (data) => {
     body: JSON.stringify(data),
   };
 
-  fetch(url, opciones)
+  fetch(
+    `https://www.cristopherdev.com/backend/catalogo/cantidad/${data.codigo}`,
+    opciones
+  )
     .then((response) => {
       if (response.ok) {
-        console.log("el usuario ah sido agregado exitosamente");
+        console.log("el producto a sido actualizado exitosamente");
+      } else {
+        console.log("Hubo un error al actualizar los datos.");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+};
+
+export const EditProducto = async (data) => {
+  const opciones = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+
+  fetch(
+    `https://www.cristopherdev.com/backend/catalogo/${data.codigo}`,
+    opciones
+  )
+    .then((response) => {
+      if (response.ok) {
+        console.log("el producto a sido actualizado exitosamente");
       } else {
         console.log("Hubo un error al actualizar los datos.");
       }

@@ -56,7 +56,6 @@ const etiquetaTotal = divElement.querySelector("#total-label");
 // }
 
 function sumarImporte() {
-  console.log("si entre al metodo pero me suda la polla");
   const celdasImporte = document.querySelectorAll(
     "#table-body td:nth-child(6)"
   );
@@ -85,9 +84,6 @@ function loadCatalogo() {
 function empycellsTable() {
   var rowCount = tabla.getElementsByTagName("tr").length;
   var emptyRowsNeeded = 5 - rowCount;
-  console.log(rowCount);
-  console.log(emptyRowsNeeded);
-  console.log("holaaaa");
   if (rowCount === 0) {
     for (var i = 0; i < emptyRowsNeeded; i++) {
       var row = document.createElement("tr");
@@ -420,7 +416,6 @@ function btnEliminar() {
 }
 
 function Contado() {
-  console.log("el compilado si esta jalando");
   const BtnContado = divElement.querySelector("#btn-contado");
   BtnContado.addEventListener("click", () => {
     alert(
