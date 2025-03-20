@@ -71,7 +71,7 @@ async function PrintUsuarios() {
   // Generar la tabla
 
   autoTable(doc, {
-    head: [["Código", "Descripción", "Precio"]],
+    head: [["Correo", "Nombre", "Contraseña"]],
     body: bodyData,
   });
 

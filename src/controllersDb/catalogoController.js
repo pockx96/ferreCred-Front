@@ -8,6 +8,10 @@ export const getAll = async () => {
         return {
           codigo: producto.codigo,
           descripcion: producto.descripcion,
+          precio_compra: producto.precio_compra,
+          precio_venta: producto.precio_venta,
+          tipo: producto.tipo,
+          cantidad: producto.cantidad,
         };
       });
       return catalogo;

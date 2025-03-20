@@ -3,6 +3,7 @@ import {
   ProductoPost,
   EditCantidad,
   EditProducto,
+  getAll,
 } from "../controllersDb/catalogoController";
 import { ProveedorPost } from "../controllersDb/proveedorController";
 import {
@@ -11,6 +12,8 @@ import {
 } from "../controllersDb/inventarioController";
 import { showDialog } from "../controllers/Entradas.controller";
 import { getByCodigo } from "../controllersDb/catalogoController";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -416,10 +419,55 @@ function CrearProveedor() {
   });
 }
 
+async function PrintProductos() {
+  const btnImprimir = divElement.querySelector("#btn-product-print");
+  const doc = new jsPDF();
+
+  // Tu lista de objetos
+  const productos = await getAll();
+
+  const bodyData = [];
+  productos.forEach((producto) => {
+    bodyData.push([
+      producto.codigo,
+      producto.descripcion,
+      producto.precio_compra,
+      producto.precio_venta,
+      producto.tipo,
+      producto.cantidad,
+    ]);
+  });
+
+  // Generar la tabla
+
+  autoTable(doc, {
+    head: [
+      [
+        "Código",
+        "Descripción",
+        "Precio de Compra",
+        "Precio de Venta",
+        "Unidad",
+        "Cantidad",
+        "Cantidad Actual",
+      ],
+    ],
+    body: bodyData,
+  });
+
+  btnImprimir.addEventListener("click", () => {
+    console.log(productos);
+    doc.save("productos.pdf");
+  });
+
+  // Descargar PDF
+}
+
 export default async () => {
   if (!appInitialized) {
   }
   initDataTableInventario();
+  PrintProductos();
   EditarProducto();
   BuscarProducto();
   CrearProducto();
