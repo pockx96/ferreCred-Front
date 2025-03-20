@@ -1,4 +1,7 @@
 import view from "../view/usuarios.html";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { getAllUsuarios } from "../controllersDb/usuariosController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -47,7 +50,42 @@ const initDataTable = async () => {
   };
 };
 
+async function PrintUsuarios() {
+  const btnImprimir = divElement.querySelector("#user-print");
+  const doc = new jsPDF();
+
+  // Tu lista de objetos
+  const usuarios = await getAllUsuarios();
+
+  const bodyData = [];
+  usuarios.forEach((usuario) => {
+    bodyData.push([
+      usuario.correoUsuario,
+      usuario.nombreUsuario,
+      usuario.contraseñaUsuario,
+    ]);
+  });
+
+  console.log(usuarios);
+
+  // Generar la tabla
+
+  autoTable(doc, {
+    head: [["Código", "Descripción", "Precio"]],
+    body: bodyData,
+  });
+
+  btnImprimir.addEventListener("click", () => {
+    console.log("imprimiendo");
+    alert("imprimiendo");
+    doc.save("productos.pdf");
+  });
+
+  // Descargar PDF
+}
+
 export default () => {
   initDataTable();
+  PrintUsuarios();
   return divElement;
 };
