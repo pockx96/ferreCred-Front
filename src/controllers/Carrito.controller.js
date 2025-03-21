@@ -1,6 +1,10 @@
 // import Quagga from 'quagga';
 import view from "../view/Carrito.html";
-import { getAll, getByCodigo } from "../controllersDb/catalogoController";
+import {
+  getAll,
+  getByCodigo,
+  EditCantidad,
+} from "../controllersDb/catalogoController";
 import { ProductoPost } from "../controllersDb/productoController";
 import { ComprasPost } from "../controllersDb/compraController";
 import {
@@ -25,35 +29,6 @@ let Cliente = "lord hikari";
 let tipoNota = "credito";
 var TotalCount;
 const etiquetaTotal = divElement.querySelector("#total-label");
-
-// function initQuagga() {
-//     Quagga.init({
-//         inputStream: {
-//             name: "Live",
-//             type: "LiveStream",
-//             target: document.querySelector('#interactive'),
-//             constraints: {
-//                 width: 184,
-//                 height: 157,
-//             }
-//         },
-//         decoder: {
-//             readers: ["ean_reader"]
-//         }
-//     }, function (err) {
-//         if (err) {
-//             console.log(err);
-//             return
-//         }
-//         console.log("Initialization finished. Ready to start");
-//         Quagga.start();
-//     }); Quagga.onDetected(function (result) {
-//         var code = result.codeResult.code;
-//         document.getElementById("result").innerHTML = code; Quagga.stop();
-
-//     });
-
-// }
 
 function sumarImporte() {
   const celdasImporte = document.querySelectorAll(
@@ -195,7 +170,7 @@ function bicoraRecord() {
 
 const confirmarCompra = () => {
   const confirmarBtn = divElement.querySelector("#confirmar");
-  confirmarBtn.addEventListener("click", () => {
+  confirmarBtn.addEventListener("click", async () => {
     const confirmado = window.confirm("¿Está seguro de confirmar la compra?");
     if (confirmado) {
       const compra = {
@@ -205,15 +180,24 @@ const confirmarCompra = () => {
         total: TotalCount,
       };
       ComprasPost(compra);
-
+      const productosCatalogo = await getAll();
       const productoList = obtenerProductos();
+
       productoList.forEach((producto) => {
+        var productoCatalogo;
+        var cantidadActual;
+        productosCatalogo.forEach((productoFind) => {
+          if (producto.codigo == productoFind) {
+            cantidadActual = productoFind.cantidad;
+          }
+        });
+
         const produtoInventario = {
           codigo: producto.codigo,
-          cantidad: producto.cantidad,
+          cantidad: productoCatalogo.cantidad - producto.cantidad,
         };
-        RestaInventario(produtoInventario);
-        ProductoPost(producto);
+        EditCantidad(produtoInventario);
+        ProductoPost(produtoInventario);
       });
       const bitacora = bicoraRecord();
       BitacoraPost(bitacora);
@@ -226,8 +210,8 @@ const confirmarCompra = () => {
 async function select(element) {
   const codigo = element.textContent.split("-")[0].trim();
   const producto = await getByCodigo(codigo);
-  const cantidadActual = await InventarioGetByCodigo(codigo);
-  if (cantidadActual.cantidad > 0) {
+  console.log(producto);
+  if (producto.cantidad > 0) {
     LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
     addRow(producto);
     sumarImporte();
