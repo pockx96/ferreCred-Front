@@ -1,7 +1,10 @@
 import view from "../view/usuarios.html";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { getAllUsuarios } from "../controllersDb/usuariosController";
+import {
+  ClientesGetAll,
+  postClientes,
+} from "../controllersDb/clientesController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -14,7 +17,7 @@ const initDataTable = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://www.cristopherdev.com/backend/usuarios";
+  var url = "https://www.cristopherdev.com/backend/clientes";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {
@@ -24,19 +27,22 @@ const initDataTable = async () => {
       miTabla = $("#datatable_usuario").DataTable({
         data: data,
         columns: [
-          { data: "correoUsuario" },
-          { data: "nombreUsuario" },
-          { data: "contraseñaUsuario" },
+          { data: "nombreCliente" },
+          { data: "direccion" },
+          { data: "telefono" },
+          { data: "correoCliente" },
+          { data: "limiteCredito" },
+          { data: "saldoActual" },
         ],
         pageLength: 6,
         language: {
           lengthMenu: "",
-          zeroRecords: "Ningún usuario encontrado",
+          zeroRecords: "Ningún cliente encontrado",
           info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
           infoEmpty: "Ningún usuario encontrado",
           infoFiltered: "(filtrados desde _MAX_ registros totales)",
           search: "",
-          searchPlaceholder: "¿Busca alguna usuario?",
+          searchPlaceholder: "¿Que Cliente Busca?",
           loadingRecords: "Cargando...",
           paginate: {
             first: "Primero",
@@ -55,23 +61,33 @@ async function PrintUsuarios() {
   const doc = new jsPDF();
 
   // Tu lista de objetos
-  const usuarios = await getAllUsuarios();
+  const clientes = await ClientesGetAll();
 
   const bodyData = [];
-  usuarios.forEach((usuario) => {
+  clientes.forEach((cliente) => {
     bodyData.push([
-      usuario.correoUsuario,
-      usuario.nombreUsuario,
-      usuario.contraseñaUsuario,
+      cliente.nombreCliente,
+      cliente.direccion,
+      cliente.telefono,
+      cliente.limiteCredito,
+      cliente.saldoActual,
+      cliente.correoCliente,
     ]);
   });
-
-  console.log(usuarios);
 
   // Generar la tabla
 
   autoTable(doc, {
-    head: [["Correo", "Nombre", "Contraseña"]],
+    head: [
+      [
+        "Nombre",
+        "Dirección",
+        "Telefono",
+        "Limite de Credito",
+        "Saldo Actual",
+        "Correo",
+      ],
+    ],
     body: bodyData,
   });
 
@@ -84,8 +100,78 @@ async function PrintUsuarios() {
   // Descargar PDF
 }
 
+function CrearCliente() {
+  const inputNombre = divElement.querySelector("#input-nombre");
+  const inputDireccion = divElement.querySelector("#input-direccion");
+  const inputTelefono = divElement.querySelector("#input-telefono");
+  const inputLimite = divElement.querySelector("#input-limite");
+  const inputCorreo = divElement.querySelector("#input-correo");
+  const lblNuevoCliente = divElement.querySelector("#Lbl-crear-cliente");
+  const btnCliente = divElement.querySelector("#btn-cliente");
+
+  const newClientDialog = divElement.querySelector("#new-cliente-dialog");
+
+  lblNuevoCliente.addEventListener("click", () => {
+    if (!newClientDialog.open) {
+      newClientDialog.showModal();
+      newClientDialog.style.visibility = "visible";
+    }
+  });
+  divElement
+    .querySelector("#close-cliente")
+    .addEventListener("click", (event) => {
+      newClientDialog.style.visibility = "hidden";
+      newClientDialog.close();
+    });
+
+  function ValidateProductInputs() {
+    var nombre = inputNombre.value;
+    var direccion = inputDireccion;
+    var correo = inputCorreo;
+    var limite = divElement.querySelector("#input-limite");
+    var telefono = inputTelefono;
+
+    // Realiza la validación de los campos
+    if (
+      nombre === "" ||
+      direccion === "" ||
+      limite === "" ||
+      correo === "" ||
+      telefono == ""
+    ) {
+      alert("Por favor, completa todos los campos.");
+      return false; // Detiene la ejecución de la función si algún campo está vacío
+    }
+
+    return true;
+  }
+
+  btnCliente.addEventListener("click", async (event) => {
+    event.preventDefault();
+    if (ValidateProductInputs()) {
+      var nombre = inputNombre.value;
+      var direccion = inputDireccion.value;
+      var correo = inputCorreo.value;
+      var limite = inputLimite.value;
+      var telefono = inputTelefono.value;
+      const newCliente = {
+        nombreCliente: nombre.toString(),
+        direccion: direccion.toString(),
+        correoCliente: correo.toString(),
+        telefono: telefono.toString(),
+        limiteCredito: limite.toString(),
+        saldoActual: "0",
+      };
+      console.log(`cliente posteado: ${newCliente}`);
+      postClientes(newCliente);
+      initDataTable();
+    }
+  });
+}
+
 export default () => {
   initDataTable();
   PrintUsuarios();
+  CrearCliente();
   return divElement;
 };
