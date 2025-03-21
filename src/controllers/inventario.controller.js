@@ -465,8 +465,8 @@ async function PrintProductos() {
 
 export default async () => {
   if (!appInitialized) {
+    initDataTableInventario();
   }
-  initDataTableInventario();
   PrintProductos();
   EditarProducto();
   BuscarProducto();

@@ -14,7 +14,7 @@ import { initDataTableBitacora } from "./Bitacora.controller";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
-const searchContainer = divElement.querySelector(".search-input-box");
+const searchContainer = divElement.querySelector("#search-input-box");
 const inputSearch = searchContainer.querySelector("input");
 const boxSuggestions = divElement.querySelector(".container-suggestions");
 let suggestions = [];

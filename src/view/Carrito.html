@@ -1,155 +1,175 @@
 <style>
-    .container {
-        margin-top: 1%;
-    }
+  .container {
+    margin-top: 1%;
+  }
 
-    .lbl-container {
-        margin-top: 1%;
-        margin-left: 2%;
-        display: flex;
-        justify-content: space-between;
-    }
+  .lbl-container {
+    margin-top: 1%;
+    margin-left: 2%;
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .tabla-container {
-        z-index: 0;
-    }
+  .tabla-container {
+    z-index: 0;
+  }
 
-    .table {
-        z-index: 1;
-    }
+  .table {
+    z-index: 1;
+  }
 
-    .table-body {
-        border-collapse: collapse;
-    }
+  .table-body {
+    border-collapse: collapse;
+  }
 
-    #datatable_inventario {
-        border: 1px solid #ccc;
-    }
+  #datatable_inventario {
+    border: 1px solid #ccc;
+  }
 
-    thead tr th {
-        color: #ffff;
-    }
+  thead tr th {
+    color: #ffff;
+  }
 
-    thead {
-        background-color: #637C98;
-    }
+  thead {
+    background-color: #637c98;
+  }
 
-    .line {
-        width: 100%;
-        background-color: #ccc;
-        height: 1px;
-    }
+  .line {
+    width: 100%;
+    background-color: #ccc;
+    height: 1px;
+  }
 
-    .total-box input {
-        border: 1px solid #cccc;
-        background-color: #F2F2F2;
-        border: none;
-        font-size: 34px;
-        margin-top: 5%;
-        margin-left: 20%;
-        width: 60%;
-        height: 30%;
-    }
-    #total-label{
-        position: relative;
-        left: 30%;
-        margin-top: 5%;
-    }
-
+  .total-box input {
+    border: 1px solid #cccc;
+    background-color: #f2f2f2;
+    border: none;
+    font-size: 34px;
+    margin-top: 5%;
+    margin-left: 20%;
+    width: 60%;
+    height: 30%;
+  }
+  #total-label {
+    position: relative;
+    left: 30%;
+    margin-top: 5%;
+  }
 </style>
 <dialog id="select-client-dialog" class="show-dialog">
-    <form>
-        <div id="close">
-            <i class="fa-solid fa-circle-xmark"></i>
-        </div>
+  <form>
+    <div id="close">
+      <i class="fa-solid fa-circle-xmark"></i>
+    </div>
 
-        <div class="elements-container">
-            <h3>Seleccione el cliente</h3>
-            <select id="combo-box"></select>
-            <button id="btn-cliente" class="btn btn-primary" >continuar</button>
-        </div>
-    </form>
+    <div class="elements-container">
+      <h3>Seleccione el cliente</h3>
+      <select id="combo-box"></select>
+      <button id="btn-cliente" class="btn btn-primary">continuar</button>
+    </div>
+  </form>
 </dialog>
 
 <div class="row">
-    <div class="lbl-container col-md-2 offset-md-1">
-        <a href="#/creditos" id="LblCrear" class="label-button">Credito</a>
-        <a id="btn-contado" class="label-button">Contado</a>
+  <div class="lbl-container col-md-2 offset-md-1">
+    <a href="#/creditos" id="LblCrear" class="text-xl text-black font-bold"
+      ><i
+        class="fa-solid fa-magnifying-glass-plus m-1 text-blue-500 text-xl"
+      ></i
+      >Clientes</a
+    >
+  </div>
+  <div class="container col-md-6 col-offset-1">
+    <div class="search-input-box">
+      <input type="text" placeholder="¿Qué producto buscas?" />
+      <a href="#" target="_blank">
+        <i class="fa-solid fa-magnifying-glass icon"> </i>
+      </a>
+      <ul class="container-suggestions">
+        <li>sugerencia 1</li>
+        <li>sugerencia 2</li>
+        <li>sugerencia 3</li>
+      </ul>
     </div>
-    <div class="container col-md-6 col-offset-1">
-        <div class="search-input-box">
-            <input type="text" placeholder="¿Qué producto buscas?" />
-            <a href="#" target="_blank">
-                <i class="fa-solid fa-magnifying-glass icon"> </i>
-            </a>
-            <ul class="container-suggestions">
-                <li>sugerencia 1</li>
-                <li>sugerencia 2</li>
-                <li>sugerencia 3</li>
-            </ul>
-        </div>
-    </div>
+  </div>
 </div>
 
 <div class="Top-box-container col-md-8 offset-md-2">
-    <div class="col-md-4 total-box">
-        <div class="title-container">
-            <span>Total</span>
-            <h2 id="Lbl-cliente">Cli. Alozo lopez mateo</h2>
-        </div>
-        <div class="line"></div>
-        <h2 id="total-label"></h2>
+  <div class="col-md-4 total-box">
+    <div class="title-container">
+      <span>Total</span>
+      <h2 id="Lbl-cliente"></h2>
     </div>
-    <div class="col-md-5 col-md-offset-1 total-box">
-        <div class="codigo-container">
-            <span>Codigo</span>
-            <h3 id="Lbl-Producto">Codigo.1 - Martillo</h3>
-        </div>
-        <div class="line"></div>
-        <input type="text" name="" id="input-codigo">
-        <p id="result"></p>
+    <div class="line"></div>
+    <h2 id="total-label"></h2>
+  </div>
+  <div class="col-md-5 col-md-offset-1 total-box">
+    <div class="codigo-container">
+      <span>Codigo</span>
+      <h3 id="Lbl-Producto"></h3>
     </div>
-    <!-- <div class="col-md-3 camera">
+    <div class="line"></div>
+    <input type="text" name="" id="input-codigo" />
+    <p id="result"></p>
+  </div>
+  <!-- <div class="col-md-3 camera">
         <i class="fa-solid fa-camera"></i>
         <div id="interactive" class="viewport"></div>
     </div> -->
-
 </div>
 <div class="row">
-    <div class="col-md-9 tabla-container offset-md-1" style="height: 250px; overflow-y: scroll; margin-bottom: 2%;">
-        <div class="tabla-scrollable">
-            <table id="table" class="table table-striped table-bordered table-carrito ">
-                <thead style="position: sticky; top: 0; ">
-                    <tr class="header-table">
-                        <th style="position: sticky; top: 0; ">Codigo</th>
-                        <th style="position: sticky; top: 0; ">Descripción</th>
-                        <th style="position: sticky; top: 0; ;">Cantidad</th>
-                        <th style="position: sticky; top: 0; ">Tipo</th>
-                        <th style="position: sticky; top: 0; ">Precio</th>
-                        <th style="position: sticky; top: 0; ">Importe</th>
-                        <th style="position: sticky; top: 0; ">Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                   
-                </tbody>
-            </table>
-        </div>
+  <div
+    class="col-md-9 tabla-container offset-md-1"
+    style="height: 250px; overflow-y: scroll; margin-bottom: 2%"
+  >
+    <div class="tabla-scrollable">
+      <table
+        id="table"
+        class="table table-striped table-bordered table-carrito"
+      >
+        <thead style="position: sticky; top: 0">
+          <tr class="header-table">
+            <th style="position: sticky; top: 0">Codigo</th>
+            <th style="position: sticky; top: 0">Descripción</th>
+            <th style="position: sticky; top: 0">Cantidad</th>
+            <th style="position: sticky; top: 0">Tipo</th>
+            <th style="position: sticky; top: 0">Precio</th>
+            <th style="position: sticky; top: 0">Importe</th>
+            <th style="position: sticky; top: 0">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
     </div>
-
+  </div>
 </div>
+<!--
 <div class="options-butons col-md-9 offset-md-1">
-    <div class="container-left-btn col-md-3">
-        <button id="eliminar">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-        <button id="pruebas">
-            <i class="fa-solid fa-camera"></i>
-        </button>
-    </div>
-    <div class="container-right-btn col-md-4">
-        <a class="btn-confirmar" id="confirmar"><i
-                class="fa-solid fa-circle-arrow-right"></i>Finalizar
-            compra</a>
-    </div>
+  <div class="container-left-btn col-md-3">
+    <button>
+      <i class="fa-solid fa-trash"></i>
+    </button>
+    <button id="pruebas">
+      <i class="fa-solid fa-camera"></i>
+    </button>
+  </div>
+  <div class="container-right-btn col-md-4">
+    <a class="btn-confirmar" id="confirmar"
+      ><i class="fa-solid fa-circle-arrow-right"></i>Finalizar compra</a
+    >
+  </div>
+</div>
+-->
+<div class="absolute bottom-0 justify-between flex h-1/6 w-full">
+  <button id="eliminar" class="w-1/4">
+    <i class="fa-solid fa-trash cursor-pointer !text-3xl text-red-400"></i>
+  </button>
+  <div class="flex w-1/2 items-center !px-[10%]">
+    <a
+      id="confirmar"
+      class="bg-[#007bff] !rounded-xl text-white text-2xl font-bold px-2 mx-2 !no-underline cursor-pointer"
+      ><i class="fa-solid fa-circle-arrow-right m-2 !text-3xl"></i>Realizar
+      Compra</a
+    >
+  </div>
 </div>

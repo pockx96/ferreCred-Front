@@ -339,7 +339,8 @@ function CodigoCaptura() {
       event.preventDefault();
       const codigo = inputCodigo.value;
       const producto = await getByCodigo(codigo);
-      LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
+      console.log(producto);
+      /*LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;*/
       addRow(producto);
       sumarImporte();
       inputCodigo.value = "";
@@ -415,14 +416,6 @@ function btnEliminar() {
   });
 }
 
-function Contado() {
-  const BtnContado = divElement.querySelector("#btn-contado");
-  BtnContado.addEventListener("click", () => {
-    alert(
-      "Estamos trabajando en agregar esta funcion en futuras actualizaciòn"
-    );
-  });
-}
 export default () => {
   loadCatalogo();
   Search();
@@ -433,7 +426,6 @@ export default () => {
   nuevoCliente();
   SelectNuevoCliente();
   empycellsTable();
-  Contado();
   btnEliminar();
 
   return divElement;

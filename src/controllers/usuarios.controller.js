@@ -78,7 +78,7 @@ async function PrintUsuarios() {
   btnImprimir.addEventListener("click", () => {
     console.log("imprimiendo");
     alert("imprimiendo");
-    doc.save("productos.pdf");
+    doc.save("usuarios.pdf");
   });
 
   // Descargar PDF
