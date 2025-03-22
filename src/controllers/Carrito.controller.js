@@ -191,7 +191,7 @@ const confirmarCompra = () => {
         deuda: TotalCount,
         total: TotalCount,
       };
-      //ComprasPost(compra);
+      ComprasPost(compra);
       try {
         const productosCatalogo = await getAll();
         const productoList = obtenerProductos();
