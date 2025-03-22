@@ -93,95 +93,136 @@ async function select(element) {
   const LblDeuda = divElement.querySelector("#Lbl-deudaCount");
   const LblCliente = divElement.querySelector("#lbl-cliente");
   LblDeuda.textContent = deuda.suma_deuda;
-  LblCliente.textContent = cliente;
+  LblCliente.textContent = cliente.replace(/%20/g, " ");
 }
 
 const initDataTable = async () => {
   if (miTabla) {
-    miTabla.destroy();
-    miTabla = null;
+      miTabla.destroy();
+      miTabla = null;
   }
-
   var xmlhttp = new XMLHttpRequest();
   var url = `https://www.cristopherdev.com/backend/compras/cliente/${cliente}`;
-  console.log(
-    `https://www.cristopherdev.com/backend/compras/cliente/${cliente}`
-  );
+  console.log(`Solicitando datos desde: ${url}`);
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
-  xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var data = JSON.parse(this.responseText);
 
-      miTabla = $("#datatable_clientes").DataTable({
-        data: data,
-        columns: [
-          { data: "folio" },
-          { data: "fecha" },
-          {
-            data: "deuda",
-            render: function (data, type, row) {
-              return data.toString(); // Convierte el valor decimal a cadena
-            },
-          },
-          {
-            data: "total",
-            render: function (data, type, row) {
-              return data.toString(); // Convierte el valor decimal a cadena
-            },
-          },
-        ],
-        pageLength: 5,
-        searching: false,
-        language: {
-          lengthMenu: "",
-          zeroRecords: "Ningún usuario encontrado",
-          info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-          infoEmpty: "Ningún usuario encontrado",
-          infoFiltered: "(filtrados desde _MAX_ registros totales)",
-          search: "Buscar:",
-          loadingRecords: "Cargando...",
-          paginate: {
-            first: "Primero",
-            last: "Último",
-            next: "Siguiente",
-            previous: "Anterior",
-          },
-        },
-      });
-    }
+  xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+          if (this.status == 200) {
+              try {
+                  var data = JSON.parse(this.responseText);
+                  console.log("Datos recibidos:", data);
+                  const table = divElement.querySelector("#tableBody");
+                  table.innerHTML = "";
+                  data.forEach((item) => {
+                      const row = document.createElement("tr");
+                      row.innerHTML = `
+                          <td>${item.folio}</td>
+                          <td>${item.fecha}</td>
+                          <td>${item.cliente}</td>
+                          <td>${item.tipo_nota}</td>
+                          <td>${item.deuda !== null ? item.deuda : "Sin deuda"}</td>
+                          <td>${item.total}</td>
+                      `;
+                      table.appendChild(row);
+                  });
+                  miTabla = $("#datatable_clientes").DataTable({
+                      data: data,
+                      columns: [
+                          { data: "folio" },
+                          { data: "fecha" },
+                          {
+                              data: "deuda",
+                              render: function (data, type, row) {
+                                  return data !== null ? data.toString() : "Sin deuda";
+                              },
+                          },
+                          {
+                              data: "total",
+                              render: function (data, type, row) {
+                                  return data.toString();
+                              },
+                          },
+                      ],
+                      pageLength: 5,
+                      searching: false,
+                      language: {
+                          lengthMenu: "",
+                          zeroRecords: "Ningún usuario encontrado",
+                          info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+                          infoEmpty: "Ningún usuario encontrado",
+                          infoFiltered: "(filtrados desde _MAX_ registros totales)",
+                          search: "Buscar:",
+                          loadingRecords: "Cargando...",
+                          paginate: {
+                              first: "Primero",
+                              last: "Último",
+                              next: "Siguiente",
+                              previous: "Anterior",
+                          },
+                      },
+                  });
+              } catch (error) {
+                  console.error("Error al procesar los datos:", error);
+              }
+          } else {
+              console.error("Error en la solicitud. Código de estado:", this.status);
+          }
+      }
   };
 };
+
 async function Abonar() {
   const LblDeuda = divElement.querySelector("#input-deuda");
   const btnAbonar = divElement.querySelector("#btn-abonar");
-  btnAbonar.addEventListener("click", async () => {
-    const abonoinput = divElement.querySelector("#input-deuda");
-    const listaDeuda = await ComprasGetByCliente(cliente);
-    let AbonoCount = parseFloat(abonoinput.value);
-    console.log(AbonoCount);
-    listaDeuda.map((Deuda) => {
-      const deudaActual = Deuda.deuda;
-      if (deudaActual < AbonoCount) {
-        AbonoCount - deudaActual;
-        Deuda.deuda = 0;
-      } else {
-        Deuda.deuda -= AbonoCount;
-        AbonoCount = 0;
-      }
-    });
-    listaDeuda.forEach(async (Deuda) => {
-      ComprasUpdateDeuda(Deuda);
-    });
-    const bitacora = bicoraRecord();
 
-    LblDeuda.value = "";
-    BitacoraPost(bitacora);
-    initDataTableBitacora();
-    initDataTable();
-    await HandleUpdateDeuda();
+  // Asegúrate de que el evento solo se configure al hacer clic en el botón
+  btnAbonar.addEventListener("click", async () => {
+    try {
+      const abonoinput = divElement.querySelector("#input-deuda");
+      let AbonoCount = parseFloat(abonoinput.value);
+
+      if (isNaN(AbonoCount) || AbonoCount <= 0) {
+        console.error("El monto del abono no es válido");
+        return;
+      }
+      const listaDeuda = await ComprasGetByCliente(cliente);
+      console.log("Abono inicial:", AbonoCount);
+      listaDeuda.forEach((Deuda) => {
+        const deudaActual = parseFloat(Deuda.deuda);
+        console.log("Deuda Actual",Deuda.folio,":",deudaActual);
+        if (isNaN(deudaActual) || deudaActual <= 0) {
+          console.warn(`Valor inválido ignorado: ${Deuda.deuda}`);
+          return; // Tu no existes, puñetas
+        }
+        if (deudaActual <= AbonoCount) {
+          // Si el abono es mayor o igual a la deuda, cancelar deuda
+          AbonoCount -= deudaActual;
+          Deuda.deuda = 0;
+        } else {
+          // Restar el abono de la deuda actual
+          Deuda.deuda = deudaActual - AbonoCount;
+          AbonoCount = 0;
+        }
+      });      
+      for (const Deuda of listaDeuda) {
+        await ComprasUpdateDeuda(Deuda);
+      }
+      const bitacora = bicoraRecord();
+      //BitacoraPost(bitacora);
+      LblDeuda.value = "";
+      //initDataTableBitacora();
+      initDataTable();
+      await HandleUpdateDeuda();
+
+      console.log("Abono completado exitosamente");
+    } catch (error) {
+      console.error("Error durante el abono:", error);
+    }
   });
 }
+
 function ValidateInputs() {
   var nombreCliente = divElement.querySelector("#input-nombre-cliente").value;
   var direccion = divElement.querySelector("#input-direccion").value;
