@@ -167,7 +167,7 @@ const obtenerProductos = () => {
   });
 
   // Filtrar valores nulos para obtener solo las filas válidas
-  console.log(objetosFilas.filter((fila) => fila !== null));
+  //console.log(objetosFilas.filter((fila) => fila !== null));
   return objetosFilas.filter((fila) => fila !== null);
 };
 
@@ -191,29 +191,36 @@ const confirmarCompra = () => {
         deuda: TotalCount,
         total: TotalCount,
       };
-      ComprasPost(compra);
-      const productosCatalogo = await getAll();
-      const productoList = obtenerProductos();
-
-      productoList.forEach((producto) => {
-        var productoCatalogo;
-        var cantidadActual;
-        productosCatalogo.forEach((productoFind) => {
-          if (producto.codigo == productoFind) {
-            cantidadActual = productoFind.cantidad;
+      //ComprasPost(compra);
+      try {
+        const productosCatalogo = await getAll();
+        const productoList = obtenerProductos();
+        productoList.forEach((producto) => {
+          const productoFind = productosCatalogo.find(
+            (item) => item.codigo === producto.codigo
+          );
+          if (productoFind) {
+            const cantidadActual = productoFind.cantidad;
+            const produtoInventario = {
+              codigo: producto.codigo,
+              cantidad: cantidadActual - producto.cantidad ,
+            };
+            console.log("Código del producto:", produtoInventario.codigo);
+            console.log("Cantidad ajustada:", produtoInventario.cantidad);
+            EditCantidad(produtoInventario);
+            ProductoPost(produtoInventario);
+          } else {
+            console.warn(
+              `Producto con código ${producto.codigo} no encontrado en el catálogo`
+            );
           }
         });
-
-        const produtoInventario = {
-          codigo: producto.codigo,
-          cantidad: productoCatalogo.cantidad - producto.cantidad,
-        };
-        EditCantidad(produtoInventario);
-        ProductoPost(produtoInventario);
-      });
+      } catch (error) {
+        console.error("Error al procesar los productos:", error);
+      }
       const bitacora = bicoraRecord();
-      BitacoraPost(bitacora);
-      initDataTableBitacora();
+      //BitacoraPost(bitacora);
+      //initDataTableBitacora();
       ClearTable();
     }
   });
