@@ -149,14 +149,26 @@ const obtenerProductos = () => {
   const objetosFilas = tablaArray.map((fila) => {
     const objetoFila = {};
     const columnas = fila.cells;
-    objetoFila.codigo = parseInt(columnas[0].textContent);
+    objetoFila.codigo = parseInt(columnas[0].textContent.trim());
     objetoFila.folio = "prueba";
-    objetoFila.cantidad = parseInt(columnas[2].textContent);
-    objetoFila.tipo = columnas[3].textContent;
-    objetoFila.importe = parseFloat(columnas[5].textContent);
-    return objetoFila;
+    objetoFila.cantidad = parseInt(columnas[2].textContent.trim());
+    objetoFila.tipo = columnas[3].textContent.trim();
+    objetoFila.importe = parseFloat(columnas[5].textContent.trim());
+    if (
+      !isNaN(objetoFila.codigo) &&
+      !isNaN(objetoFila.cantidad) &&
+      !isNaN(objetoFila.importe) &&
+      objetoFila.tipo !== ""
+    ) {
+      return objetoFila;
+    } else {
+      return null;
+    }
   });
-  return objetosFilas;
+
+  // Filtrar valores nulos para obtener solo las filas válidas
+  console.log(objetosFilas.filter((fila) => fila !== null));
+  return objetosFilas.filter((fila) => fila !== null);
 };
 
 function bicoraRecord() {
