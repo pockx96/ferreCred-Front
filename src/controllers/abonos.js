@@ -176,8 +176,6 @@ const initDataTable = async () => {
 async function Abonar() {
   const LblDeuda = divElement.querySelector("#input-deuda");
   const btnAbonar = divElement.querySelector("#btn-abonar");
-
-  // Asegúrate de que el evento solo se configure al hacer clic en el botón
   btnAbonar.addEventListener("click", async () => {
     try {
       const abonoinput = divElement.querySelector("#input-deuda");
@@ -208,14 +206,14 @@ async function Abonar() {
       });      
       for (const Deuda of listaDeuda) {
         await ComprasUpdateDeuda(Deuda);
+        console.log(Deuda);
       }
       const bitacora = bicoraRecord();
       //BitacoraPost(bitacora);
       LblDeuda.value = "";
       //initDataTableBitacora();
-      initDataTable();
+      await initDataTable();
       await HandleUpdateDeuda();
-
       console.log("Abono completado exitosamente");
     } catch (error) {
       console.error("Error durante el abono:", error);
