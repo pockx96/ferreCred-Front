@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/productos";
+const url = `${API_URL}productos`;
 
 export const getAll = async () => {
   return fetch(url)
@@ -10,7 +10,7 @@ export const getAll = async () => {
 };
 // GET por ID
 export const getByFolio = async (id) => {
-  return fetch(`https://cristopherdev.com/backend/productos/${id}`, {
+  return fetch(`${API_URL}productos/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

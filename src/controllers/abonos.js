@@ -98,78 +98,80 @@ async function select(element) {
 
 const initDataTable = async () => {
   if (miTabla) {
-      miTabla.destroy();
-      miTabla = null;
+    miTabla.destroy();
+    miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = `https://www.cristopherdev.com/backend/compras/cliente/${cliente}`;
+  var url = `${API_URL}compras/cliente/${cliente}`;
   console.log(`Solicitando datos desde: ${url}`);
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
   xmlhttp.onreadystatechange = function () {
-      if (this.readyState == 4) {
-          if (this.status == 200) {
-              try {
-                  var data = JSON.parse(this.responseText);
-                  console.log("Datos recibidos:", data);
-                  const table = divElement.querySelector("#tableBody");
-                  table.innerHTML = "";
-                  data.forEach((item) => {
-                      const row = document.createElement("tr");
-                      row.innerHTML = `
+    if (this.readyState == 4) {
+      if (this.status == 200) {
+        try {
+          var data = JSON.parse(this.responseText);
+          console.log("Datos recibidos:", data);
+          const table = divElement.querySelector("#tableBody");
+          table.innerHTML = "";
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
                           <td>${item.folio}</td>
                           <td>${item.fecha}</td>
                           <td>${item.cliente}</td>
                           <td>${item.tipo_nota}</td>
-                          <td>${item.deuda !== null ? item.deuda : "Sin deuda"}</td>
+                          <td>${
+                            item.deuda !== null ? item.deuda : "Sin deuda"
+                          }</td>
                           <td>${item.total}</td>
                       `;
-                      table.appendChild(row);
-                  });
-                  miTabla = $("#datatable_clientes").DataTable({
-                      data: data,
-                      columns: [
-                          { data: "folio" },
-                          { data: "fecha" },
-                          {
-                              data: "deuda",
-                              render: function (data, type, row) {
-                                  return data !== null ? data.toString() : "Sin deuda";
-                              },
-                          },
-                          {
-                              data: "total",
-                              render: function (data, type, row) {
-                                  return data.toString();
-                              },
-                          },
-                      ],
-                      pageLength: 5,
-                      searching: false,
-                      language: {
-                          lengthMenu: "",
-                          zeroRecords: "Ningún usuario encontrado",
-                          info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-                          infoEmpty: "Ningún usuario encontrado",
-                          infoFiltered: "(filtrados desde _MAX_ registros totales)",
-                          search: "Buscar:",
-                          loadingRecords: "Cargando...",
-                          paginate: {
-                              first: "Primero",
-                              last: "Último",
-                              next: "Siguiente",
-                              previous: "Anterior",
-                          },
-                      },
-                  });
-              } catch (error) {
-                  console.error("Error al procesar los datos:", error);
-              }
-          } else {
-              console.error("Error en la solicitud. Código de estado:", this.status);
-          }
+            table.appendChild(row);
+          });
+          miTabla = $("#datatable_clientes").DataTable({
+            data: data,
+            columns: [
+              { data: "folio" },
+              { data: "fecha" },
+              {
+                data: "deuda",
+                render: function (data, type, row) {
+                  return data !== null ? data.toString() : "Sin deuda";
+                },
+              },
+              {
+                data: "total",
+                render: function (data, type, row) {
+                  return data.toString();
+                },
+              },
+            ],
+            pageLength: 5,
+            searching: false,
+            language: {
+              lengthMenu: "",
+              zeroRecords: "Ningún usuario encontrado",
+              info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+              infoEmpty: "Ningún usuario encontrado",
+              infoFiltered: "(filtrados desde _MAX_ registros totales)",
+              search: "Buscar:",
+              loadingRecords: "Cargando...",
+              paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior",
+              },
+            },
+          });
+        } catch (error) {
+          console.error("Error al procesar los datos:", error);
+        }
+      } else {
+        console.error("Error en la solicitud. Código de estado:", this.status);
       }
+    }
   };
 };
 
@@ -189,7 +191,7 @@ async function Abonar() {
       console.log("Abono inicial:", AbonoCount);
       listaDeuda.forEach((Deuda) => {
         const deudaActual = parseFloat(Deuda.deuda);
-        console.log("Deuda Actual",Deuda.folio,":",deudaActual);
+        console.log("Deuda Actual", Deuda.folio, ":", deudaActual);
         if (isNaN(deudaActual) || deudaActual <= 0) {
           console.warn(`Valor inválido ignorado: ${Deuda.deuda}`);
           return; // Tu no existes, puñetas
@@ -203,7 +205,7 @@ async function Abonar() {
           Deuda.deuda = deudaActual - AbonoCount;
           AbonoCount = 0;
         }
-      });      
+      });
       for (const Deuda of listaDeuda) {
         await ComprasUpdateDeuda(Deuda);
         console.log(Deuda);

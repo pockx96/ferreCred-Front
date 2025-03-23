@@ -11,7 +11,7 @@ export const initDataTableBitacora = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://www.cristopherdev.com/backend/bitacora";
+  var url = `${API_URL}bitacora`;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {

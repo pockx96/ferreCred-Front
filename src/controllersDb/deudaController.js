@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/deuda";
+const url = `${API_URL}deuda`;
 
 export const getAll = async () => {
   return fetch(url)

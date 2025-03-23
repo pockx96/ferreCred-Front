@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/compras";
+const url = `${API_URL}compras`;
 
 export const ComprasGetAll = async () => {
   return fetch(url)

@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/usuarios";
+const url = `${API_URL}usuarios`;
 
 // Función para obtener todos los usuarios
 export const getAllUsuarios = async () => {
@@ -12,7 +12,7 @@ export const getAllUsuarios = async () => {
 
 // Función para obtener un usuario por su ID
 export const getByIDUsuario = async (id) => {
-  return fetch(`https://cristopherdev.com/backend/usuarios/${id}`, {
+  return fetch(`${API_URL}usuarios/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const putUsuarios = async (data) => {
 
 // Función para eliminar un usuario
 export const deleteUsuario = async (data) => {
-  return fetch(`https://cristopherdev.com/backend/usuarios`, {
+  return fetch(`${API_URL}usuarios`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/bitacora";
+const url = `${API_URL}bitacora`;
 
 export const BitacoraGetAll = async () => {
   return fetch(url)

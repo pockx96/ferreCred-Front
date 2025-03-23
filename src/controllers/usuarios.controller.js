@@ -17,7 +17,7 @@ const initDataTable = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://www.cristopherdev.com/backend/clientes";
+  var url = `${API_URL}clientes`;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {

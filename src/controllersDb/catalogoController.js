@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/catalogo";
+const url = `${API_URL}catalogo`;
 
 export const getAll = async () => {
   return fetch(url)
@@ -20,7 +20,7 @@ export const getAll = async () => {
 };
 // GET por ID
 export const getByCodigo = async (id) => {
-  return fetch(`https://cristopherdev.com/backend/catalogo/${id}`, {
+  return fetch(`${API_URL}catalogo/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -67,10 +67,7 @@ export const EditCantidad = async (data) => {
     body: JSON.stringify(data),
   };
 
-  fetch(
-    `https://www.cristopherdev.com/backend/catalogo/cantidad/${data.codigo}`,
-    opciones
-  )
+  fetch(`${API_URL}catalogo/cantidad/${data.codigo}`, opciones)
     .then((response) => {
       if (response.ok) {
         console.log("el producto a sido actualizado exitosamente");
@@ -90,10 +87,7 @@ export const EditProducto = async (data) => {
     body: JSON.stringify(data),
   };
 
-  fetch(
-    `https://www.cristopherdev.com/backend/catalogo/${data.codigo}`,
-    opciones
-  )
+  fetch(`${API_URL}catalogo/${data.codigo}`, opciones)
     .then((response) => {
       if (response.ok) {
         console.log("el producto a sido actualizado exitosamente");

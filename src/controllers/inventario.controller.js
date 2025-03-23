@@ -29,7 +29,7 @@ export const initDataTableInventario = async () => {
     miTabla = null;
   }
   var xmlhttp = new XMLHttpRequest();
-  var url = "https://www.cristopherdev.com/backend/catalogo";
+  var url = `${API_URL}catalogo`;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function () {

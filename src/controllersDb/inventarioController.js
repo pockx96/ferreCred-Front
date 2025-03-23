@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/inventario";
+const url = `${API_URL}inventario`;
 
 export const getAll = async () => {
   return fetch(url)
@@ -88,4 +88,3 @@ export const RestaInventario = async (data) => {
     })
     .catch((error) => console.error("Error:", error));
 };
-

@@ -1,4 +1,4 @@
-const url = "https://www.cristopherdev.com/backend/clientes";
+const url = `${API_URL}clientes`;
 
 export const ClientesGetAll = async () => {
   return fetch(url)
@@ -69,7 +69,7 @@ export const putUsuarios = async (data) => {
 
 // DELETE
 export const deleteUsuario = async (data) => {
-  return fetch(`https://cristopherdev.com/backend/usuarios`, {
+  return fetch(`${API_URL}/usuarios`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
