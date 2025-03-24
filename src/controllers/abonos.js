@@ -120,11 +120,7 @@ const initDataTable = async () => {
             row.innerHTML = `
                           <td>${item.folio}</td>
                           <td>${item.fecha}</td>
-                          <td>${item.cliente}</td>
-                          <td>${item.tipo_nota}</td>
-                          <td>${
-                            item.deuda !== null ? item.deuda : "Sin deuda"
-                          }</td>
+                          <td>${item.deuda > 0 ? item.deuda : "Sin deuda"}</td>
                           <td>${item.total}</td>
                       `;
             table.appendChild(row);
