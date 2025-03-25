@@ -25,7 +25,7 @@ const inputCodigo = divElement.querySelector("#input-codigo");
 let fila;
 const tabla = divElement.querySelector("#table-body");
 let suggestions = [];
-let Cliente = "lord hikari";
+let Cliente = "venta de contado";
 let metodoDePago = "";
 var TotalCount;
 const etiquetaTotal = divElement.querySelector("#total-label");
@@ -180,50 +180,50 @@ function bicoraRecord() {
   return bitacora;
 }
 
-const confirmarCompra = () => {
-  const confirmarBtn = divElement.querySelector("#confirmar");
-  confirmarBtn.addEventListener("click", async () => {
-    const confirmado = window.confirm("¿Está seguro de confirmar la compra?");
-    if (confirmado) {
-      const compra = {
-        cliente: Cliente,
-        tipo_nota: metodoDePago,
-        deuda: TotalCount,
-        total: TotalCount,
-      };
-      ComprasPost(compra);
-      try {
-        const productosCatalogo = await getAll();
-        const productoList = obtenerProductos();
-        productoList.forEach((producto) => {
-          const productoFind = productosCatalogo.find(
-            (item) => item.codigo === producto.codigo
+const confirmarCompra = async () => {
+  const lblCliente = divElement.querySelector("#Lbl-cliente");
+  const confirmado = window.confirm("¿Está seguro de confirmar la compra?");
+  if (confirmado) {
+    const compra = {
+      cliente: Cliente,
+      tipo_nota: metodoDePago,
+      deuda: TotalCount,
+      total: TotalCount,
+    };
+    ComprasPost(compra);
+    try {
+      const productosCatalogo = await getAll();
+      const productoList = obtenerProductos();
+      productoList.forEach((producto) => {
+        const productoFind = productosCatalogo.find(
+          (item) => item.codigo === producto.codigo
+        );
+        if (productoFind) {
+          const cantidadActual = productoFind.cantidad;
+          const produtoInventario = {
+            codigo: producto.codigo,
+            cantidad: cantidadActual - producto.cantidad,
+          };
+          console.log("Código del producto:", produtoInventario.codigo);
+          console.log("Cantidad ajustada:", produtoInventario.cantidad);
+          EditCantidad(produtoInventario);
+          ProductoPost(produtoInventario);
+          Cliente = "venta de contado";
+          lblCliente.textContent = "";
+        } else {
+          console.warn(
+            `Producto con código ${producto.codigo} no encontrado en el catálogo`
           );
-          if (productoFind) {
-            const cantidadActual = productoFind.cantidad;
-            const produtoInventario = {
-              codigo: producto.codigo,
-              cantidad: cantidadActual - producto.cantidad,
-            };
-            console.log("Código del producto:", produtoInventario.codigo);
-            console.log("Cantidad ajustada:", produtoInventario.cantidad);
-            EditCantidad(produtoInventario);
-            ProductoPost(produtoInventario);
-          } else {
-            console.warn(
-              `Producto con código ${producto.codigo} no encontrado en el catálogo`
-            );
-          }
-        });
-      } catch (error) {
-        console.error("Error al procesar los productos:", error);
-      }
-      const bitacora = bicoraRecord();
-      //BitacoraPost(bitacora);
-      //initDataTableBitacora();
-      ClearTable();
+        }
+      });
+    } catch (error) {
+      console.error("Error al procesar los productos:", error);
     }
-  });
+    const bitacora = bicoraRecord();
+    //BitacoraPost(bitacora);
+    //initDataTableBitacora();
+    ClearTable();
+  }
 };
 
 async function select(element) {
@@ -438,6 +438,7 @@ function metodoPago() {
   const lblTitleTotal = divElement.querySelector("#lblTitleTotal");
   var inputPago = divElement.querySelector("#inputPay");
   let pago = 0;
+  let isMethodPay = false;
 
   lblTotal.toLocaleString("es-ES", {
     style: "currency",
@@ -447,20 +448,23 @@ function metodoPago() {
   btnPagar.disabled = true;
   btnPagar.classList.add("!bg-slate-500");
 
-  btnConfirmar.disabled = true;
-  btnConfirmar.classList.add("!bg-slate-500");
+  function clearDialog() {
+    inputPago.textContent = "";
+    btnEfectivo.classList.remove("bg-orange-800");
+    btnDolares.classList.remove("bg-orange-800");
+    btnCredito.classList.remove("bg-orange-800");
+    btnDebito.classList.remove("bg-orange-800");
+  }
 
-  btnConfirmar.addEventListener("click", () => {
-    dialogMetodPay.showModal();
-    dialogMetodPay.style.visibility = "visible";
-    lblSubtotal.textContent = TotalCount.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "MXN",
-    });
-    lblTotal.textContent = TotalCount.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "MXN",
-    });
+  dialogMetodPay.showModal();
+  dialogMetodPay.style.visibility = "visible";
+  lblSubtotal.textContent = TotalCount.toLocaleString("es-ES", {
+    style: "currency",
+    currency: "MXN",
+  });
+  lblTotal.textContent = TotalCount.toLocaleString("es-ES", {
+    style: "currency",
+    currency: "MXN",
   });
 
   btnClose.addEventListener("click", () => {
@@ -469,22 +473,39 @@ function metodoPago() {
   });
 
   btnEfectivo.addEventListener("click", () => {
-    metodoDePago = "Efectivo";
-  });
-  btnEfectivo.addEventListener("click", () => {
-    metodoDePago = "Efectivo";
+    metodoDePago += " | Efectivo";
+    btnEfectivo.classList.add("bg-orange-800");
+    btnDebito.classList.remove("bg-orange-800");
+    btnDolares.classList.remove("bg-orange-800");
+    btnCredito.classList.remove("bg-orange-800");
+    isMethodPay = true;
   });
 
   btnDebito.addEventListener("click", () => {
-    metodoDePago = "Débito";
+    metodoDePago += " | Débito";
+    btnDebito.classList.add("bg-orange-800");
+    btnCredito.classList.remove("bg-orange-800");
+    btnEfectivo.classList.remove("bg-orange-800");
+    btnDolares.classList.remove("bg-orange-800");
+    isMethodPay = true;
   });
 
   btnCredito.addEventListener("click", () => {
-    metodoDePago = "Crédito";
+    metodoDePago += " | Crédito";
+    btnCredito.classList.add("bg-orange-800");
+    btnEfectivo.classList.remove("bg-orange-800");
+    btnDebito.classList.remove("bg-orange-800");
+    btnDolares.classList.remove("bg-orange-800");
+    isMethodPay = true;
   });
 
   btnDolares.addEventListener("click", () => {
-    metodoDePago = "Dólares";
+    metodoDePago += " | Dólares";
+    btnDolares.classList.add("bg-orange-800");
+    btnEfectivo.classList.remove("bg-orange-800");
+    btnDebito.classList.remove("bg-orange-800");
+    btnCredito.classList.remove("bg-orange-800");
+    isMethodPay = true;
   });
 
   btnAddPay.addEventListener("click", () => {
@@ -496,7 +517,12 @@ function metodoPago() {
     if (isNaN(parseFloat(cantidad))) {
       alert("Los precios deben ser valores numéricos.");
       return false;
+    }
+    if (!isMethodPay) {
+      alert("seleccione al menos un metodo de pago");
+      return false;
     } else {
+      btnAddPay.disabled = false;
       lblSubtotal.textContent = TotalCount.toLocaleString("es-ES", {
         style: "currency",
         currency: "MXN",
@@ -526,6 +552,26 @@ function metodoPago() {
 
   btnPagar.addEventListener("click", () => {
     confirmarCompra();
+    dialogMetodPay.visibility = "hidden";
+    dialogMetodPay.close();
+    btnConfirmar.disabled = true;
+    btnConfirmar.classList.add("!bg-slate-500");
+  });
+}
+
+function contadoCreditoValidation() {
+  const btnConfirmar = divElement.querySelector("#confirmar");
+  btnConfirmar.disabled = true;
+  btnConfirmar.classList.add("!bg-slate-500");
+
+  btnConfirmar.addEventListener("click", () => {
+    if (Cliente != "venta de contado") {
+      confirmarCompra();
+      btnConfirmar.disabled = true;
+      btnConfirmar.classList.add("!bg-slate-500");
+    } else {
+      metodoPago();
+    }
   });
 }
 
@@ -535,12 +581,11 @@ export default () => {
   CantidadCaptura();
   CodigoCapturaCelda();
   CodigoCaptura();
-  /*confirmarCompra();*/
   nuevoCliente();
   SelectNuevoCliente();
   empycellsTable();
   btnEliminar();
-  metodoPago();
+  contadoCreditoValidation();
 
   return divElement;
 };
