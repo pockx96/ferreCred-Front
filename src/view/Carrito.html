@@ -71,11 +71,95 @@
   </form>
 </dialog>
 
+<dialog id="select-pay-dialog" class="show-dialog">
+  <form>
+    <div class="flex justify-end p-1 w-full">
+      <i id="close-pay" class="fa-solid fa-circle-xmark"></i>
+    </div>
+    <div class="w-full py-2 flex justify-center">
+      <h3 class="mx-auto">Metodo de Pago</h3>
+    </div>
+    <div class="bg-blue-500b flex justify-between py-2 px-4">
+      <button
+        id="btnEfectivo"
+        class="bg-orange-600 !rounded text-white !no-border p-2 hover:bg-orange-800"
+      >
+        Efectivo
+      </button>
+      <button
+        id="BtnDebito"
+        class="bg-orange-600 !rounded text-white no-border p-2 hover:bg-orange-800"
+      >
+        Debito
+      </button>
+      <button
+        id="BtnCredito"
+        class="bg-orange-600 !rounded text-white no-border p-2 hover:bg-orange-800"
+      >
+        Credito
+      </button>
+      <button
+        id="BtnDolares"
+        class="bg-orange-600 !rounded text-white no-border p-2 hover:bg-orange-800"
+      >
+        dolares
+      </button>
+    </div>
+    <div class="flex justify-around px-4 py-2 my-2">
+      <input
+        class="border border-black px-2"
+        id="inputPay"
+        type="number"
+        name=""
+        id="pagoCantidad"
+        placeholder="$0.00"
+      />
+      <button
+        id="btnAddPay"
+        class="bg-slate-600 !rounded text-white no-border p-2 hover:bg-slate-800"
+      >
+        Agregar
+      </button>
+    </div>
+    <div class="grid grid-cols-2 gap-4 w-3/4 mx-auto my-4">
+      <!-- Fila 1 -->
+      <label class="font-bold text-black p-auto text-3xl">Subtotal</label>
+      <label id="lblSubtotal" class="font-bold text-black p-auto text-3xl"
+        >$100.00</label
+      >
+
+      <!-- Fila 2 -->
+      <label class="font-bold text-black p-auto text-3xl">Pago</label>
+      <label id="lblPago" class="font-bold text-black p-auto text-3xl"
+        >$0.00</label
+      >
+
+      <!-- Línea divisoria que cruza ambas columnas -->
+      <div class="col-span-2 border-b-2 border-gray-400"></div>
+
+      <!-- Fila 3 -->
+      <label id="lblTitleTotal" class="font-bold text-black p-auto text-3xl">Total</label>
+      <label id="lblTotal" class="font-bold text-black p-auto text-3xl"
+        >$0.00</label
+      >
+    </div>
+
+    <div class="flex w-full justify-center">
+      <button
+        id="btnPay"
+        class="!w-1/2 !bg-green-500 !rounded py-2 text-white font-bold !text-2xl"
+      >
+        Continuar
+      </button>
+    </div>
+  </form>
+</dialog>
+
 <div class="row">
   <div class="lbl-container col-md-2 offset-md-1">
-    <a href="#/creditos" id="LblCrear" class="text-xl text-black font-bold"
+    <a href="#/creditos" id="LblCrear" class="text-xl font-bold text-black"
       ><i
-        class="fa-solid fa-magnifying-glass-plus m-1 text-blue-500 text-xl"
+        class="fa-solid fa-magnifying-glass-plus m-1 text-xl text-blue-500"
       ></i
       >Clientes</a
     >
@@ -113,7 +197,6 @@
     <input type="text" name="" id="input-codigo" />
     <p id="result"></p>
   </div>
-
 </div>
 <div class="row">
   <div
@@ -142,17 +225,18 @@
   </div>
 </div>
 
-
 <div class="absolute bottom-0 justify-between flex h-1/6 w-full">
   <button id="eliminar" class="w-1/4">
     <i class="fa-solid fa-trash cursor-pointer !text-3xl text-red-400"></i>
   </button>
   <div class="flex w-1/2 items-center !px-[10%]">
-    <a
+    <button
       id="confirmar"
-      class="bg-[#007bff] !rounded-xl text-white text-2xl font-bold px-2 mx-2 !no-underline cursor-pointer"
-      ><i class="fa-solid fa-circle-arrow-right m-2 !text-3xl"></i>Realizar
-      Compra</a
+      class="bg-[#007bff] !rounded-xl text-white text-2xl font-bold px-2 mx-2 !no-underline"
+      disabled
     >
+      <i class="fa-solid fa-circle-arrow-right m-2 !text-3xl"></i>Realizar
+      Compra
+    </button>
   </div>
 </div>

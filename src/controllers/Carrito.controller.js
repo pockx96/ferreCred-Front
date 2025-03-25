@@ -26,7 +26,7 @@ let fila;
 const tabla = divElement.querySelector("#table-body");
 let suggestions = [];
 let Cliente = "lord hikari";
-let tipoNota = "credito";
+let metodoDePago = "";
 var TotalCount;
 const etiquetaTotal = divElement.querySelector("#total-label");
 
@@ -187,7 +187,7 @@ const confirmarCompra = () => {
     if (confirmado) {
       const compra = {
         cliente: Cliente,
-        tipo_nota: tipoNota,
+        tipo_nota: metodoDePago,
         deuda: TotalCount,
         total: TotalCount,
       };
@@ -203,7 +203,7 @@ const confirmarCompra = () => {
             const cantidadActual = productoFind.cantidad;
             const produtoInventario = {
               codigo: producto.codigo,
-              cantidad: cantidadActual - producto.cantidad ,
+              cantidad: cantidadActual - producto.cantidad,
             };
             console.log("Código del producto:", produtoInventario.codigo);
             console.log("Cantidad ajustada:", produtoInventario.cantidad);
@@ -229,12 +229,14 @@ const confirmarCompra = () => {
 async function select(element) {
   const codigo = element.textContent.split("-")[0].trim();
   const producto = await getByCodigo(codigo);
-  console.log(producto);
+  const btnConfirmar = divElement.querySelector("#confirmar");
   if (producto.cantidad > 0) {
     LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;
     addRow(producto);
     sumarImporte();
     inputSearch.value = "";
+    btnConfirmar.disabled = false;
+    btnConfirmar.classList.remove("!bg-slate-500");
   } else {
     alert("produco agotado");
   }
@@ -337,16 +339,17 @@ function CodigoCapturaCelda() {
   });
 }
 function CodigoCaptura() {
+  const btnConfirmar = divElement.querySelector("#confirmar");
   inputCodigo.addEventListener("keydown", async (event) => {
     if (event.keyCode === 13 && event.target === inputCodigo) {
       event.preventDefault();
       const codigo = inputCodigo.value;
       const producto = await getByCodigo(codigo);
-      console.log(producto);
-      /*LblProducto.innerText = `Codigo.${producto.codigo} - ${producto.descripcion}`;*/
       addRow(producto);
       sumarImporte();
       inputCodigo.value = "";
+      btnConfirmar.classList.remove("!bg-slate-500");
+      btnConfirmar.disabled = false;
     }
   });
 }
@@ -419,17 +422,125 @@ function btnEliminar() {
   });
 }
 
+function metodoPago() {
+  const btnConfirmar = divElement.querySelector("#confirmar");
+  const btnPagar = divElement.querySelector("#btnPay");
+  const dialogMetodPay = divElement.querySelector("#select-pay-dialog");
+  const btnClose = divElement.querySelector("#close-pay");
+  const btnEfectivo = divElement.querySelector("#btnEfectivo");
+  const btnDebito = divElement.querySelector("#BtnDebito");
+  const btnCredito = divElement.querySelector("#BtnCredito");
+  const btnDolares = divElement.querySelector("#BtnDolares");
+  const btnAddPay = divElement.querySelector("#btnAddPay");
+  const lblSubtotal = divElement.querySelector("#lblSubtotal");
+  const lblPago = divElement.querySelector("#lblPago");
+  const lblTotal = divElement.querySelector("#lblTotal");
+  const lblTitleTotal = divElement.querySelector("#lblTitleTotal");
+  var inputPago = divElement.querySelector("#inputPay");
+  let pago = 0;
+
+  lblTotal.toLocaleString("es-ES", {
+    style: "currency",
+    currency: "MXN",
+  });
+
+  btnPagar.disabled = true;
+  btnPagar.classList.add("!bg-slate-500");
+
+  btnConfirmar.disabled = true;
+  btnConfirmar.classList.add("!bg-slate-500");
+
+  btnConfirmar.addEventListener("click", () => {
+    dialogMetodPay.showModal();
+    dialogMetodPay.style.visibility = "visible";
+    lblSubtotal.textContent = TotalCount.toLocaleString("es-ES", {
+      style: "currency",
+      currency: "MXN",
+    });
+    lblTotal.textContent = TotalCount.toLocaleString("es-ES", {
+      style: "currency",
+      currency: "MXN",
+    });
+  });
+
+  btnClose.addEventListener("click", () => {
+    dialogMetodPay.style.visibility = "hidden";
+    dialogMetodPay.close();
+  });
+
+  btnEfectivo.addEventListener("click", () => {
+    metodoDePago = "Efectivo";
+  });
+  btnEfectivo.addEventListener("click", () => {
+    metodoDePago = "Efectivo";
+  });
+
+  btnDebito.addEventListener("click", () => {
+    metodoDePago = "Débito";
+  });
+
+  btnCredito.addEventListener("click", () => {
+    metodoDePago = "Crédito";
+  });
+
+  btnDolares.addEventListener("click", () => {
+    metodoDePago = "Dólares";
+  });
+
+  btnAddPay.addEventListener("click", () => {
+    const cantidad = inputPago.value;
+    if (cantidad === "") {
+      alert("Por favor, completa todos los campos.");
+      return false;
+    }
+    if (isNaN(parseFloat(cantidad))) {
+      alert("Los precios deben ser valores numéricos.");
+      return false;
+    } else {
+      lblSubtotal.textContent = TotalCount.toLocaleString("es-ES", {
+        style: "currency",
+        currency: "MXN",
+      });
+
+      lblPago.textContent = cantidad.toLocaleString("es-ES", {
+        style: "currency",
+        currency: "MXN",
+      });
+      if (cantidad >= TotalCount) {
+        btnPagar.classList.remove("!bg-slate-500");
+        btnPagar.disabled = false;
+        const cambio = Math.abs(TotalCount - cantidad);
+        lblTotal.textContent = cambio.toLocaleString("es-ES", {
+          style: "currency",
+          currency: "MXN",
+        });
+        lblTitleTotal.textContent = "Cambio";
+      } else {
+        lblTotal.textContent = (TotalCount - cantidad).toLocaleString("es-ES", {
+          style: "currency",
+          currency: "MXN",
+        });
+      }
+    }
+  });
+
+  btnPagar.addEventListener("click", () => {
+    confirmarCompra();
+  });
+}
+
 export default () => {
   loadCatalogo();
   Search();
   CantidadCaptura();
   CodigoCapturaCelda();
   CodigoCaptura();
-  confirmarCompra();
+  /*confirmarCompra();*/
   nuevoCliente();
   SelectNuevoCliente();
   empycellsTable();
   btnEliminar();
+  metodoPago();
 
   return divElement;
 };
