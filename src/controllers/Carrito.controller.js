@@ -568,7 +568,7 @@ function contadoCreditoValidation() {
     if (Cliente != "venta de contado") {
       confirmarCompra();
       btnConfirmar.disabled = true;
-      btnConfirmar.classList.add("!bg-slate-500");
+      btnConfirmar.classList.add("!bg-slate-500")
     } else {
       metodoPago();
     }

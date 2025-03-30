@@ -117,12 +117,22 @@ const initDataTable = async () => {
           table.innerHTML = "";
           data.forEach((item) => {
             const row = document.createElement("tr");
-            row.innerHTML = `
-                          <td>${item.folio}</td>
-                          <td>${item.fecha}</td>
-                          <td>${item.deuda > 0 ? item.deuda : "Sin deuda"}</td>
-                          <td>${item.total}</td>
+            if (item.deuda > 0) {
+              row.innerHTML = `
+                          <td class="!bg-red-400">${item.folio}</td>
+                          <td class="!bg-red-400">${item.fecha}</td>
+                          <td class="!bg-red-400">${item.total}</td>
+                          <td class="!bg-red-400">${item.deuda}<i class="fa-solid fa-caret-down !ml-2"></i></td>
                       `;
+            } else {
+              row.innerHTML = `
+                          <td class="!bg-green-400">${item.folio}</td>
+                          <td class="!bg-green-400">${item.fecha}</td>
+                          <td class="!bg-green-400">${item.total}</td>
+                          <td class="!bg-green-400 !mr-2">Sin Deuda<i class="fa-solid fa-caret-up !ml-2"></i></td>
+                      `;
+            }
+
             table.appendChild(row);
           });
           miTabla = $("#datatable_clientes").DataTable({
