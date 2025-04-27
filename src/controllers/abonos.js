@@ -1,8 +1,5 @@
 import view from "../view/abonos.html";
-import {
-  ClientesGetAll,
-  ClientesGetByCorreo,
-} from "../controllersDb/clientesController";
+import { ClientesGetAll } from "../controllersDb/clientesController";
 import {
   ComprasGetByCliente,
   ComprasGetDeuda,
@@ -11,6 +8,8 @@ import {
 import { postClientes } from "../controllersDb/clientesController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
 import { initDataTableBitacora } from "./Bitacora.controller";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -18,7 +17,7 @@ const searchContainer = divElement.querySelector("#search-input-box");
 const inputSearch = searchContainer.querySelector("input");
 const boxSuggestions = divElement.querySelector(".container-suggestions");
 let suggestions = [];
-let cliente = "anlopez@gmail.com";
+let cliente = "";
 const table = divElement.querySelector("#tableBody");
 let miTabla;
 
@@ -184,6 +183,7 @@ const initDataTable = async () => {
 async function Abonar() {
   const LblDeuda = divElement.querySelector("#input-deuda");
   const btnAbonar = divElement.querySelector("#btn-abonar");
+  const btnRecivo = divElement.querySelector("#btn-abono-print");
   btnAbonar.addEventListener("click", async () => {
     try {
       const abonoinput = divElement.querySelector("#input-deuda");
@@ -219,10 +219,11 @@ async function Abonar() {
       const bitacora = bicoraRecord();
       //BitacoraPost(bitacora);
       LblDeuda.value = "";
-      //initDataTableBitacora();
-      await initDataTable();
+      initDataTable();
       await HandleUpdateDeuda();
-      console.log("Abono completado exitosamente");
+      btnRecivo.disabled = false;
+      btnRecivo.classList.remove("!bg-[#3d4d5f]");
+      alert("Abono completado exitosamente");
     } catch (error) {
       console.error("Error durante el abono:", error);
     }
@@ -315,7 +316,40 @@ function CrearCliente() {
   });
 }
 
+async function printRecibo() {
+  const btnRecibo = divElement.querySelector("#btn-abono-print");
+  let NombreCliente = cliente;
+  NombreCliente.replace(/%20/g, " ");
+  const deudas = await ComprasGetByCliente();
+  const doc = new jsPDF();
+  const bodyData = [];
+  deudas.forEach((deuda) => {
+    bodyData.push([
+      deuda.producto.folio,
+      deuda.fecha,
+      deuda.total,
+      deuda.deuda,
+    ]);
+  });
+
+  autoTable(doc, {
+    head: [["Folio", "Fecha", "Total de la Nota", "Adeudo"]],
+    body: bodyData,
+  });
+
+  btnRecibo.addEventListener("click", () => {
+    btnRecibo.disabled = true;
+    btnRecibo.classList.add("!bg-[#3d4d5f]");
+    console.log(`cliente ${NombreCliente}`);
+    console.log(cliente);
+    console.log(`endpoint ${deudas}`);
+    console.log(`bodytable ${bodyData}`);
+    doc.save(`Estado de cuenta ${NombreCliente}.pdf`);
+  });
+}
+
 export default () => {
+  printRecibo();
   initDataTable();
   loadCatalogo();
   Search();

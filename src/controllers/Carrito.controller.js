@@ -8,7 +8,6 @@ import {
 import { ProductoPost } from "../controllersDb/productoController";
 import { ComprasPost } from "../controllersDb/compraController";
 import {
-  RestaInventario,
   InventarioGetByCodigo,
 } from "../controllersDb/inventarioController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
