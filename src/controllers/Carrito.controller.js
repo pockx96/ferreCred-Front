@@ -7,12 +7,11 @@ import {
 } from "../controllersDb/catalogoController";
 import { ProductoPost } from "../controllersDb/productoController";
 import { ComprasPost } from "../controllersDb/compraController";
-import {
-  InventarioGetByCodigo,
-} from "../controllersDb/inventarioController";
+import { InventarioGetByCodigo } from "../controllersDb/inventarioController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
 import { initDataTableBitacora } from "./Bitacora.controller";
 import { ClientesGetAll } from "../controllersDb/clientesController";
+import _ from "lodash";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -149,7 +148,7 @@ const obtenerProductos = () => {
     const objetoFila = {};
     const columnas = fila.cells;
     objetoFila.codigo = parseInt(columnas[0].textContent.trim());
-    objetoFila.folio = "prueba";
+    objetoFila.descripcion = columnas[1].textContent.trim();
     objetoFila.cantidad = parseInt(columnas[2].textContent.trim());
     objetoFila.tipo = columnas[3].textContent.trim();
     objetoFila.importe = parseFloat(columnas[5].textContent.trim());
@@ -170,13 +169,33 @@ const obtenerProductos = () => {
   return objetosFilas.filter((fila) => fila !== null);
 };
 
-function bicoraRecord() {
-  let bitacora = {
-    Usuario: "@example.com",
-    Proceso: "Compra de producto",
-    Estatus: 1,
-  };
-  return bitacora;
+async function BitacoraAdd() {
+  console.log("bitacora");
+  const listaProducto = obtenerProductos();
+  const catalogo = await getAll();
+  const catalogoIndexado = _.keyBy(catalogo, "codigo");
+
+  console.log("listaProducto: ", listaProducto);
+  console.log("catalogo: ", catalogo);
+  console.log("catalogo inventario: ", catalogoIndexado);
+
+  const bitacoraList = _.map(listaProducto, (item) => {
+    const inventarioReal = catalogoIndexado[item.codigo];
+    return {
+      Usuario: "ana@example.com",
+      Operacion: "Venta",
+      Producto: item.descripcion,
+      Codigo: item.codigo,
+      Inventario: item.cantidad,
+      Cantidad: item.cantidad,
+      Inventario_Actual: inventarioReal ? inventarioReal.cantidad : 0,
+    };
+  });
+
+  console.log("bitacoraList: ", bitacoraList);
+  bitacoraList.forEach((item) => {
+    BitacoraPost(item);
+  });
 }
 
 const confirmarCompra = async () => {
@@ -189,11 +208,11 @@ const confirmarCompra = async () => {
       deuda: TotalCount,
       total: TotalCount,
     };
-    ComprasPost(compra);
+    await ComprasPost(compra);
     try {
       const productosCatalogo = await getAll();
       const productoList = obtenerProductos();
-      productoList.forEach((producto) => {
+      productoList.forEach(async (producto) => {
         const productoFind = productosCatalogo.find(
           (item) => item.codigo === producto.codigo
         );
@@ -205,8 +224,8 @@ const confirmarCompra = async () => {
           };
           console.log("Código del producto:", produtoInventario.codigo);
           console.log("Cantidad ajustada:", produtoInventario.cantidad);
-          EditCantidad(produtoInventario);
-          ProductoPost(produtoInventario);
+          await EditCantidad(produtoInventario);
+          await ProductoPost(produtoInventario);
           Cliente = "venta de contado";
           lblCliente.textContent = "";
         } else {
@@ -215,10 +234,12 @@ const confirmarCompra = async () => {
           );
         }
       });
+
+      await BitacoraAdd();
     } catch (error) {
       console.error("Error al procesar los productos:", error);
     }
-    const bitacora = bicoraRecord();
+
     //BitacoraPost(bitacora);
     //initDataTableBitacora();
     ClearTable();
@@ -551,6 +572,7 @@ function metodoPago() {
 
   btnPagar.addEventListener("click", () => {
     confirmarCompra();
+
     dialogMetodPay.visibility = "hidden";
     dialogMetodPay.close();
     btnConfirmar.disabled = true;
@@ -567,7 +589,7 @@ function contadoCreditoValidation() {
     if (Cliente != "venta de contado") {
       confirmarCompra();
       btnConfirmar.disabled = true;
-      btnConfirmar.classList.add("!bg-slate-500")
+      btnConfirmar.classList.add("!bg-slate-500");
     } else {
       metodoPago();
     }
