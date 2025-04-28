@@ -314,7 +314,7 @@ function CantidadCaptura() {
       const codigo = celdaCodigo.innerText;
       console.log(codigo);
       const cantidad = parseInt(celdaCantidad.innerText);
-      const cantidadActual = await InventarioGetByCodigo(codigo);
+      const cantidadActual = await getByCodigo(codigo);
       if (cantidad <= cantidadActual.cantidad) {
         const precio = parseFloat(fila.cells[4].innerText);
         const importe = (cantidad * precio * 1.16).toFixed(2);
@@ -330,6 +330,7 @@ function CantidadCaptura() {
         alert(
           `Cantidad insuficiente en inventario - cantidad disponible: ${cantidadActual.cantidad}`
         );
+        celdaCantidad.innerText = "";
       }
     }
   });

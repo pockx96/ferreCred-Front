@@ -6,10 +6,9 @@ import {
   getAll,
 } from "../controllersDb/catalogoController";
 import { ProveedorPost } from "../controllersDb/proveedorController";
-import {
-  InventarioGetByCodigo,
-  EditarInventario,
-} from "../controllersDb/inventarioController";
+import { InventarioGetByCodigo } from "../controllersDb/inventarioController";
+import { BitacoraPost } from "../controllersDb/bitacoraController";
+
 import { showDialog } from "../controllers/Entradas.controller";
 import { getByCodigo } from "../controllersDb/catalogoController";
 import jsPDF from "jspdf";
@@ -46,7 +45,7 @@ export const initDataTableInventario = async () => {
           { data: "precio_venta" },
           { data: "cantidad" },
         ],
-        pageLength: 7,
+        pageLength: 15,
         language: {
           lengthMenu: "",
           zeroRecords: "Ningún producto encontrado",
@@ -142,8 +141,9 @@ function CrearProducto() {
         tipo: inputTipo.value.toString(),
         cantidad: parseFloat(inputCantidad.value),
       };
-      console.log(`producto posteado: ${newProducto}`);
       ProductoPost(newProducto);
+      newClientDialog.style.visibility = "hidden";
+      newClientDialog.close();
       initDataTableInventario();
     }
   });
@@ -200,27 +200,21 @@ function actualizarEditDialog(idProduct) {
   inputCodigo.readOnly = true;
 }
 
-async function BitacoraAdd() {
-  const catalogo = await getAll();
-  const catalogoIndexado = _.keyBy(catalogo, "codigo");
-  const bitacoraList = _.map(catalogoIndexado, (item) => {
-    const inventarioReal = catalogoIndexado[item.codigo];
-    return {
-      Usuario: "ana@example.com",
-      Operacion: "Recepcion",
-      Producto: item.descripcion,
-      Codigo: item.codigo,
-      Inventario: item.cantidad,
-      Cantidad: item.cantidad,
-      Inventario_Actual: inventarioReal
-        ? inventarioReal.cantidad + item.cantidad
-        : 0,
-    };
-  });
+async function BitacoraAdd(bitacoraInput) {
+  const productoDetalle = await getByCodigo(bitacoraInput.codigo);
+  const bitacoraActualizada = {
+    Usuario: "ana@example.com",
+    Operacion: "Ajuste Manual",
+    Producto: productoDetalle.descripcion,
+    Codigo: bitacoraInput.codigo,
+    Cantidad: bitacoraInput.cantidad,
+    Inventario_Actual: bitacoraInput.cantidad,
+  };
+  console.log(`bitacora actualizada: ${bitacoraActualizada}`);
 
-  bitacoraList.forEach((item) => {
-    BitacoraPost(item);
-  });
+  await BitacoraPost(bitacoraActualizada);
+
+  return bitacoraActualizada;
 }
 
 function EditarProducto() {
@@ -276,7 +270,8 @@ function EditarProducto() {
         tipo: inputTipoEdit.value.toString(),
       };
       EditProducto(newProducto);
-      
+      console.log("si esta aca we");
+      BitacoraAdd(newProducto);
       dialogEditar.style.visibility = "hidden";
       dialogEditar.close();
       initDataTableInventario();
@@ -351,6 +346,7 @@ function EditarCantidad() {
 
       try {
         await EditCantidad(data); // Llama a tu método para actualizar el inventario
+        BitacoraAdd(data);
         dialogEditarCantidad.style.visibility = "hidden";
         dialogEditarCantidad.close();
       } catch (error) {
