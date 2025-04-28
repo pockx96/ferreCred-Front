@@ -188,7 +188,9 @@ async function BitacoraAdd() {
       Codigo: item.codigo,
       Inventario: item.cantidad,
       Cantidad: item.cantidad,
-      Inventario_Actual: inventarioReal ? inventarioReal.cantidad : 0,
+      Inventario_Actual: inventarioReal
+        ? inventarioReal.cantidad - item.cantidad
+        : 0,
     };
   });
 
@@ -208,24 +210,30 @@ const confirmarCompra = async () => {
       deuda: TotalCount,
       total: TotalCount,
     };
-    await ComprasPost(compra);
+    await ComprasPost(compra); // también deberías esperar aquí
+
     try {
       const productosCatalogo = await getAll();
       const productoList = obtenerProductos();
-      productoList.forEach(async (producto) => {
+
+      for (const producto of productoList) {
         const productoFind = productosCatalogo.find(
           (item) => item.codigo === producto.codigo
         );
+
         if (productoFind) {
           const cantidadActual = productoFind.cantidad;
           const produtoInventario = {
             codigo: producto.codigo,
             cantidad: cantidadActual - producto.cantidad,
           };
+
           console.log("Código del producto:", produtoInventario.codigo);
           console.log("Cantidad ajustada:", produtoInventario.cantidad);
+
           await EditCantidad(produtoInventario);
           await ProductoPost(produtoInventario);
+
           Cliente = "venta de contado";
           lblCliente.textContent = "";
         } else {
@@ -233,15 +241,14 @@ const confirmarCompra = async () => {
             `Producto con código ${producto.codigo} no encontrado en el catálogo`
           );
         }
-      });
+      }
 
+      // Ahora sí ya puedes llamar BitacoraAdd tranquila
       await BitacoraAdd();
     } catch (error) {
       console.error("Error al procesar los productos:", error);
     }
 
-    //BitacoraPost(bitacora);
-    //initDataTableBitacora();
     ClearTable();
   }
 };
@@ -572,7 +579,6 @@ function metodoPago() {
 
   btnPagar.addEventListener("click", () => {
     confirmarCompra();
-
     dialogMetodPay.visibility = "hidden";
     dialogMetodPay.close();
     btnConfirmar.disabled = true;
