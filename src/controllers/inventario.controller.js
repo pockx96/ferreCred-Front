@@ -14,6 +14,7 @@ import { showDialog } from "../controllers/Entradas.controller";
 import { getByCodigo } from "../controllersDb/catalogoController";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import _ from "lodash";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -199,6 +200,29 @@ function actualizarEditDialog(idProduct) {
   inputCodigo.readOnly = true;
 }
 
+async function BitacoraAdd() {
+  const catalogo = await getAll();
+  const catalogoIndexado = _.keyBy(catalogo, "codigo");
+  const bitacoraList = _.map(catalogoIndexado, (item) => {
+    const inventarioReal = catalogoIndexado[item.codigo];
+    return {
+      Usuario: "ana@example.com",
+      Operacion: "Recepcion",
+      Producto: item.descripcion,
+      Codigo: item.codigo,
+      Inventario: item.cantidad,
+      Cantidad: item.cantidad,
+      Inventario_Actual: inventarioReal
+        ? inventarioReal.cantidad + item.cantidad
+        : 0,
+    };
+  });
+
+  bitacoraList.forEach((item) => {
+    BitacoraPost(item);
+  });
+}
+
 function EditarProducto() {
   const dialogEditar = divElement.querySelector("#edit-product-dialog");
   const inputCodigoEdit = divElement.querySelector("#input-codigo-edit");
@@ -251,8 +275,8 @@ function EditarProducto() {
         precio_venta: parseFloat(inputVentaEdit.value),
         tipo: inputTipoEdit.value.toString(),
       };
-      console.log(`producto posteado: ${newProducto}`);
       EditProducto(newProducto);
+      
       dialogEditar.style.visibility = "hidden";
       dialogEditar.close();
       initDataTableInventario();

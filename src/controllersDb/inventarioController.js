@@ -40,6 +40,7 @@ export const EditarInventario = async (data) => {
   try {
     const response = await fetch(url, opciones);
     if (response.ok) {
+      console.log(data);
       console.log("El inventario ha sido actualizado exitosamente.");
     } else {
       console.error("Hubo un error al actualizar los datos.");

@@ -170,15 +170,9 @@ const obtenerProductos = () => {
 };
 
 async function BitacoraAdd() {
-  console.log("bitacora");
   const listaProducto = obtenerProductos();
   const catalogo = await getAll();
   const catalogoIndexado = _.keyBy(catalogo, "codigo");
-
-  console.log("listaProducto: ", listaProducto);
-  console.log("catalogo: ", catalogo);
-  console.log("catalogo inventario: ", catalogoIndexado);
-
   const bitacoraList = _.map(listaProducto, (item) => {
     const inventarioReal = catalogoIndexado[item.codigo];
     return {
@@ -194,7 +188,6 @@ async function BitacoraAdd() {
     };
   });
 
-  console.log("bitacoraList: ", bitacoraList);
   bitacoraList.forEach((item) => {
     BitacoraPost(item);
   });
