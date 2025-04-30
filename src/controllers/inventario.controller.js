@@ -45,7 +45,7 @@ export const initDataTableInventario = async () => {
           { data: "precio_venta" },
           { data: "cantidad" },
         ],
-        pageLength: 15,
+        pageLength: 10,
         language: {
           lengthMenu: "",
           zeroRecords: "Ningún producto encontrado",
@@ -67,6 +67,18 @@ export const initDataTableInventario = async () => {
   };
   appInitialized = true;
 };
+
+function BitacoraAdd(producto, Operacion) {
+  const bitacoraInput = {
+    Usuario: "ana@example.com",
+    Codigo: producto.codigo,
+    Producto: producto.descripcion,
+    Cantidad: producto.cantidad,
+    Operacion: Operacion,
+    Inventario_Actual: producto.cantidad,
+  };
+  BitacoraPost(bitacoraInput);
+}
 
 function CrearProducto() {
   const newClientDialog = divElement.querySelector("#new-product-dialog");
@@ -126,6 +138,7 @@ function CrearProducto() {
   const btnProducto = divElement.querySelector("#btn-producto");
   btnProducto.addEventListener("click", async (event) => {
     event.preventDefault();
+
     if (ValidateProductInputs()) {
       const inputCodigo = divElement.querySelector("#input-codigo");
       const inputDescripccion = divElement.querySelector("#input-descripcion");
@@ -141,10 +154,12 @@ function CrearProducto() {
         tipo: inputTipo.value.toString(),
         cantidad: parseFloat(inputCantidad.value),
       };
-      ProductoPost(newProducto);
+      await ProductoPost(newProducto);
+      await BitacoraAdd(newProducto, "Alta de Producto");
+      initDataTableInventario();
       newClientDialog.style.visibility = "hidden";
       newClientDialog.close();
-      initDataTableInventario();
+      console.log(`producto: ${newProducto}`);
     }
   });
 }
@@ -198,23 +213,6 @@ function actualizarEditDialog(idProduct) {
   inputCompra.value = "";
   inputVenta.value = "";
   inputCodigo.readOnly = true;
-}
-
-async function BitacoraAdd(bitacoraInput) {
-  const productoDetalle = await getByCodigo(bitacoraInput.codigo);
-  const bitacoraActualizada = {
-    Usuario: "ana@example.com",
-    Operacion: "Ajuste Manual",
-    Producto: productoDetalle.descripcion,
-    Codigo: bitacoraInput.codigo,
-    Cantidad: bitacoraInput.cantidad,
-    Inventario_Actual: bitacoraInput.cantidad,
-  };
-  console.log(`bitacora actualizada: ${bitacoraActualizada}`);
-
-  await BitacoraPost(bitacoraActualizada);
-
-  return bitacoraActualizada;
 }
 
 function EditarProducto() {
@@ -346,7 +344,7 @@ function EditarCantidad() {
 
       try {
         await EditCantidad(data); // Llama a tu método para actualizar el inventario
-        BitacoraAdd(data);
+        BitacoraAdd(data, "Ajuste Manual");
         dialogEditarCantidad.style.visibility = "hidden";
         dialogEditarCantidad.close();
       } catch (error) {

@@ -1,4 +1,3 @@
-// import Quagga from 'quagga';
 import view from "../view/Carrito.html";
 import {
   getAll,
@@ -7,9 +6,7 @@ import {
 } from "../controllersDb/catalogoController";
 import { ProductoPost } from "../controllersDb/productoController";
 import { ComprasPost } from "../controllersDb/compraController";
-import { InventarioGetByCodigo } from "../controllersDb/inventarioController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
-import { initDataTableBitacora } from "./Bitacora.controller";
 import { ClientesGetAll } from "../controllersDb/clientesController";
 import _ from "lodash";
 
@@ -107,9 +104,9 @@ const addRow = (producto) => {
 
   const tableBody = document.getElementById("table-body");
   if (totalRows > 0) {
-    tableBody.insertBefore(newRow, tableBody.childNodes[0]); // Insertar después de la segunda fila (después de las cabeceras)
+    tableBody.insertBefore(newRow, tableBody.childNodes[0]);
   } else {
-    tableBody.appendChild(newRow); // Si no hay filas, agregar como la primera fila
+    tableBody.appendChild(newRow);
   }
 
   const emptyRowsNeeded = Math.max(0, 6 - totalRows - 1);
@@ -180,7 +177,6 @@ async function BitacoraAdd() {
       Operacion: "Venta",
       Producto: item.descripcion,
       Codigo: item.codigo,
-      Inventario: item.cantidad,
       Cantidad: item.cantidad,
       Inventario_Actual: inventarioReal
         ? inventarioReal.cantidad - item.cantidad
@@ -236,7 +232,6 @@ const confirmarCompra = async () => {
         }
       }
 
-      // Ahora sí ya puedes llamar BitacoraAdd tranquila
       await BitacoraAdd();
     } catch (error) {
       console.error("Error al procesar los productos:", error);

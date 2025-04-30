@@ -180,7 +180,6 @@ async function BitacoraAdd() {
       Operacion: "Recepcion",
       Producto: item.descripcion,
       Codigo: item.codigo,
-      Inventario: item.cantidad,
       Cantidad: item.cantidad,
       Inventario_Actual: inventarioReal
         ? inventarioReal.cantidad + item.cantidad
