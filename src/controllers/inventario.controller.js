@@ -14,6 +14,7 @@ import { getByCodigo } from "../controllersDb/catalogoController";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import _ from "lodash";
+import { buildBitacoraEntry } from "../utils/bitacoraUtils";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -67,18 +68,6 @@ export const initDataTableInventario = async () => {
   };
   appInitialized = true;
 };
-
-function BitacoraAdd(producto, Operacion) {
-  const bitacoraInput = {
-    Usuario: "ana@example.com",
-    Codigo: producto.codigo,
-    Producto: producto.descripcion,
-    Cantidad: producto.cantidad,
-    Operacion: Operacion,
-    Inventario_Actual: producto.cantidad,
-  };
-  BitacoraPost(bitacoraInput);
-}
 
 function CrearProducto() {
   const newClientDialog = divElement.querySelector("#new-product-dialog");
@@ -155,7 +144,11 @@ function CrearProducto() {
         cantidad: parseFloat(inputCantidad.value),
       };
       await ProductoPost(newProducto);
-      await BitacoraAdd(newProducto, "Alta de Producto");
+      const bitacoRecord = await buildBitacoraEntry(
+        newProducto,
+        "Alta de Producto"
+      );
+      await BitacoraPost(bitacoRecord);
       initDataTableInventario();
       newClientDialog.style.visibility = "hidden";
       newClientDialog.close();
@@ -268,8 +261,6 @@ function EditarProducto() {
         tipo: inputTipoEdit.value.toString(),
       };
       EditProducto(newProducto);
-      console.log("si esta aca we");
-      BitacoraAdd(newProducto);
       dialogEditar.style.visibility = "hidden";
       dialogEditar.close();
       initDataTableInventario();
@@ -277,15 +268,22 @@ function EditarProducto() {
   });
 }
 
+export function getDialogElementsEdit() {
+  return {
+    dialogEditar: divElement.querySelector("#dialogoEditarCantidad"),
+    lblEditarCantidad: divElement.querySelector("#Lbl-editar-cantidad"),
+    inputCodigo: divElement.querySelector("#codigoProducto"),
+    descripcionProducto: divElement.querySelector("#descripcionProducto"),
+    cantidadProducto: divElement.querySelector("#cantidadProducto"),
+    btnActualizar: divElement.querySelector("#actualizarCantidad"),
+    btnClose: divElement.querySelector("#close-editar-cantidad"),
+  };
+}
+
+
+
 function EditarCantidad() {
-  const dialogEditarCantidad = divElement.querySelector(
-    "#dialogoEditarCantidad"
-  );
-  const lblEditarCantidad = divElement.querySelector("#Lbl-editar-cantidad");
-  const inputCodigo = divElement.querySelector("#codigoProducto");
-  const descripcionProducto = divElement.querySelector("#descripcionProducto");
-  const cantidadProducto = divElement.querySelector("#cantidadProducto");
-  const btnActualizar = divElement.querySelector("#actualizarCantidad");
+  const elements = getDialogElements();
 
   lblEditarCantidad.addEventListener("click", () => {
     if (!dialogEditarCantidad.open) {
@@ -335,16 +333,19 @@ function EditarCantidad() {
   btnActualizar.addEventListener("click", async () => {
     const codigo = inputCodigo.value.trim();
     const cantidad = cantidadProducto.value.trim();
+    const descripcion = descripcionProducto.value.trim();
 
     if (codigo && cantidad) {
       const data = {
         codigo: parseInt(codigo, 10),
         cantidad: parseInt(cantidad, 10),
+        descripcion: descripcion,
       };
 
       try {
         await EditCantidad(data); // Llama a tu método para actualizar el inventario
-        BitacoraAdd(data, "Ajuste Manual");
+        const bitacoraRecord = await buildBitacoraEntry(data, "Ajuste Manual");
+        await BitacoraPost(bitacoraRecord);
         dialogEditarCantidad.style.visibility = "hidden";
         dialogEditarCantidad.close();
       } catch (error) {

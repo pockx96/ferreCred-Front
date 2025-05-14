@@ -34,6 +34,7 @@ module.exports = {
     new webpack.DefinePlugin({
       API_URL: JSON.stringify("http://localhost:80/ferreCred-Backend/"),
       VERSION: JSON.stringify("1.0.0"),
+      USER_NAME: JSON.stringify("ana@example.com"),
     }),
   ],
 
