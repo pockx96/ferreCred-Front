@@ -12,6 +12,9 @@
   "bootstrap": "^5.2.3",
   
     
+  "cypress": "^14.3.3",
+  
+    
   "datatables.net": "^1.13.4",
   
     
@@ -128,7 +131,10 @@
   "dev": "npm run start",
   
     
-  "test": "jest"
+  "test": "jest",
+  
+  "cy:open": "cypress open"
+  
   
   }
 }
