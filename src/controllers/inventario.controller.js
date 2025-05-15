@@ -15,12 +15,12 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import _ from "lodash";
 import { buildBitacoraEntry } from "../utils/bitacoraUtils";
+import FormManager from "../utils/FormManager.js";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
 let miTabla;
 
-const lblProducto = divElement.querySelector("#Lbl-crear-producto");
 const lblProvedor = divElement.querySelector("#Lbl-crear-proveedor");
 let appInitialized = false;
 
@@ -69,91 +69,90 @@ export const initDataTableInventario = async () => {
   appInitialized = true;
 };
 
-function CrearProducto() {
-  const newClientDialog = divElement.querySelector("#new-product-dialog");
-  lblProducto.addEventListener("click", () => {
-    if (!newClientDialog.open) {
-      newClientDialog.showModal();
-      newClientDialog.style.visibility = "visible";
-    }
-  });
-  divElement.querySelector("#close").addEventListener("click", (event) => {
-    newClientDialog.style.visibility = "hidden";
-    newClientDialog.close();
-  });
+async function ValidateCreateInputs() {
+  const codigo = document.querySelector("#input-codigo").value.trim();
+  const descripcion = document.querySelector("#input-descripcion").value.trim();
+  const precioCompra = document
+    .querySelector("#input-precio-compra")
+    .value.trim();
+  const precioVenta = document
+    .querySelector("#input-precio-venta")
+    .value.trim();
+  const tipo = document.querySelector("#input-tipo").value.trim();
+  const cantidad = document.querySelector("#input-cantidad").value.trim();
+  const producto = await getByCodigo(codigo);
 
-  function ValidateProductInputs() {
-    var codigo = divElement.querySelector("#input-codigo").value;
-    var descripcion = divElement.querySelector("#input-descripcion").value;
-    var precioCompra = divElement.querySelector("#input-precio-compra").value;
-    var precioVenta = divElement.querySelector("#input-precio-venta").value;
-    var tipo = divElement.querySelector("#input-tipo").value;
-    var cantidad = divElement.querySelector("#input-cantidad").value;
-
-    // Realiza la validación de los campos
-    if (
-      codigo === "" ||
-      descripcion === "" ||
-      precioCompra === "" ||
-      precioVenta === "" ||
-      tipo === "" ||
-      cantidad == ""
-    ) {
-      alert("Por favor, completa todos los campos.");
-      return false; // Detiene la ejecución de la función si algún campo está vacío
-    }
-
-    // Validación de tipo numérico para los precios de compra y venta
-    if (isNaN(parseFloat(codigo))) {
-      alert("El codigo debe contener solo valores numéricos.");
-      return false; // Detiene la ejecución de la función si los precios no son numéricos
-    }
-
-    // Validación de tipo numérico para los precios de compra y venta
-    if (isNaN(parseFloat(precioCompra)) || isNaN(parseFloat(precioVenta))) {
-      alert("Los precios deben ser valores numéricos.");
-      return false; // Detiene la ejecución de la función si los precios no son numéricos
-    }
-
-    // Validación de tipo numérico para la cantidad de producto
-    if (isNaN(parseFloat(cantidad))) {
-      alert("La cantidad debe de ser Numerica");
-      return false; // Detiene la ejecución de la función si los precios no son numéricos
-    }
-
-    return true;
+  if (producto.codigo == codigo) {
+    alert("⚠️ El código ya existe.");
+    return false;
+  }
+  // Validar campos vacíos
+  if (
+    !codigo ||
+    !descripcion ||
+    !precioCompra ||
+    !precioVenta ||
+    !tipo ||
+    !cantidad
+  ) {
+    alert("Por favor, completa todos los campos.");
+    return false;
   }
 
-  const btnProducto = divElement.querySelector("#btn-producto");
-  btnProducto.addEventListener("click", async (event) => {
-    event.preventDefault();
+  // Validaciones numéricas
+  if (isNaN(codigo)) {
+    alert("El código debe contener solo valores numéricos.");
+    return false;
+  }
 
-    if (ValidateProductInputs()) {
-      const inputCodigo = divElement.querySelector("#input-codigo");
-      const inputDescripccion = divElement.querySelector("#input-descripcion");
-      const inputCompra = divElement.querySelector("#input-precio-compra");
-      const inputVenta = divElement.querySelector("#input-precio-venta");
-      const inputTipo = divElement.querySelector("#input-tipo");
-      const inputCantidad = divElement.querySelector("#input-cantidad");
-      const newProducto = {
-        codigo: parseInt(inputCodigo.value, 10),
-        descripcion: inputDescripccion.value.toString(),
-        precio_compra: parseFloat(inputCompra.value),
-        precio_venta: parseFloat(inputVenta.value),
-        tipo: inputTipo.value.toString(),
-        cantidad: parseFloat(inputCantidad.value),
-      };
-      await ProductoPost(newProducto);
-      const bitacoRecord = await buildBitacoraEntry(
-        newProducto,
-        "Alta de Producto"
-      );
-      await BitacoraPost(bitacoRecord);
-      initDataTableInventario();
-      newClientDialog.style.visibility = "hidden";
-      newClientDialog.close();
-      console.log(`producto: ${newProducto}`);
-    }
+  if (isNaN(precioCompra) || isNaN(precioVenta)) {
+    alert("Los precios deben ser valores numéricos.");
+    return false;
+  }
+
+  if (isNaN(cantidad)) {
+    alert("La cantidad debe ser numérica.");
+    return false;
+  }
+
+  return true;
+}
+
+async function handleCreateProduct() {
+  const inputCodigo = divElement.querySelector("#input-codigo");
+  const inputDescripccion = divElement.querySelector("#input-descripcion");
+  const inputCompra = divElement.querySelector("#input-precio-compra");
+  const inputVenta = divElement.querySelector("#input-precio-venta");
+  const inputTipo = divElement.querySelector("#input-tipo");
+  const inputCantidad = divElement.querySelector("#input-cantidad");
+
+  const newProducto = {
+    codigo: parseInt(inputCodigo.value, 10),
+    descripcion: inputDescripccion.value.toString(),
+    precio_compra: parseFloat(inputCompra.value),
+    precio_venta: parseFloat(inputVenta.value),
+    tipo: inputTipo.value.toString(),
+    cantidad: parseFloat(inputCantidad.value),
+  };
+
+  await ProductoPost(newProducto);
+  const bitacoRecord = await buildBitacoraEntry(
+    newProducto,
+    "Alta de Producto"
+  );
+  await BitacoraPost(bitacoRecord);
+  await initDataTableInventario();
+}
+
+function createProductDialog() {
+  FormManager.initForm({
+    constainer: { divElement },
+    triggerSelector: "#Lbl-crear-producto",
+    dialogSelector: "#new-product-dialog",
+    closeSelector: "#close",
+    submitSelector: "#btn-producto",
+    validateFn: ValidateCreateInputs,
+    submitFn: handleCreateProduct,
   });
 }
 
@@ -280,10 +279,16 @@ export function getDialogElementsEdit() {
   };
 }
 
-
-
 function EditarCantidad() {
-  const elements = getDialogElements();
+  const dialogEditarCantidad = divElement.querySelector(
+    "#dialogoEditarCantidad"
+  );
+  const lblEditarCantidad = divElement.querySelector("#Lbl-editar-cantidad");
+  const inputCodigo = divElement.querySelector("#codigoProducto");
+  const descripcionProducto = divElement.querySelector("#descripcionProducto");
+  const cantidadProducto = divElement.querySelector("#cantidadProducto");
+  const btnActualizar = divElement.querySelector("#actualizarCantidad");
+  const btnCloseCantidad = divElement.querySelector("#close-editar-cantidad");
 
   lblEditarCantidad.addEventListener("click", () => {
     if (!dialogEditarCantidad.open) {
@@ -489,8 +494,8 @@ export default async () => {
   PrintProductos();
   EditarProducto();
   BuscarProducto();
-  CrearProducto();
   CrearProveedor();
   EditarCantidad();
+  createProductDialog();
   return divElement;
 };
