@@ -83,7 +83,7 @@ async function ValidateCreateInputs() {
   const producto = await getByCodigo(codigo);
 
   if (producto.codigo == codigo) {
-    alert("⚠️ El código ya existe.");
+    alert("El código ya existe.");
     return false;
   }
   // Validar campos vacíos
@@ -146,7 +146,7 @@ async function handleCreateProduct() {
 
 function createProductDialog() {
   FormManager.initForm({
-    constainer: { divElement },
+    container: { divElement },
     triggerSelector: "#Lbl-crear-producto",
     dialogSelector: "#new-product-dialog",
     closeSelector: "#close",

@@ -14,7 +14,7 @@ const FormManager = (() => {
   }
 
   async function initForm({
-    constainer,
+    container,
     triggerSelector,
     dialogSelector,
     closeSelector,
@@ -23,10 +23,10 @@ const FormManager = (() => {
     submitFn,
     loadFn,
   }) {
-    const trigger = constainer.divElement.querySelector(triggerSelector);
-    const dialog = constainer.divElement.querySelector(dialogSelector);
-    const closeBtn = constainer.divElement.querySelector(closeSelector);
-    const submitBtn = constainer.divElement.querySelector(submitSelector);
+    const trigger = container.divElement.querySelector(triggerSelector);
+    const dialog = container.divElement.querySelector(dialogSelector);
+    const closeBtn = container.divElement.querySelector(closeSelector);
+    const submitBtn = container.divElement.querySelector(submitSelector);
 
     if (!trigger || !dialog || !closeBtn || !submitBtn) {
       console.error(
@@ -46,9 +46,13 @@ const FormManager = (() => {
 
     submitBtn.addEventListener("click", async (event) => {
       event.preventDefault();
-      if (validateFn && validateFn()) {
+      const isValid = validateFn ? await validateFn() : true;
+
+      if (isValid) {
         if (submitFn) await submitFn();
         closeDialog(dialog);
+      } else {
+        console.warn("Formulario inválido. No se cerrará el diálogo.");
       }
     });
   }
