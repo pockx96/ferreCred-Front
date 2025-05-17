@@ -29,7 +29,7 @@ describe("Formulario de editar producto", () => {
 
     // Y verificamos que los campos se hayan llenado correctamente
     cy.get("#input-descripcion-edit").should("have.value", "Producto nuevo");
-    cy.get("#input-tipo-edit").should("have.value", "Pieza");
+    cy.get("#input-tipo-edit").should("have.value", "Litro");
   });
 
   it("Debe rechazar campos vacíos en editar", () => {
@@ -60,7 +60,7 @@ describe("Formulario de editar producto", () => {
     // Interceptamos el PUT para validar que se está enviando el producto correctamente
 
     // Llenado de formulario
-    cy.get("#input-descripcion-edit").type("Producto nuevo");
+    cy.get("#input-descripcion-edit").clear().type("Producto nuevo");
     cy.get("#input-precio-compra-edit").type("50");
     cy.get("#input-precio-venta-edit").type("75");
     cy.get("#input-tipo-edit").select("Litro");
