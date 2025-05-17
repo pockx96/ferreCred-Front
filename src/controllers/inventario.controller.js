@@ -69,6 +69,8 @@ export const initDataTableInventario = async () => {
   appInitialized = true;
 };
 
+/// Crear Producto
+
 async function ValidateCreateInputs() {
   const codigo = document.querySelector("#input-codigo").value.trim();
   const descripcion = document.querySelector("#input-descripcion").value.trim();
@@ -156,59 +158,39 @@ function createProductDialog() {
   });
 }
 
-function BuscarProducto() {
-  const lblEditar = divElement.querySelector("#Lbl-editar");
-  const dialogBuscar = divElement.querySelector("#dialogoBuscarProducto");
-  const btnCerrar = divElement.querySelector("#close-editar");
-  const inputBusqueda = divElement.querySelector("#codigoBusqueda");
-  const btnBuscar = divElement.querySelector("#btnBuscar");
-  const dialogEditar = divElement.querySelector("#edit-product-dialog");
+/// Editar Producto
 
-  lblEditar.addEventListener("click", () => {
-    if (!dialogBuscar.open) {
-      dialogBuscar.showModal();
-      dialogBuscar.style.visibility = "visible";
-    }
-  });
+async function ValidateProductEdit() {
+  const descripccionEdit = document
+    .querySelector("#input-descripcion-edit")
+    .value.trim();
+  const compraEdit = document
+    .querySelector("#input-precio-compra-edit")
+    .value.trim();
+  const ventaEdit = document
+    .querySelector("#input-precio-venta-edit")
+    .value.trim();
+  const tipoEdit = document.querySelector("#input-tipo-edit").value.trim();
 
-  btnCerrar.addEventListener("click", () => {
-    dialogBuscar.style.visibility = "hidden";
-    dialogBuscar.close();
-  });
+  if (
+    descripccionEdit === "" ||
+    compraEdit === "" ||
+    ventaEdit === "" ||
+    tipoEdit === ""
+  ) {
+    alert("Por favor, completa todos los campos.");
+    return false;
+  }
+  // Validación de tipo numérico para los precios de compra y venta
+  if (isNaN(parseFloat(compraEdit)) || isNaN(parseFloat(ventaEdit))) {
+    alert("Los precios deben ser valores numéricos.");
+    return false; // Detiene la ejecución de la función si los precios no son numéricos
+  }
 
-  btnBuscar.addEventListener("click", async () => {
-    if (!dialogEditar.open) {
-      const busqueda = inputBusqueda.value.toString();
-      inputBusqueda.value = "";
-      dialogBuscar.style.visibility = "hidden";
-      dialogBuscar.close();
-      actualizarEditDialog(busqueda);
-      dialogEditar.showModal();
-      dialogEditar.style.visibility = "visible";
-      const producto = await getByCodigo(busqueda);
-      actualizarEditDialog(producto);
-    }
-  });
+  return true;
 }
 
-function actualizarEditDialog(idProduct) {
-  const inputCodigo = divElement.querySelector("#input-codigo-edit");
-  const inputDescripccion = divElement.querySelector("#input-descripcion-edit");
-  const inputCompra = divElement.querySelector("#input-precio-compra-edit");
-  const inputVenta = divElement.querySelector("#input-precio-venta-edit");
-  const inputTipo = divElement.querySelector("#input-tipo-edit");
-  const btnCerrar = divElement.querySelector("#close-edit");
-
-  inputCodigo.value = idProduct.codigo;
-  inputDescripccion.value = idProduct.descripcion;
-  inputTipo.value = idProduct.tipo;
-  inputCompra.value = "";
-  inputVenta.value = "";
-  inputCodigo.readOnly = true;
-}
-
-function EditarProducto() {
-  const dialogEditar = divElement.querySelector("#edit-product-dialog");
+async function handleEditProduct() {
   const inputCodigoEdit = divElement.querySelector("#input-codigo-edit");
   const inputDescripccionEdit = divElement.querySelector(
     "#input-descripcion-edit"
@@ -216,68 +198,84 @@ function EditarProducto() {
   const inputCompraEdit = divElement.querySelector("#input-precio-compra-edit");
   const inputVentaEdit = divElement.querySelector("#input-precio-venta-edit");
   const inputTipoEdit = divElement.querySelector("#input-tipo-edit");
-  const btnCerrarEdit = divElement.querySelector("#close-edit");
-  const btnEditar = divElement.querySelector("#btn-edit");
+  const newProducto = {
+    codigo: parseInt(inputCodigoEdit.value, 10),
+    descripcion: inputDescripccionEdit.value.toString(),
+    precio_compra: parseFloat(inputCompraEdit.value),
+    precio_venta: parseFloat(inputVentaEdit.value),
+    tipo: inputTipoEdit.value.toString(),
+  };
+  await EditProducto(newProducto);
+  const bitacoRecord = await buildBitacoraEntry(
+    newProducto,
+    "Edición de Producto"
+  );
+  await BitacoraPost(bitacoRecord);
+  await initDataTableInventario();
+}
 
-  btnCerrarEdit.addEventListener("click", () => {
-    dialogEditar.style.visibility = "hidden";
-    dialogEditar.close();
+function editProductDialog() {
+  FormManager.initForm({
+    container: { divElement },
+    triggerSelector: "#btnBuscar",
+    dialogSelector: "#edit-product-dialog",
+    closeSelector: "#close-edit",
+    submitSelector: "#btn-edit",
+    validateFn: ValidateProductEdit,
+    submitFn: handleEditProduct,
   });
+}
 
-  function ValidateProductEdit() {
-    const descripcion = inputDescripccionEdit.value;
-    const precioCompra = inputCompraEdit.value;
-    const precioVenta = inputVentaEdit.value;
-    const tipo = inputTipoEdit.value;
+// Buscar Producto a Editar
 
-    if (
-      descripcion === "" ||
-      precioCompra === "" ||
-      precioVenta === "" ||
-      tipo === ""
-    ) {
-      alert("Por favor, completa todos los campos.");
-      return false;
-    }
+async function ValidateSearchProduct() {
+  const inputCodigoSearch = document.querySelector("#codigoBusqueda").value.trim();
 
-    // Validación de tipo numérico para los precios de compra y venta
-    if (isNaN(parseFloat(precioCompra)) || isNaN(parseFloat(precioVenta))) {
-      alert("Los precios deben ser valores numéricos.");
-      return false; // Detiene la ejecución de la función si los precios no son numéricos
-    }
-
-    return true;
+  if (inputCodigoSearch === "") {
+    alert("Por favor, ingresa el código del producto.");
+    console.log(inputCodigoSearch);
+    return false;
   }
 
-  btnEditar.addEventListener("click", async (event) => {
-    event.preventDefault();
-    if (ValidateProductEdit()) {
-      const newProducto = {
-        codigo: parseInt(inputCodigoEdit.value, 10),
-        descripcion: inputDescripccionEdit.value.toString(),
-        precio_compra: parseFloat(inputCompraEdit.value),
-        precio_venta: parseFloat(inputVentaEdit.value),
-        tipo: inputTipoEdit.value.toString(),
-      };
-      EditProducto(newProducto);
-      dialogEditar.style.visibility = "hidden";
-      dialogEditar.close();
-      initDataTableInventario();
-    }
+  if (isNaN(inputCodigoSearch)) {
+    alert("El código debe ser numérico.");
+    console.log(inputCodigoSearch);
+    return false;
+  }
+
+  return true;
+}
+
+async function handleSeachEdit() {
+  const inputCodigoSearch = divElement.querySelector("#codigoBusqueda");
+  const producto = await getByCodigo(inputCodigoSearch.value.trim());
+  const inputCodigo = divElement.querySelector("#input-codigo-edit");
+  const inputDescripccion = divElement.querySelector("#input-descripcion-edit");
+  const inputCompra = divElement.querySelector("#input-precio-compra-edit");
+  const inputVenta = divElement.querySelector("#input-precio-venta-edit");
+  const inputTipo = divElement.querySelector("#input-tipo-edit");
+
+  inputCodigo.value = producto.codigo;
+  inputDescripccion.value = producto.descripcion;
+  inputTipo.value = producto.tipo;
+  inputCompra.value = "";
+  inputVenta.value = "";
+  inputCodigo.readOnly = true;
+}
+
+function searchEditDialog() {
+  FormManager.initForm({
+    container: { divElement },
+    triggerSelector: "#Lbl-editar",
+    dialogSelector: "#dialogoBuscarProducto",
+    closeSelector: "#close-editar",
+    submitSelector: "#btnBuscar",
+    validateFn: ValidateSearchProduct,
+    submitFn: handleSeachEdit,
   });
 }
 
-export function getDialogElementsEdit() {
-  return {
-    dialogEditar: divElement.querySelector("#dialogoEditarCantidad"),
-    lblEditarCantidad: divElement.querySelector("#Lbl-editar-cantidad"),
-    inputCodigo: divElement.querySelector("#codigoProducto"),
-    descripcionProducto: divElement.querySelector("#descripcionProducto"),
-    cantidadProducto: divElement.querySelector("#cantidadProducto"),
-    btnActualizar: divElement.querySelector("#actualizarCantidad"),
-    btnClose: divElement.querySelector("#close-editar-cantidad"),
-  };
-}
+////
 
 function EditarCantidad() {
   const dialogEditarCantidad = divElement.querySelector(
@@ -492,10 +490,10 @@ export default async () => {
     initDataTableInventario();
   }
   PrintProductos();
-  EditarProducto();
-  BuscarProducto();
   CrearProveedor();
   EditarCantidad();
   createProductDialog();
+  searchEditDialog();
+  editProductDialog();
   return divElement;
 };

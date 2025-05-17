@@ -6,7 +6,7 @@ describe("Formulario de nuevo producto", () => {
   });
 
   it("Debe rechazar campos vacíos", () => {
-    cy.get("#btn-producto").click();
+    cy.get("#btn-edit").click();
     cy.on("window:alert", (str) => {
       expect(str).to.include("completa todos los campos");
     });
@@ -26,7 +26,7 @@ describe("Formulario de nuevo producto", () => {
     cy.get("#input-tipo").select("Pieza");
     cy.get("#input-cantidad").type("10");
 
-    cy.get("#btn-producto").click();
+    cy.get("#btn-edit").click();
 
     cy.wait("@getProducto");
     cy.on("window:alert", (str) => {
@@ -48,7 +48,7 @@ describe("Formulario de nuevo producto", () => {
     cy.get("#input-tipo").select("Pieza");
     cy.get("#input-cantidad").type("aaa");
 
-    cy.get("#btn-producto").click();
+    cy.get("#btn-edit").click();
 
     cy.wait("@getProducto");
     cy.on("window:alert", (str) => {
@@ -64,7 +64,7 @@ describe("Formulario de nuevo producto", () => {
     cy.get("#input-tipo").select("Pieza");
     cy.get("#input-cantidad").type("10");
 
-    cy.get("#btn-producto").click();
+    cy.get("#btn-edit").click();
 
     cy.on("window:alert", (str) => {
       expect(str).to.include("El código debe contener solo valores numéricos.");
@@ -84,7 +84,7 @@ describe("Formulario de nuevo producto", () => {
     cy.get("#input-tipo").select("Pieza");
     cy.get("#input-cantidad").type("10");
 
-    cy.get("#btn-producto").click();
+    cy.get("#btn-edit").click();
 
     cy.wait("@getProducto");
     cy.on("window:alert", (str) => {
@@ -123,7 +123,7 @@ describe("Formulario de nuevo producto", () => {
     cy.get("#input-cantidad").type("20");
 
     // Enviar formulario
-    cy.get("#btn-producto").click();
+    cy.get("#btn-edit").click();
 
     // Esperamos a que se valide primero
     cy.wait("@getProducto");
