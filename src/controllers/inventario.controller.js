@@ -8,8 +8,6 @@ import {
 import { ProveedorPost } from "../controllersDb/proveedorController";
 import { InventarioGetByCodigo } from "../controllersDb/inventarioController";
 import { BitacoraPost } from "../controllersDb/bitacoraController";
-
-import { showDialog } from "../controllers/Entradas.controller";
 import { getByCodigo } from "../controllersDb/catalogoController";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -21,7 +19,6 @@ const divElement = document.createElement("div");
 divElement.innerHTML = view;
 let miTabla;
 
-const lblProvedor = divElement.querySelector("#Lbl-crear-proveedor");
 let appInitialized = false;
 
 export const initDataTableInventario = async () => {
@@ -229,7 +226,9 @@ function editProductDialog() {
 // Buscar Producto a Editar
 
 async function ValidateSearchProduct() {
-  const inputCodigoSearch = document.querySelector("#codigoBusqueda").value.trim();
+  const inputCodigoSearch = document
+    .querySelector("#codigoBusqueda")
+    .value.trim();
 
   if (inputCodigoSearch === "") {
     alert("Por favor, ingresa el código del producto.");
@@ -275,7 +274,7 @@ function searchEditDialog() {
   });
 }
 
-////
+// Editar Cantidad
 
 function EditarCantidad() {
   const dialogEditarCantidad = divElement.querySelector(
@@ -362,6 +361,8 @@ function EditarCantidad() {
   });
 }
 
+// Crear Proveedor
+
 function ValidateProviderInputs() {
   var empresa = divElement.querySelector("#input-empresa").value;
   var nombreProveedor = divElement.querySelector("#input-nombre").value;
@@ -379,7 +380,7 @@ function ValidateProviderInputs() {
     telefono === "" ||
     rfc === ""
   ) {
-    alert("Por favor, completa todos los campos. 3");
+    alert("Por favor, completa todos los campos.");
     return false; // Detiene la ejecución de la función si algún campo está vacío
   }
 
@@ -402,44 +403,38 @@ function ValidateProviderInputs() {
   return true;
 }
 
-function CrearProveedor() {
-  const newProveedorDialog = divElement.querySelector("#new-proveedor-dialog");
-  lblProvedor.addEventListener("click", () => {
-    if (!newProveedorDialog.open) {
-      newProveedorDialog.showModal();
-      newProveedorDialog.style.visibility = "visible";
-    }
-  });
-  divElement
-    .querySelector("#close-proveedor")
-    .addEventListener("click", (event) => {
-      newProveedorDialog.style.visibility = "hidden";
-      newProveedorDialog.close();
-    });
+function handleCreateProvider() {
+  const inputEmpresa = divElement.querySelector("#input-empresa");
+  const inputNombre = divElement.querySelector("#input-nombre");
+  const inputCorreo = divElement.querySelector("#input-correo");
+  const inputDireccion = divElement.querySelector("#input-direccion");
+  const inputTelefono = divElement.querySelector("#input-telefono");
+  const inputRFC = divElement.querySelector("#input-rfc");
+  const newProveedor = {
+    correo_electronico: inputCorreo.value,
+    nombre_empresa: inputEmpresa.value,
+    nombre_contacto: inputNombre.value,
+    direccion: inputDireccion.value,
+    telefono: inputTelefono.value,
+    RFC: inputRFC.value,
+  };
+  ProveedorPost(newProveedor);
+  alert("Nuevo proveedor agregado");
+}
 
-  const btnProvedor = divElement.querySelector("#btn-provedor");
-  btnProvedor.addEventListener("click", async (event) => {
-    event.preventDefault();
-    if (ValidateProviderInputs()) {
-      const inputEmpresa = divElement.querySelector("#input-empresa");
-      const inputNombre = divElement.querySelector("#input-nombre");
-      const inputCorreo = divElement.querySelector("#input-correo");
-      const inputDireccion = divElement.querySelector("#input-direccion");
-      const inputTelefono = divElement.querySelector("#input-telefono");
-      const inputRFC = divElement.querySelector("#input-rfc");
-      const newProveedor = {
-        correo_electronico: inputCorreo.value,
-        nombre_empresa: inputEmpresa.value,
-        nombre_contacto: inputNombre.value,
-        direccion: inputDireccion.value,
-        telefono: inputTelefono.value,
-        RFC: inputRFC.value,
-      };
-      ProveedorPost(newProveedor);
-      alert("Nuevo proveedor agregado");
-    }
+function createProviderDialog() {
+  FormManager.initForm({
+    container: { divElement },
+    triggerSelector: "#Lbl-crear-proveedor",
+    dialogSelector: "#new-proveedor-dialog",
+    closeSelector: "#close-proveedor",
+    submitSelector: "#btn-provedor",
+    validateFn: ValidateProviderInputs,
+    submitFn: handleCreateProvider,
   });
 }
+
+// Imprimir
 
 async function PrintProductos() {
   const btnImprimir = divElement.querySelector("#btn-product-print");
@@ -490,8 +485,8 @@ export default async () => {
     initDataTableInventario();
   }
   PrintProductos();
-  CrearProveedor();
   EditarCantidad();
+  createProviderDialog();
   createProductDialog();
   searchEditDialog();
   editProductDialog();

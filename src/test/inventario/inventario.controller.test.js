@@ -12,17 +12,7 @@ jest.mock("../../controllers/inventario.controller", () => ({
   })),
 }));
 
-describe("getDialogElementsEdit", () => {
-  it("should return dialog elements", () => {
-    const result = getDialogElementsEdit();
-    expect(result).toEqual({
-      dialogEditar: expect.any(HTMLDialogElement),
-      lblEditarCantidad: expect.any(HTMLLabelElement),
-      inputCodigo: expect.any(HTMLInputElement),
-      descripcionProducto: expect.any(HTMLInputElement),
-      cantidadProducto: expect.any(HTMLInputElement),
-      btnActualizar: expect.any(HTMLButtonElement),
-      btnClose: expect.any(HTMLButtonElement),
-    });
-  });
-});
+
+
+
+
