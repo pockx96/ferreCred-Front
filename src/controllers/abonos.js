@@ -1,12 +1,12 @@
 import view from "../view/abonos.html";
-import { ClientesGetAll } from "../controllersDb/clientesController";
+import { ClientesGetAll } from "../model/clientesController";
 import {
   ComprasGetByCliente,
   ComprasGetDeuda,
   ComprasUpdateDeuda,
-} from "../controllersDb/compraController";
-import { postClientes } from "../controllersDb/clientesController";
-import { BitacoraPost } from "../controllersDb/bitacoraController";
+} from "../model/compraController";
+import { postClientes } from "../model/clientesController";
+import { BitacoraPost } from "../model/bitacoraController";
 import { initDataTableBitacora } from "./Bitacora.controller";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";

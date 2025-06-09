@@ -1,19 +1,15 @@
 // import Quagga from 'quagga';
 import view from "../view/Carrito.html";
-import {
-  getAll,
-  getByCodigo,
-  EditCantidad,
-} from "../controllersDb/catalogoController";
-import { ProductoPost } from "../controllersDb/productoController";
-import { ComprasPost } from "../controllersDb/compraController";
-import { InventarioGetByCodigo } from "../controllersDb/inventarioController";
-import { BitacoraPost } from "../controllersDb/bitacoraController";
+import { getAll, getByCodigo, EditCantidad } from "../model/catalogoController";
+import { ProductoPost } from "../model/productoController";
+import { ComprasPost } from "../model/compraController";
+import { InventarioGetByCodigo } from "../model/inventarioController";
+import { BitacoraPost } from "../model/bitacoraController";
 import { initDataTableBitacora } from "./Bitacora.controller";
-import { DeudaUpdate } from "../controllersDb/deudaController";
+import { DeudaUpdate } from "../model/deudaController";
 import { initDataTableInventario } from "./inventario.controller";
-import { ClientesGetAll } from "../controllersDb/clientesController";
-import { ProveedoresGetAll } from "../controllersDb/proveedorController";
+import { ClientesGetAll } from "../model/clientesController";
+import { ProveedoresGetAll } from "../model/proveedorController";
 import _ from "lodash";
 
 const divElement = document.createElement("div");

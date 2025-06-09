@@ -1,5 +1,11 @@
-import view from '../../view/testDB/deudaTest.html'
-import {getAll,getByFolio,post,DeudaUpdate,getByCliente } from '../../controllersDb/deudaController'
+import view from "../../view/testDB/deudaTest.html";
+import {
+  getAll,
+  getByFolio,
+  post,
+  DeudaUpdate,
+  getByCliente,
+} from "../../model/deudaController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -17,13 +23,13 @@ const total = divElement.querySelector("#total");
 const adeudo = divElement.querySelector("#adeudo");
 
 function loadTable() {
-    while (table.rows.length > 1) {
-        table.deleteRow(1);
-    }
+  while (table.rows.length > 1) {
+    table.deleteRow(1);
+  }
 
-    getAll().then((deuda) => {
-        deuda.forEach((deuda) => {
-            table.innerHTML += `
+  getAll().then((deuda) => {
+    deuda.forEach((deuda) => {
+      table.innerHTML += `
           <tr>
           <td>${deuda.folio}</td>
           <td>${deuda.fecha}</td>
@@ -32,67 +38,63 @@ function loadTable() {
           <td>${deuda.adeudo}</td>
       </tr>
           `;
-
-        });
     });
-};
+  });
+}
 
 function searchDeudaByFolio() {
-    btnBuscar.addEventListener("click", () => {
-        var folioString = folio.value;
-        getByFolio(folioString).then((deudas) =>{
-            console.log(deudas);
-            alert(deudas.cliente);
-        });
+  btnBuscar.addEventListener("click", () => {
+    var folioString = folio.value;
+    getByFolio(folioString).then((deudas) => {
+      console.log(deudas);
+      alert(deudas.cliente);
     });
-
-};
+  });
+}
 function searchDeudaByCliente() {
-    btnBuscar.addEventListener("click", () => {
-        var ClienteString = cliente.value;
-        console.log(ClienteString);
-        getByCliente(ClienteString).then((deudas) =>{
-            console.log(deudas);
-            alert(deudas.folio);
-        });
+  btnBuscar.addEventListener("click", () => {
+    var ClienteString = cliente.value;
+    console.log(ClienteString);
+    getByCliente(ClienteString).then((deudas) => {
+      console.log(deudas);
+      alert(deudas.folio);
     });
-
-};
+  });
+}
 
 function addDeuda() {
-    btnAgregar.addEventListener("click", () => {
-        var deuda = {
-            folio:folio.value,
-            fecha:fecha.value,
-            cliente:cliente.value,
-            total:total.value,
-            adeudo:adeudo.value
-        };
-        console.log(deuda);
+  btnAgregar.addEventListener("click", () => {
+    var deuda = {
+      folio: folio.value,
+      fecha: fecha.value,
+      cliente: cliente.value,
+      total: total.value,
+      adeudo: adeudo.value,
+    };
+    console.log(deuda);
 
-        post(deuda);
-        loadTable();
-    });
-};
+    post(deuda);
+    loadTable();
+  });
+}
 function updateDeuda() {
-    btnEditar.addEventListener("click", () => {
-        var deuda = {
-            adeudo:adeudo.value
-        };
-        console.log(deuda);
-        const folioString = folio.value;
-        console.log(folioString);
-        DeudaUpdate(folioString,deuda);
-        loadTable();
-    });
-};
-
+  btnEditar.addEventListener("click", () => {
+    var deuda = {
+      adeudo: adeudo.value,
+    };
+    console.log(deuda);
+    const folioString = folio.value;
+    console.log(folioString);
+    DeudaUpdate(folioString, deuda);
+    loadTable();
+  });
+}
 
 export default async () => {
-    loadTable();
-    searchDeudaByFolio();
-    searchDeudaByCliente();
-    updateDeuda();
-    addDeuda();
-    return divElement;
+  loadTable();
+  searchDeudaByFolio();
+  searchDeudaByCliente();
+  updateDeuda();
+  addDeuda();
+  return divElement;
 };

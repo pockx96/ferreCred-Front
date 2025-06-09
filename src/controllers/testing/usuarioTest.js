@@ -1,5 +1,5 @@
-import view from '../../view/testDB/usuariosTest.html'
-import {getAll,getByFolio,post } from '../../controllersDb/usuariosController'
+import view from "../../view/testDB/usuariosTest.html";
+import { getAll, getByFolio, post } from "../../model/usuariosController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -16,11 +16,8 @@ const unidad = divElement.querySelector("#unidad");
 const cantidad = divElement.querySelector("#cantidad");
 const importe = divElement.querySelector("#importe");
 
-
-
-
 export default async () => {
-    const divElement = document.createElement("div");
-    divElement.innerHTML = view;
-    return divElement;
+  const divElement = document.createElement("div");
+  divElement.innerHTML = view;
+  return divElement;
 };

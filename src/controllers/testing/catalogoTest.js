@@ -1,8 +1,12 @@
-import $ from 'jquery';
-import 'datatables.net';
-import '../../../node_modules/datatables/media/css/jquery.dataTables.min.css';
-import view from '../../view/testDB/catalogoTest.html'
-import {getAll,getByFolio,ProductoPost } from '../../controllersDb/catalogoController'
+import $ from "jquery";
+import "datatables.net";
+import "../../../node_modules/datatables/media/css/jquery.dataTables.min.css";
+import view from "../../view/testDB/catalogoTest.html";
+import {
+  getAll,
+  getByFolio,
+  ProductoPost,
+} from "../../model/catalogoController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -23,25 +27,24 @@ let dataTable;
 let dataTableIsInitialized = false;
 
 const initDataTable = async () => {
-    if (dataTableIsInitialized) {
-        dataTable.fnDestroy();
-    };
+  if (dataTableIsInitialized) {
+    dataTable.fnDestroy();
+  }
 
-    await listProductos();
+  await listProductos();
 
-    dataTable = $(divElement).find("#datatable_producto").dataTable({searching:true,destroy: true});
+  dataTable = $(divElement)
+    .find("#datatable_producto")
+    .dataTable({ searching: true, destroy: true });
 
-
-    dataTableIsInitialized = true;
+  dataTableIsInitialized = true;
 };
 
-
-const listProductos= async()=> {
-
-    getAll().then((producto) => {
-        dataTable.fnClearTable();
-        producto.forEach((producto) => {
-            table.innerHTML += `
+const listProductos = async () => {
+  getAll().then((producto) => {
+    dataTable.fnClearTable();
+    producto.forEach((producto) => {
+      table.innerHTML += `
           <tr>
           <td>${producto.codigo}</td>
           <td>${producto.descripcion}</td>
@@ -50,32 +53,26 @@ const listProductos= async()=> {
           <td>${producto.tipo}</td>
       </tr>
           `;
-
-        });
     });
-
+  });
 };
 
 function addProducto() {
-    btnAgregar.addEventListener("click", () => {
-        var producto = {
-            codigo: codigo.value,
-            descripcion: descripcion.value,
-            precio_compra: precio_compra.value,
-            precio_venta: precio_venta.value,
-            tipo: tipo.value
-        };
+  btnAgregar.addEventListener("click", () => {
+    var producto = {
+      codigo: codigo.value,
+      descripcion: descripcion.value,
+      precio_compra: precio_compra.value,
+      precio_venta: precio_venta.value,
+      tipo: tipo.value,
+    };
 
-        ProductoPost(producto);
-    });
-
-};
-
-
+    ProductoPost(producto);
+  });
+}
 
 export default async () => {
-
-    await initDataTable();
-    addProducto();
-    return divElement;
+  await initDataTable();
+  addProducto();
+  return divElement;
 };

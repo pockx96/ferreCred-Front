@@ -1,10 +1,7 @@
 import view from "../view/usuarios.html";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import {
-  ClientesGetAll,
-  postClientes,
-} from "../controllersDb/clientesController";
+import { ClientesGetAll, postClientes } from "../model/clientesController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;

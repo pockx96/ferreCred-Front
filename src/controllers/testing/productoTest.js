@@ -1,9 +1,12 @@
-import $ from 'jquery';
-import 'datatables.net';
-import '../../../node_modules/datatables/media/css/jquery.dataTables.min.css';
-import view from '../../view/testDB/productoTest.html'
-import { ProductogetAll, ProductogetByFolio, ProductoPost } from '../../controllersDb/productoController'
-
+import $ from "jquery";
+import "datatables.net";
+import "../../../node_modules/datatables/media/css/jquery.dataTables.min.css";
+import view from "../../view/testDB/productoTest.html";
+import {
+  ProductogetAll,
+  ProductogetByFolio,
+  ProductoPost,
+} from "../../model/productoController";
 
 const divElement = document.createElement("div");
 divElement.innerHTML = view;
@@ -24,54 +27,49 @@ let dataTable;
 let dataTableIsInitialized = false;
 
 const dataTableOptions = {
-    pageLength: 3,
-    destroy: true,
-    searching: false,
-    language: {
-        lengthMenu: "Mostrar _MENU_ registros por página",
-        zeroRecords: "Ningún usuario encontrado",
-        info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
-        infoEmpty: "Ningún usuario encontrado",
-        infoFiltered: "(filtrados desde _MAX_ registros totales)",
-        search: "Buscar:",
-        loadingRecords: "Cargando...",
-        paginate: {
-            first: "Primero",
-            last: "Último",
-            next: "Siguiente",
-            previous: "Anterior"
-        }
+  pageLength: 3,
+  destroy: true,
+  searching: false,
+  language: {
+    lengthMenu: "Mostrar _MENU_ registros por página",
+    zeroRecords: "Ningún usuario encontrado",
+    info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+    infoEmpty: "Ningún usuario encontrado",
+    infoFiltered: "(filtrados desde _MAX_ registros totales)",
+    search: "Buscar:",
+    loadingRecords: "Cargando...",
+    paginate: {
+      first: "Primero",
+      last: "Último",
+      next: "Siguiente",
+      previous: "Anterior",
     },
-    columns: [
-        { data: 'codigo', searchable: false },
-        { data: 'folio', searchable: true },
-        { data: 'unidad', searchable: false },
-        { data: 'cantidad', searchable: false },
-        { data: 'importe', searchable: false }
-    ]
-
+  },
+  columns: [
+    { data: "codigo", searchable: false },
+    { data: "folio", searchable: true },
+    { data: "unidad", searchable: false },
+    { data: "cantidad", searchable: false },
+    { data: "importe", searchable: false },
+  ],
 };
-
 
 const initDataTable = async () => {
-    if (dataTableIsInitialized) {
-        dataTable.destroy();
-    };
+  if (dataTableIsInitialized) {
+    dataTable.destroy();
+  }
 
-    await listProductos();
+  await listProductos();
 
-    dataTable = $(divElement).find("#datatable_producto").dataTable();
+  dataTable = $(divElement).find("#datatable_producto").dataTable();
 
-
-    dataTableIsInitialized = true;
+  dataTableIsInitialized = true;
 };
 
-
-const listProductos= async()=> {
-
-    ProductogetAll().then((producto) => {
-        producto.forEach((producto) => {
-            table.innerHTML += `
+const listProductos = async () => {
+  ProductogetAll().then((producto) => {
+    producto.forEach((producto) => {
+      table.innerHTML += `
           <tr>
           <td>${producto.codigo}</td>
           <td>${producto.folio}</td>
@@ -80,55 +78,47 @@ const listProductos= async()=> {
           <td>${producto.importe}</td>
       </tr>
           `;
-
-        });
     });
-
+  });
 };
-
 
 function searchproducto() {
-    btnBuscar.addEventListener("click", () => {
-        var folioString = folio.value;
-        ProductogetByFolio(folioString).then((productos) => {
-            productos.forEach((producto) => {
-                console.log(typeof (producto));
-            });
-        });
+  btnBuscar.addEventListener("click", () => {
+    var folioString = folio.value;
+    ProductogetByFolio(folioString).then((productos) => {
+      productos.forEach((producto) => {
+        console.log(typeof producto);
+      });
     });
-
-};
-
-function addProducto() {
-    btnAgregar.addEventListener("click", () => {
-        var producto = {
-            codigo: codigo.value,
-            folio: folio.value,
-            unidad: unidad.value,
-            cantidad: cantidad.value,
-            importe: importe.value
-        };
-
-        ProductoPost(producto);
-        loadTable();
-    });
-
-};
-
-function jquery() {
-    const btn = $(divElement).find("#prueba");
-    btn.click(function () {
-        alert("¡Haz hecho clic en el botón de prueba!");
-    });
+  });
 }
 
+function addProducto() {
+  btnAgregar.addEventListener("click", () => {
+    var producto = {
+      codigo: codigo.value,
+      folio: folio.value,
+      unidad: unidad.value,
+      cantidad: cantidad.value,
+      importe: importe.value,
+    };
 
+    ProductoPost(producto);
+    loadTable();
+  });
+}
 
+function jquery() {
+  const btn = $(divElement).find("#prueba");
+  btn.click(function () {
+    alert("¡Haz hecho clic en el botón de prueba!");
+  });
+}
 
 export default async () => {
-    dataTable = $(divElement).find("#datatable_producto").dataTable();
-    searchproducto();
-    addProducto();
-    jquery();
-    return divElement;
+  dataTable = $(divElement).find("#datatable_producto").dataTable();
+  searchproducto();
+  addProducto();
+  jquery();
+  return divElement;
 };

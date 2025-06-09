@@ -1,13 +1,9 @@
 import view from "../view/Carrito.html";
-import {
-  getAll,
-  getByCodigo,
-  EditCantidad,
-} from "../controllersDb/catalogoController";
-import { ProductoPost } from "../controllersDb/productoController";
-import { ComprasPost } from "../controllersDb/compraController";
-import { BitacoraPost } from "../controllersDb/bitacoraController";
-import { ClientesGetAll } from "../controllersDb/clientesController";
+import { getAll, getByCodigo, EditCantidad } from "../model/catalogoController";
+import { ProductoPost } from "../model/productoController";
+import { ComprasPost } from "../model/compraController";
+import { BitacoraPost } from "../model/bitacoraController";
+import { ClientesGetAll } from "../model/clientesController";
 import _ from "lodash";
 
 const divElement = document.createElement("div");

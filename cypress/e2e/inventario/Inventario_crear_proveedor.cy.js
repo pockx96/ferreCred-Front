@@ -1,6 +1,7 @@
 describe("Formulario de nuevo proveedor", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:8080/#/inventario"); // Ajusta la ruta si es diferente
+    cy.visit("http://localhost:8080/#/inventario");
+    cy.viewport(1480, 720);
     cy.get("#Lbl-crear-proveedor").click(); // Abre el modal de nuevo proveedor
   });
 
@@ -37,7 +38,9 @@ describe("Formulario de nuevo proveedor", () => {
 
     cy.get("#btn-provedor").click();
     cy.on("window:alert", (str) => {
-      expect(str).to.include("El número de teléfono no tiene un formato válido. Debe contener 10 dígitos."); // Ajusta según tus validaciones
+      expect(str).to.include(
+        "El número de teléfono no tiene un formato válido. Debe contener 10 dígitos."
+      ); // Ajusta según tus validaciones
     });
   });
 
