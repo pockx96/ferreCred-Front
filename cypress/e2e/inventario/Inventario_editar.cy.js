@@ -1,7 +1,8 @@
+const url = `${Cypress.env("DEPLOY_URL")}/#/inventario`;
 describe("Formulario de editar producto", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:8080/#/inventario");
-    // Cambia a tu ruta real si es necesario
+    cy.visit(url);
+    cy.viewport(1480, 720);
     cy.get("#Lbl-editar").click(); // Abre el modal
   });
 

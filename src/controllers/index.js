@@ -3,7 +3,7 @@ import Posts from "./posts.controller";
 import NotFound from "./404.controller";
 import Products from "./products.controller";
 import Carrito from "./Carrito.controller";
-import Usuarios from "./usuarios.controller";
+import Usuarios from "./clientes.controller";
 import Bitacora from "./Bitacora.controller";
 import Proveedor from "./provedores.controller";
 import Inventario from "./inventario.controller";
@@ -23,24 +23,23 @@ const pages = {
   home: Home,
   posts: Posts,
   notFound: NotFound,
-  products:Products,
-  carrito:Carrito,
-  usuarios:Usuarios,
-  bitacora:Bitacora,
-  abonos:Abonos,
-  entradas:Entrada,
-  productoTest:ProductoTest,//TESTING/
-  deudaTest:DeudaTest,
-  compraTest:CompraTest,
-  entradaTest:EntradaTest,
-  inventarioTest:InventarioTest,
-  proveedorTest:ProveedorTest,
-  clienteTest:ClientesTest,
-  catalogoTest:CatalogoTest,
-  usuarioTest:UsuarioTest,
-  proveedor:Proveedor,
-  inventario:Inventario
-
+  products: Products,
+  carrito: Carrito,
+  usuarios: Usuarios,
+  bitacora: Bitacora,
+  abonos: Abonos,
+  entradas: Entrada,
+  productoTest: ProductoTest, //TESTING/
+  deudaTest: DeudaTest,
+  compraTest: CompraTest,
+  entradaTest: EntradaTest,
+  inventarioTest: InventarioTest,
+  proveedorTest: ProveedorTest,
+  clienteTest: ClientesTest,
+  catalogoTest: CatalogoTest,
+  usuarioTest: UsuarioTest,
+  proveedor: Proveedor,
+  inventario: Inventario,
 };
 
 export { pages };

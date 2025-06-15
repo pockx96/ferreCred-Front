@@ -1,6 +1,7 @@
+const url = `${Cypress.env("DEPLOY_URL")}/#/inventario`;
 describe("Formulario de nuevo producto", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:8080/#/inventario");
+    cy.visit(url);
     // Cambia a tu ruta real si es necesario
     cy.get("#Lbl-crear-producto").click(); // Abre el modal
   });

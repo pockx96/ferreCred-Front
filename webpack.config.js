@@ -35,6 +35,7 @@ module.exports = {
       API_URL: JSON.stringify("http://localhost:80/ferreCred-Backend/"),
       VERSION: JSON.stringify("1.0.0"),
       USER_NAME: JSON.stringify("ana@example.com"),
+      DEPLOY_URL: JSON.stringify("http://localhost:8080/"),
     }),
   ],
 
